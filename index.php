@@ -133,61 +133,100 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Set character encoding for the document -->
     <meta charset="UTF-8">
-    <!-- Configure viewport for responsive design -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Set favicon for the website -->
-    <link rel="icon" type="image/png" sizes="16x16" href="admindashboard/assets/images/logo.png">
-    <!-- Set page title -->
+    <link rel="icon" type="image/png" sizes="16x16" href="admindashboard/assets/images/isalu-logo.png">
     <title>Login | Asset Management</title>
-    <!-- Include Bootstrap CSS framework -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts for modern look -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Montserrat', Arial, sans-serif;
+        }
+        .bg-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0,0,0,0.5);
+            z-index: 0;
+            animation: fadeInBg 1.5s;
+        }
+        @keyframes fadeInBg {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .logo-animate {
+            animation: logoDrop 1.2s cubic-bezier(.68,-0.55,.27,1.55);
+        }
+        @keyframes logoDrop {
+            0% { opacity: 0; transform: translateY(-60px) scale(0.8) rotate(-10deg); }
+            60% { opacity: 1; transform: translateY(10px) scale(1.05) rotate(2deg); }
+            100% { opacity: 1; transform: translateY(0) scale(1) rotate(0); }
+        }
+        .card-animate {
+            animation: cardFadeIn 1.2s 0.5s both;
+        }
+        @keyframes cardFadeIn {
+            0% { opacity: 0; transform: translateY(40px) scale(0.95); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .btn-primary {
+            background: linear-gradient(90deg, #1e90ff 0%, #00c6ff 100%);
+            border: none;
+            transition: box-shadow 0.3s, transform 0.2s;
+        }
+        .btn-primary:hover, .btn-primary:focus {
+            box-shadow: 0 4px 16px rgba(30,144,255,0.25);
+            transform: translateY(-2px) scale(1.03);
+        }
+        .card {
+            border-radius: 1.2rem;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+        }
+        .form-control:focus {
+            border-color: #1e90ff;
+            box-shadow: 0 0 0 0.2rem rgba(30,144,255,0.15);
+        }
+        .forgot-link {
+            color: #1e90ff;
+            transition: color 0.2s;
+        }
+        .forgot-link:hover {
+            color: #005fa3;
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <!-- Set body background and styling -->
-<body class="bg-light" style="background-image: url('background.jpg'); background-size: cover; background-position: center;">
-    <!-- Main container with vertical and horizontal centering -->
-    <div class="container d-flex justify-content-center align-items-center vh-100 shadow-sm">
-        <!-- Responsive row for layout -->
-        <div class="row w-100 align-items-center">
-            <!-- Left column for logo -->
-            <div class="col-md-5 text-center mb-4 mb-md-0">
-                <img src="admindashboard/assets/images/logo.png" alt="Office" class="img-fluid rounded shadow-lg" style="max-height: 300px;">
-            </div>
-            <!-- Right column for login form -->
-            <div class="col-md-5">
-                <!-- Login card with shadow effect -->
-                <div class="card shadow-lg p-4">
-                    <!-- Card title -->
-                    <h3 class="text-center mb-4">Asset Management</h3>
-                    <!-- Display error message if exists -->
-                    <?php if (isset($error)): ?>
-                        <div class="alert alert-danger text-center"><?php echo htmlspecialchars($error); ?></div>
-                    <?php endif; ?>
-                    <!-- Login form -->
-                    <form method="POST" action="">
-                        <!-- Username/Email input field -->
-                        <div class="mb-3">
-                            <label for="username" class="form-label">Email/Username</label>
-                            <input type="text" class="form-control" id="username" name="username" placeholder="Enter your username">
-                        </div>
-                        <!-- Password input field -->
-                        <div class="mb-3">
-                            <label for="password" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password">
-                        </div>
-                        <!-- Submit button -->
-                        <button type="submit" class="btn btn-primary w-100">Login</button>
-                    </form>
-                    <!-- Forgot password link -->
-                    <div class="text-center mt-3">
-                        <a href="#" class="text-decoration-none">Forgot Password?</a>
-                    </div>
+<body class="bg-light" style="background-image: url('admindashboard/assets/images/isalu1.jpg'); background-size: cover; background-position: center; min-height: 100vh; position: relative;">
+    <div class="bg-overlay"></div>
+    <div class="container d-flex flex-column justify-content-center align-items-center vh-100" style="position: relative; z-index: 1;">
+        <!-- Logo above the form -->
+        <div class="mb-4 text-center">
+            <img src="admindashboard/assets/images/isalu-logo.png" alt="Isalu Logo" class="img-fluid rounded shadow-lg logo-animate" style="max-height: 180px; background: rgba(255,255,255,0.8); padding: 10px;">
+        </div>
+        <!-- Login card -->
+        <div class="card shadow-lg p-4 card-animate" style="min-width: 320px; max-width: 400px; width: 100%; background: rgba(255,255,255,0.95);">
+            <h3 class="text-center mb-4">Asset Management</h3>
+            <?php if (isset($error)): ?>
+                <div class="alert alert-danger text-center"><?php echo htmlspecialchars($error); ?></div>
+            <?php endif; ?>
+            <form method="POST" action="">
+                <div class="mb-3">
+                    <label for="username" class="form-label">Email/Username</label>
+                    <input type="text" class="form-control" id="username" name="username" placeholder="Enter your username">
                 </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password">
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Login</button>
+            </form>
+            <div class="text-center mt-3">
+                <a href="#" class="text-decoration-none forgot-link">Forgot Password?</a>
             </div>
         </div>
     </div>
-    <!-- Include Bootstrap JS bundle for functionality -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -26,7 +26,7 @@
                     </a>
                 </li>
 
-                <li class="sidebar-item">
+              <!--   <li class="sidebar-item">
                     <a class="sidebar-link has-arrow waves-effect" href="javascript:void(0)">
                         <i class="mdi mdi-file-document text-danger"></i>
                         <span class="hide-menu">Request Module</span>
@@ -53,14 +53,14 @@
                          </li>
                          
                     </ul>
-                </li>
+                </li> -->
 
-                <li class="sidebar-item">
+               <!--  <li class="sidebar-item">
                             <a href="../assethistory.php" class="sidebar-link">
                                 <i class="mdi mdi-history"></i>
                                 <span>Report</span>
                             </a>
-                </li>
+                </li> -->
 
                 <li class="sidebar-item">
                     <a class="sidebar-link waves-effect" href="maintenance.php">

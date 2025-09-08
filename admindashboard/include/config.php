@@ -3,7 +3,7 @@
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "asset_management";
+$dbname = "inventory_sys";
 
 try {
     // Create PDO connection

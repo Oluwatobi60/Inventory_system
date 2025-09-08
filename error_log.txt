@@ -5354,3 +5354,23 @@ Stack trace:
 [2025-08-15 22:11:56] Login successful for user 'PRO'
 [2025-09-03 16:40:30] Login successful for user 'Tobestic'
 [2025-09-08 10:04:12] Login successful for user 'Tobestic'
+[2025-09-08 11:45:17] Login failed: Missing username or password.
+[2025-09-08 11:45:20] Login failed: Missing username or password.
+[2025-09-08 11:48:07] Login successful for user 'Tobestic'
+[2025-09-08 11:48:27] Login successful for user 'Tobestic'
+[2025-09-08 11:48:40] Login failed: Password mismatch for user 'Tobestic'.
+[2025-09-08 11:48:48] Login successful for user 'Tobestic'
+[2025-09-08 11:56:37] Pagination details
+[2025-09-08 12:01:34] Pagination details
+[2025-09-08 12:34:26] Pagination details
+[2025-09-08 12:34:49] Pagination details
+[2025-09-08 12:35:31] Pagination details
+[2025-09-08 12:36:27] Pagination details
+[2025-09-08 12:36:42] Pagination details
+[2025-09-08 12:36:48] Pagination details
+[2025-09-08 12:37:25] Pagination details
+[2025-09-08 12:37:43] Pagination details
+[2025-09-08 12:41:07] Pagination details
+[2025-09-08 22:07:10] Login successful for user 'Tobestic'
+[2025-09-08 22:07:25] Login successful for user 'Tobestic'
+[2025-09-08 22:14:17] Pagination details

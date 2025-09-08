@@ -4,7 +4,7 @@
     <div class="scroll-sidebar">
         <!-- Brand Logo and Name -->
         <div class="brand-container p-3 mb-4 text-center">
-            <h4 class="text-white mb-0">Asset Management</h4>
+            <h4 class="text-white mb-0">Inventory System</h4>
         </div>
         
         <!-- Sidebar navigation-->
@@ -31,7 +31,7 @@
                     </a>
                 </li>
 
-                <li class="sidebar-item"> 
+               <!--  <li class="sidebar-item"> 
                     <a class="sidebar-link has-arrow waves-effect" href="javascript:void(0)">
                         <i class="mdi mdi-file-document text-danger"></i>
                         <span class="menu-title">Request Module</span>
@@ -57,14 +57,14 @@
                             </a>
                          </li>
                     </ul>
-                </li>
+                </li> -->
 
-                   <li class="sidebar-item">
+                  <!--  <li class="sidebar-item">
                             <a href="assethistory.php" class="sidebar-link">
                                 <i class="mdi mdi-history"></i>
                                 <span>Report</span>
                             </a>
-                    </li>
+                    </li> -->
 
                 <li class="sidebar-item"> 
                     <a class="sidebar-link waves-effect" href="maintenance.php">

@@ -1,6 +1,6 @@
 <?php
 $host = 'localhost';
-$dbname = 'asset_management';
+$dbname = 'inventory_sys';
 $username = 'root';
 $password = '';
 

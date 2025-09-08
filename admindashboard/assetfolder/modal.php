@@ -161,11 +161,10 @@ if(isset($_POST['submit'])) {
     document.addEventListener("DOMContentLoaded", function() {
         // Attach an event listener to the modal when it is about to be shown
         $('#exampleModal').on('show.bs.modal', function() {
-            // Generate a random registration number
-            const randomRegNo = Math.random().toString(36).substring(2, 4).toUpperCase() + 
-                                Math.floor(1000 + Math.random() * 9000).toString();
-            // Set the generated registration number to the input field with ID 'reg_no'
-            document.getElementById('reg_no').value = randomRegNo; // Corrected ID from 'asset-model' to 'reg_no'
+            // Generate a registration number: ISL + 3 random digits
+            const randomDigits = Math.floor(100 + Math.random() * 900); // 100-999
+            const regNo = 'ISL' + randomDigits;
+            document.getElementById('reg_no').value = regNo;
         });
     });
 </script>

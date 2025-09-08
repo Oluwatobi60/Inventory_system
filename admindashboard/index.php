@@ -147,13 +147,56 @@ try {
     <meta name="description" content="">
     <meta name="author" content="">
     <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/logo.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/isalu-logo.png">
     <title>Admin||Dashboard</title>
     <!-- Custom CSS -->
     <link href="assets/libs/flot/css/float-chart.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="dist/css/style.min.css" rel="stylesheet">
-
+    <!-- Google Fonts for modern look -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;900&display=swap" rel="stylesheet">
+    <style>
+       .logo-icon img.light-logo {
+            width: 60px !important;
+            max-height: 60px;
+            object-fit: contain;
+            background: linear-gradient(135deg, #e0e7ff 60%, #fff 100%);
+            border-radius: 50%;
+            box-shadow: 0 4px 18px rgba(30,144,255,0.10), 0 1.5px 6px rgba(0,0,0,0.07);
+            padding: 7px;
+            margin: 4px 0 4px 0;
+            border: 2.5px solid #1e90ff22;
+            transition: box-shadow 0.3s, transform 0.2s, border 0.2s;
+        }
+          .logo-icon img.light-logo:hover {
+            box-shadow: 0 8px 32px rgba(30,144,255,0.18);
+            border: 2.5px solid #1e90ff;
+            transform: scale(1.08) rotate(-2deg);
+        }
+        .page-title {
+            font-family: 'Montserrat', Arial, sans-serif;
+            font-weight: 900;
+            font-size: 2.2rem;
+            color: #1e90ff;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 8px rgba(30,144,255,0.08), 0 1px 0 #fff;
+            background: rgba(255,255,255,0.7);
+            border-radius: 8px;
+            padding: 0.3em 1em;
+            display: inline-block;
+            margin-top: 0.5em;
+        }
+        @media (max-width: 600px) {
+            .page-title {
+                font-size: 1.3rem;
+                padding: 0.2em 0.7em;
+            }
+            .logo-icon img.light-logo {
+                width: 48px !important;
+                max-height: 48px;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -186,8 +229,8 @@ try {
                         <b class="logo-icon p-l-10">
                             <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
                             <!-- Dark Logo icon -->
-                            <img src="assets/images/logo.png" alt="homepage" class="light-logo" width="100px"/>
-                           
+                            <img src="assets/images/isalu-logo.png" alt="homepage" class="light-logo" />
+
                         </b>
                         <!--End Logo icon -->
                          <!-- Logo text -->

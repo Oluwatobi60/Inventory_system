@@ -16,18 +16,18 @@
                     </a>
                 </li>
               
-                <li class="sidebar-item"> 
+              <!--   <li class="sidebar-item"> 
                     <a class="sidebar-link waves-effect waves-dark sidebar-link" href="requestasset.php" aria-expanded="false">
                         <i class="mdi mdi-arrow-right-bold"></i><span class="hide-menu">Asset Request</span>
                     </a>
-                </li>
+                </li> -->
 
-                <li class="sidebar-item">
+              <!--   <li class="sidebar-item">
                             <a href="borrowasset.php" class="sidebar-link">
                                 <i class="mdi mdi-arrow-right-bold"></i>
                                 <span>Borrow Asset</span>
                             </a>
-                </li>
+                </li> -->
 
                   <li class="sidebar-item"> 
                     <a class="sidebar-link has-arrow waves-effect" href="javascript:void(0)">
@@ -59,11 +59,11 @@
                     </a>
                 </li>
 
-                <li class="sidebar-item"> 
+                <!-- <li class="sidebar-item"> 
                     <a class="sidebar-link waves-effect waves-dark sidebar-link" href="assethistory.php" aria-expanded="false">
                         <i class="mdi mdi-history"></i><span class="hide-menu">Report</span>
                     </a>
-                </li>
+                </li> -->
 
                 <li class="sidebar-item">
                     <a href="../admindashboard/logout.php" class="sidebar-link">

@@ -23,7 +23,9 @@
                     $stmt->execute(); // Execute the query
                     
                     // Start looping through results
+                     $hasRows = false;
                     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) { // Loop through each row
+                        $hasRows = true;
                         echo "<tr>";
                         echo "<th scope='row'>" . $s++ . "</th>"; // Display serial number
                         echo "<td>" . $row['reg_no'] . "</td>"; // Display registration number
@@ -47,6 +49,9 @@
                     // Log error and display a user-friendly message
                     error_log("Error in assetlisttable.php: " . $e->getMessage());
                     echo "<tr><td colspan='8' class='text-center'>No assets found or error loading assets.</td></tr>";
+                }
+                if (!$hasRows) {
+                    echo "<tr><td colspan='8' class='text-center text-danger font-weight-bold'>No asset records found</td></tr>";
                 }
                 ?>
             </tbody>

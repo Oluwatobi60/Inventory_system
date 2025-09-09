@@ -27,6 +27,8 @@
                                 </td>";
                                 echo "</tr>";
                             }
+                        } else {
+                            echo "<tr><td colspan='3' class='text-center text-danger font-weight-bold'>No record found</td></tr>";
                         }
                         ?>
                         </tbody>

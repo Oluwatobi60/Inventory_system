@@ -1,30 +1,27 @@
-<?php
- require "../include/config.php";
- 
-$id = $_GET['id']; // Retrieve the id from the URL parameters
 
-if (isset($id)) {
-    echo "
-    <script>
-        var confirmDelete = confirm('Are you sure you want to delete this department?');
-        if (confirmDelete) {
-            window.location.href = 'deletedepartment.php?id=$id&confirm=yes';
+
+<?php
+require "../include/config.php";
+
+$id = isset($_GET['id']) ? $_GET['id'] : null;
+if ($id) {
+    try {
+        $stmt = $conn->prepare("DELETE FROM department_table WHERE id = :id");
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        if ($stmt->execute()) {
+            echo "<script>alert('Record deleted successfully'); window.location.href='../department.php';</script>";
+            exit;
         } else {
-            window.location.href = '../department.php';
+            echo "<script>alert('Error deleting record'); window.location.href='../department.php';</script>";
+            exit;
         }
-    </script>
-    ";
-    
-    if (isset($_GET['confirm']) && $_GET['confirm'] == 'yes') {
-        // SQL query to delete the asset record with the given id
-        $sql = "DELETE FROM department_table WHERE id = $id";
-        if ($conn->query($sql) === TRUE) {
-            echo "<script>alert('Record deleted successfully');</script>";
-            header("Location: ../department.php"); // Redirect back to the asset list page
-        } else {
-            echo "<script>alert('Error deleting record');</script>";
-        }
+    } catch (PDOException $e) {
+        echo "<script>alert('Database error: " . addslashes($e->getMessage()) . "'); window.location.href='../department.php';</script>";
+        exit;
     }
+} else {
+    header('Location: ../department.php');
+    exit;
 }
 ?>
 

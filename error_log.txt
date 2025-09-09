@@ -5374,3 +5374,101 @@ Stack trace:
 [2025-09-08 22:07:10] Login successful for user 'Tobestic'
 [2025-09-08 22:07:25] Login successful for user 'Tobestic'
 [2025-09-08 22:14:17] Pagination details
+[2025-09-08 22:20:53] Asset deleted successfully (ID: 22)
+[2025-09-08 22:21:02] Asset deleted successfully (ID: 12)
+[2025-09-08 22:21:10] Asset deleted successfully (ID: 21)
+[2025-09-08 22:21:18] Asset deleted successfully (ID: 20)
+[2025-09-08 22:21:25] Asset deleted successfully (ID: 18)
+[2025-09-08 22:21:32] Asset deleted successfully (ID: 19)
+[2025-09-08 22:21:39] Asset deleted successfully (ID: 17)
+[2025-09-08 22:21:45] Asset deleted successfully (ID: 16)
+[2025-09-08 22:21:51] Asset deleted successfully (ID: 9)
+[2025-09-08 22:21:58] Asset deleted successfully (ID: 11)
+[2025-09-08 22:22:05] Asset deleted successfully (ID: 13)
+[2025-09-08 22:22:15] Asset deleted successfully (ID: 14)
+[2025-09-08 22:23:14] Category deleted successfully (ID: 14)
+[2025-09-08 22:23:19] Category deleted successfully (ID: 8)
+[2025-09-08 22:25:49] Category deleted successfully (ID: 7)
+[2025-09-08 22:26:01] Pagination details
+[2025-09-08 22:26:08] Pagination details
+[2025-09-08 22:26:14] Pagination details
+[2025-09-08 22:26:22] Pagination details
+[2025-09-08 22:26:28] Pagination details
+[2025-09-08 22:26:35] Pagination details
+[2025-09-08 22:36:39] Pagination details
+[2025-09-08 22:39:16] Pagination details
+[2025-09-08 22:40:41] Pagination details
+[2025-09-08 22:51:28] Login successful for user 'daraminds'
+[2025-09-08 22:52:32] Pagination details
+[2025-09-08 22:52:34] Pagination details
+[2025-09-09 09:26:59] Login successful for user 'daraminds'
+[2025-09-09 09:37:36] Pagination details
+[2025-09-09 09:37:45] Pagination details
+[2025-09-09 09:38:31] Pagination details
+[2025-09-09 09:39:16] Pagination details
+[2025-09-09 09:39:37] Pagination details
+[2025-09-09 09:41:15] Pagination details
+[2025-09-09 09:45:41] Pagination details
+[2025-09-09 09:45:54] Pagination details
+[2025-09-09 09:48:15] Pagination details
+[2025-09-09 09:51:16] Login failed: No matching user found for 'HOD'.
+[2025-09-09 09:51:25] Login successful for user 'Tobestics'
+[2025-09-09 09:53:38] Login successful for user 'Teeb'
+[2025-09-09 09:54:07] Login successful for user 'Teeb'
+[2025-09-09 09:54:16] Login successful for user 'daraminds'
+[2025-09-09 09:54:29] Login successful for user 'Tobestic'
+[2025-09-09 09:54:52] Login successful for user 'daraminds'
+[2025-09-09 09:57:03] Pagination details
+[2025-09-09 09:57:06] Pagination details
+[2025-09-09 09:57:20] Login successful for user 'Tobestic'
+[2025-09-09 09:59:33] Login successful for user 'daraminds'
+[2025-09-09 09:59:53] Pagination details
+[2025-09-09 10:02:35] Login successful for user 'Tobestic'
+[2025-09-09 10:03:05] Login successful for user 'daraminds'
+[2025-09-09 10:29:17] Login successful for user 'daraminds'
+[2025-09-09 10:38:33] Pagination details
+[2025-09-09 10:39:10] Login successful for user 'Tobestic'
+[2025-09-09 12:41:31] Login successful for user 'Tobestic'
+[2025-09-09 12:42:51] Failed to fetch request statistics: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'date_added' in 'where clause'
+[2025-09-09 12:45:01] Failed to fetch request statistics: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'date_added' in 'where clause'
+[2025-09-09 12:47:30] Failed to fetch request statistics: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'date_added' in 'where clause'
+[2025-09-09 12:49:21] Failed to fetch request statistics: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'date_added' in 'where clause'
+[2025-09-09 12:50:14] Failed to fetch request statistics: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'date_added' in 'where clause'
+[2025-09-09 12:50:36] Failed to fetch request statistics: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'date_added' in 'where clause'
+[2025-09-09 12:55:46] Failed to fetch request statistics: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'date_added' in 'where clause'
+[2025-09-09 12:57:19] New asset added successfully: HP 840 G3 (Reg No: ISL158)
+[2025-09-09 13:01:23] Failed to fetch request statistics: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'date_added' in 'where clause'
+[2025-09-09 13:05:03] Failed to fetch request statistics: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'date_added' in 'where clause'
+[2025-09-09 13:37:14] Login successful for user 'Tobestic'
+[2025-09-09 13:37:14] Failed to fetch request statistics: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'date_added' in 'where clause'
+[2025-09-09 13:37:27] Failed to fetch request statistics: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'date_added' in 'where clause'
+[2025-09-09 13:37:29] Failed to fetch request statistics: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'date_added' in 'where clause'
+[2025-09-09 13:37:32] Failed to fetch request statistics: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'date_added' in 'where clause'
+[2025-09-09 13:37:41] Failed to fetch request statistics: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'date_added' in 'where clause'
+[2025-09-09 13:37:44] Failed to fetch request statistics: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'date_added' in 'where clause'
+[2025-09-09 13:38:26] Failed to fetch request statistics: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'date_added' in 'where clause'
+[2025-09-09 13:38:30] Failed to fetch request statistics: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'date_added' in 'where clause'
+[2025-09-09 13:45:40] Failed to fetch request statistics: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'date_added' in 'where clause'
+[2025-09-09 13:50:22] Failed to fetch request statistics: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'date_added' in 'where clause'
+[2025-09-09 13:50:30] Failed to fetch request statistics: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'date_added' in 'where clause'
+[2025-09-09 13:51:50] Failed to fetch request statistics: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'date_added' in 'where clause'
+[2025-09-09 13:55:07] Failed to fetch request statistics: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'date_added' in 'where clause'
+[2025-09-09 13:55:30] Failed to fetch request statistics: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'date_added' in 'where clause'
+[2025-09-09 13:56:07] Failed to fetch request statistics: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'date_added' in 'where clause'
+[2025-09-09 13:57:55] Failed to fetch request statistics: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'date_added' in 'where clause'
+[2025-09-09 13:58:37] Failed to fetch request statistics: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'date_added' in 'where clause'
+[2025-09-09 14:00:19] Failed to fetch request statistics: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'date_added' in 'where clause'
+[2025-09-09 14:03:36] Failed to fetch request statistics: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'date_added' in 'where clause'
+[2025-09-09 14:04:35] Failed to fetch request statistics: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'date_added' in 'where clause'
+[2025-09-09 14:05:09] Failed to fetch request statistics: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'date_added' in 'where clause'
+[2025-09-09 14:08:12] Failed to fetch request statistics: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'date_added' in 'where clause'
+[2025-09-09 14:09:21] Failed to fetch request statistics: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'date_added' in 'where clause'
+[2025-09-09 14:09:34] Failed to fetch request statistics: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'date_added' in 'where clause'
+[2025-09-09 14:09:44] Failed to fetch request statistics: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'date_added' in 'where clause'
+[2025-09-09 14:10:30] Failed to fetch request statistics: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'date_added' in 'where clause'
+[2025-09-09 14:13:38] Failed to fetch request statistics: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'date_added' in 'where clause'
+[2025-09-09 14:14:31] Pagination details
+[2025-09-09 14:15:50] Failed to fetch request statistics: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'date_added' in 'where clause'
+[2025-09-09 14:19:10] Failed to fetch request statistics: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'date_added' in 'where clause'
+[2025-09-09 15:11:49] Login successful for user 'Tobestic'
+[2025-09-09 15:11:49] Failed to fetch request statistics: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'date_added' in 'where clause'

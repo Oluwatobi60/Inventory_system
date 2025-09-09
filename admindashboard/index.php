@@ -8,19 +8,20 @@ if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY']) >
     // If the session has been inactive for too long, destroy it
     session_unset();
     session_destroy();
-    header("Location: ../userfolder/index.php"); // Redirect to login page
+    header("Location: ../index.php"); // Redirect to login page
     exit();
 }
 $_SESSION['LAST_ACTIVITY'] = time(); // Update last activity timestamp
 
 // Check if the user is logged in
 if (!isset($_SESSION['username'])) {
-    header("Location: ../userfolder/index.php"); // Redirect to login page if not logged in
+    header("Location: ../index.php"); // Redirect to login page if not logged in
     exit();
 }
 
 // Database connection
-require_once "include/config.php";
+require_once "../include/config.php";
+require_once "../include/utils.php";
 
 // Section: Fetch Admin User Details
 try {
@@ -94,45 +95,44 @@ try {
     $total_ac_quantity = 0;
 }
 
-// Fetch total "Today Request"
-/* $query = "SELECT COUNT(*) AS total_today_request FROM request_table WHERE DATE(request_date) = CURDATE()";
-$result = mysqli_query($conn, $query);
-$row = mysqli_fetch_assoc($result);
-$total_today_request = $row['total_today_request']; */
-
 // Section: Fetch Request Statistics
 try {
-    // Query to get total requests for today
-    // Uses DATE() function to compare only the date part
-    $query = "SELECT SUM(quantity) AS total_today_request_quantity 
-              FROM request_table 
-              WHERE DATE(request_date) = CURDATE()";
+    // Fetch total number of assets
+    $query = "SELECT COUNT(*) AS total_asset FROM asset_table";
     $stmt = $conn->query($query);
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    // Store today's request quantity, default to 0 if NULL
-    $total_today_request_quantity = $row['total_today_request_quantity'] ?? 0;
+    $total_asset = $row ? $row['total_asset'] : 0;
 
-    // Query to get total requests for current month
-    // Uses MONTH() and YEAR() to match current month and year
-    $query = "SELECT SUM(quantity) AS total_this_month_request_quantity 
-              FROM request_table 
-              WHERE MONTH(request_date) = MONTH(CURDATE()) 
-              AND YEAR(request_date) = YEAR(CURDATE())";
+    // Fetch number of assets added today
+    $query = "SELECT COUNT(*) AS new_added_asset FROM asset_table WHERE DATE(date_added) = CURDATE()";
     $stmt = $conn->query($query);
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    // Store monthly request quantity, default to 0 if NULL
-    $total_this_month_request_quantity = $row['total_this_month_request_quantity'] ?? 0;
+    $new_added_asset = $row ? $row['new_added_asset'] : 0;
 
     // Fetch total number of users
     $query = "SELECT COUNT(*) AS total_users FROM user_table";
     $stmt = $conn->query($query);
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    $total_users = $row['total_users'] ?? 0;
+    $total_users = $row ? $row['total_users'] : 0;
+
+    // Fetch total staff allocated asset (from staff_allocation table, counting unique staff_id)
+    $query = "SELECT COUNT(DISTINCT id) AS staff_allocated FROM staff_allocation";
+    $stmt = $conn->query($query);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    $staff_allocated = $row ? $row['staff_allocated'] : 0;
+
+    // Fetch total staff allocated asset (from maintenance_table, counting unique staff_id)
+    $query = "SELECT COUNT(DISTINCT id) AS maintenance_report FROM maintenance_table";
+    $stmt = $conn->query($query);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    $maintenance_report = $row ? $row['maintenance_report'] : 0;
 } catch (PDOException $e) {
     logError("Failed to fetch request statistics: " . $e->getMessage());
-    $total_today_request_quantity = 0;
-    $total_this_month_request_quantity = 0;
+    $total_asset = 0;
+    $new_added_asset = 0;
     $total_users = 0;
+    $staff_allocated = 0;
+    $maintenance_report = 0;    
 }
 ?>
 
@@ -196,6 +196,41 @@ try {
                 max-height: 48px;
             }
         }
+        .request-dist-card.glass-effect {
+    background: rgba(255,255,255,0.25);
+    box-shadow: 0 8px 32px rgba(30,144,255,0.13), 0 1.5px 6px rgba(0,0,0,0.09);
+    border-radius: 18px;
+    backdrop-filter: blur(7px);
+    border: 1.5px solid rgba(30,144,255,0.13);
+    transition: box-shadow 0.3s, transform 0.3s;
+    opacity: 0;
+    transform: translateY(40px) scale(0.98);
+    animation: fadeInUp 1.2s 0.2s forwards;
+}
+.request-dist-card.glass-effect:hover {
+    box-shadow: 0 16px 48px rgba(30,144,255,0.18), 0 3px 12px rgba(0,0,0,0.13);
+    transform: translateY(-8px) scale(1.04) rotate(-1deg);
+    z-index: 2;
+}
+.glass-header {
+    background: rgba(255,255,255,0.55)!important;
+    border-radius: 18px 18px 0 0;
+    border-bottom: 1px solid rgba(30,144,255,0.08);
+}
+.animated-fade-in {
+    opacity: 0;
+    animation: fadeInUp 1.2s 0.2s forwards;
+}
+.animated-chart {
+    opacity: 0;
+    animation: fadeInUp 1.4s 0.4s forwards;
+}
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
     </style>
 </head>
 
@@ -477,53 +512,53 @@ try {
                 </div>
 
                 <!-- Statistics Section -->
-                <div class="row mb-4">
+                <div class="row mb-4 dashboard-stats-row">
                     <div class="col-12">
                         <h4 class="text-muted mb-4">Statistics</h4>
                     </div>
-                    <div class="col-xl-3 col-md-4 mb-4">
-                        <div class="card shadow-lg rounded-lg h-100 bg-gradient-primary text-white">
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card stat-card shadow-lg rounded-lg h-100 bg-gradient-primary text-white animated-card">
                             <div class="card-body">
                                 <div class="row align-items-center">
                                     <div class="col mr-2">
                                         <div class="text-xs font-weight-bold text-uppercase mb-1">Total Users</div>
-                                        <div class="h5 mb-0 font-weight-bold"><?php echo $total_users; ?></div>
+                                        <div class="h2 mb-0 font-weight-bold count-up" data-count="<?php echo $total_users; ?>">0</div>
                                     </div>
                                     <div class="col-auto">
-                                        <i class="mdi mdi-account-multiple fa-2x opacity-75"></i>
+                                        <i class="mdi mdi-account-multiple fa-3x opacity-75"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+              
+                    
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card stat-card shadow-lg rounded-lg h-100 bg-gradient-success text-white animated-card">
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-uppercase mb-1">Staff Allocated Asset</div>
+                                        <div class="h2 mb-0 font-weight-bold count-up" data-count="<?php echo $staff_allocated; ?>">0</div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="mdi mdi-account-check fa-3x opacity-75"></i>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-
-                    <div class="col-xl-3 col-md-4 mb-4">
-                        <div class="card shadow-lg rounded-lg h-100 bg-gradient-warning text-white">
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card stat-card shadow-lg rounded-lg h-100 bg-gradient-warning text-white animated-card">
                             <div class="card-body">
                                 <div class="row align-items-center">
                                     <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-uppercase mb-1">Today's Requests</div>
-                                        <div class="h5 mb-0 font-weight-bold"><?php echo $total_today_request_quantity; ?></div>
+                                        <div class="text-xs font-weight-bold text-uppercase mb-1">Maintenance Report</div>
+                                        <div class="h2 mb-0 font-weight-bold count-up" data-count="<?php echo $maintenance_report; ?>">0</div>
                                     </div>
                                     <div class="col-auto">
-                                        <i class="mdi mdi-calendar-today fa-2x opacity-75"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-xl-3 col-md-4 mb-4">
-                        <div class="card shadow-lg rounded-lg h-100 bg-gradient-danger text-white">
-                            <div class="card-body">
-                                <div class="row align-items-center">
-                                    <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-uppercase mb-1">Monthly Requests</div>
-                                        <div class="h5 mb-0 font-weight-bold"><?php echo $total_this_month_request_quantity; ?></div>
-                                    </div>
-                                    <div class="col-auto">
-                                        <i class="mdi mdi-calendar fa-2x opacity-75"></i>
+                                        <i class="mdi mdi-account-check fa-3x opacity-75"></i>
                                     </div>
                                 </div>
                             </div>
@@ -541,19 +576,6 @@ try {
                             <div class="card-body">
                                 <div class="chart-area">
                                     <canvas id="assetBarChart"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-xl-4 col-lg-5">
-                        <div class="card shadow-lg rounded-lg mb-4">
-                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-light">
-                                <h6 class="m-0 font-weight-bold text-primary">Request Distribution</h6>
-                            </div>
-                            <div class="card-body">
-                                <div class="chart-pie pt-4 pb-2">
-                                    <canvas id="requestDistributionChart"></canvas>
                                 </div>
                             </div>
                         </div>
@@ -660,38 +682,6 @@ try {
                     grid: {
                         display: false
                     }
-                }
-            }
-        }
-    });
-
-    var reqCtx = document.getElementById('requestDistributionChart').getContext('2d');
-    var requestDistributionChart = new Chart(reqCtx, {
-        type: 'doughnut',
-        data: {
-            labels: ['Today\'s Requests', 'Monthly Requests'],
-            datasets: [{
-                data: [
-                    <?php echo $total_today_request_quantity; ?>,
-                    <?php echo $total_this_month_request_quantity; ?>
-                ],
-                backgroundColor: [
-                    'rgba(246, 194, 62, 0.8)',
-                    'rgba(231, 74, 59, 0.8)'
-                ],
-                borderColor: [
-                    'rgb(246, 194, 62)',
-                    'rgb(231, 74, 59)'
-                ],
-                borderWidth: 2
-            }]
-        },
-        options: {
-            maintainAspectRatio: false,
-            cutout: '70%',
-            plugins: {
-                legend: {
-                    position: 'bottom'
                 }
             }
         }

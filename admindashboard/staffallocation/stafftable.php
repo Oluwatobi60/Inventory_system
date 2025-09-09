@@ -167,7 +167,9 @@ try {
                 <tbody>
                     <?php                    $s = $offset + 1; // Initialize serial number for the current page
                     // Fetch and display all results using PDO
+                    $hasRows = false;
                     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                        $hasRows = true;
                         // Sanitize data to prevent XSS attacks
                         $id = htmlspecialchars($row['id']);
                         $reg_no = htmlspecialchars($row['reg_no']);
@@ -213,6 +215,9 @@ try {
                             </td>
                         </tr>
                     <?php
+                    }
+                    if (!$hasRows) {
+                        echo "<tr><td colspan='8' class='text-center text-danger font-weight-bold'>No record found</td></tr>";
                     }
                     ?>
                 </tbody>

@@ -8,14 +8,14 @@ if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY']) >
     // If the session has been inactive for too long, destroy it
     session_unset();
     session_destroy();
-    header("Location: ../userfolder/index.php"); // Redirect to login page
+    header("Location: ../index.php"); // Redirect to login page
     exit();
 }
 $_SESSION['LAST_ACTIVITY'] = time(); // Update last activity timestamp
 
 // Check if the user is logged in
 if (!isset($_SESSION['username'])) {
-    header("Location: ../userfolder/index.php"); // Redirect to login page if not logged in
+    header("Location: ../index.php"); // Redirect to login page if not logged in
     exit();
 }
 ?>
@@ -30,8 +30,35 @@ if (!isset($_SESSION['username'])) {
     <meta name="description" content="">
     <meta name="author" content="">
     <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="../admindashboard/assets/images/logo.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../admindashboard/assets/images/isalu-logo.png">
     <title>Procurement||Dashboard</title>
+
+    <style>
+
+        .logo-icon img.light-logo {
+            width: 60px !important;
+            max-height: 60px;
+            object-fit: contain;
+            background: linear-gradient(135deg, #e0e7ff 60%, #fff 100%);
+            border-radius: 50%;
+            box-shadow: 0 4px 18px rgba(30,144,255,0.10), 0 1.5px 6px rgba(0,0,0,0.07);
+            padding: 7px;
+            margin: 4px 0 4px 0;
+            border: 2.5px solid #1e90ff22;
+            transition: box-shadow 0.3s, transform 0.2s, border 0.2s;
+        }
+          .logo-icon img.light-logo:hover {
+            box-shadow: 0 8px 32px rgba(30,144,255,0.18);
+            border: 2.5px solid #1e90ff;
+            transform: scale(1.08) rotate(-2deg);
+        }
+        @media (max-width: 600px) {
+            .logo-icon img.light-logo {
+                width: 48px !important;
+                max-height: 48px;
+            }
+        }
+    </style>
     <!-- Custom CSS -->
     <link href="../admindashboard/assets/libs/flot/css/float-chart.css" rel="stylesheet">
     <!-- Custom CSS -->
@@ -56,7 +83,7 @@ if (!isset($_SESSION['username'])) {
         <!-- ============================================================== -->
         <!-- Topbar header - style you can find in pages.scss -->
         <!-- ============================================================== -->
-        <header class="topbar" data-navbarbg="skin5">
+     <header class="topbar" data-navbarbg="skin5">
             <nav class="navbar top-navbar navbar-expand-md navbar-dark">
                 <div class="navbar-header" data-logobg="skin5">
                     <!-- This is for the sidebar toggle which is visible on mobile only -->
@@ -69,8 +96,8 @@ if (!isset($_SESSION['username'])) {
                         <b class="logo-icon p-l-10">
                             <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
                             <!-- Dark Logo icon -->
-                            <img src="../admindashboard/assets/images/logo.png" alt="homepage" class="light-logo" width="100px"/>
-                           
+                            <img src="../admindashboard/assets/images/isalu-logo.png" alt="homepage" class="light-logo" />
+
                         </b>
                         <!--End Logo icon -->
                          <!-- Logo text -->
@@ -156,7 +183,7 @@ if (!isset($_SESSION['username'])) {
                         <!-- User profile and search -->
                         <!-- ============================================================== -->
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="assets/images/users/1.jpg" alt="user" class="rounded-circle" width="31"></a>
+                            <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="../admindashboard/assets/images/users/1.jpg" alt="user" class="rounded-circle" width="31"></a>
                             <div class="dropdown-menu dropdown-menu-right user-dd animated">
                                 <a class="dropdown-item" href="javascript:void(0)"><i class="ti-user m-r-5 m-l-5"></i> My Profile</a>
                                 <a class="dropdown-item" href="javascript:void(0)"><i class="ti-wallet m-r-5 m-l-5"></i> My Balance</a>
@@ -175,7 +202,7 @@ if (!isset($_SESSION['username'])) {
                     </ul>
                 </div>
             </nav>
-        </header>
+        </header> 
         <!-- ============================================================== -->
         <!-- End Topbar header -->
       

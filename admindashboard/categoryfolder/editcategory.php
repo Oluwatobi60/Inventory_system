@@ -55,7 +55,34 @@ try {
     <meta name="description" content="">
     <meta name="author" content="">
     <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/logo.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/isalu-logo.png">
+
+    <style>
+        .logo-icon img.light-logo {
+            width: 60px !important;
+            max-height: 60px;
+            object-fit: contain;
+            background: linear-gradient(135deg, #e0e7ff 60%, #fff 100%);
+            border-radius: 50%;
+            box-shadow: 0 4px 18px rgba(30,144,255,0.10), 0 1.5px 6px rgba(0,0,0,0.07);
+            padding: 7px;
+            margin: 4px 0 4px 0;
+            border: 2.5px solid #1e90ff22;
+            transition: box-shadow 0.3s, transform 0.2s, border 0.2s;
+        }
+          .logo-icon img.light-logo:hover {
+            box-shadow: 0 8px 32px rgba(30,144,255,0.18);
+            border: 2.5px solid #1e90ff;
+            transform: scale(1.08) rotate(-2deg);
+        }
+        @media (max-width: 600px) {
+            .logo-icon img.light-logo {
+                width: 48px !important;
+                max-height: 48px;
+            }
+        }
+    </style>
+
     <title>Admin||Dashboard</title>
     <!-- Custom CSS -->
     <link href="../assets/libs/flot/css/float-chart.css" rel="stylesheet">
@@ -99,15 +126,15 @@ try {
                         <b class="logo-icon p-l-10">
                             <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
                             <!-- Dark Logo icon -->
-                            <img src="../assets/images/logo-icon.png" alt="homepage" class="light-logo" />
+                            <img src="../assets/images/isalu-logo.png" alt="homepage" class="light-logo" />
+
                         </b>
                         <!--End Logo icon -->
                          <!-- Logo text -->
                         <span class="logo-text">
-                            <!-- Dark Logo text -->
-                            <img src="../assets/images/logo.png" alt="homepage" class="light-logo" width="100px"/>
-                        </span>
-                    </a>
+                        
+                            
+                     
                     <a class="topbartoggler d-block d-md-none waves-effect waves-light" href="javascript:void(0)" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><i class="ti-more"></i></a>
                 </div>
                 <!-- ============================================================== -->
@@ -120,6 +147,7 @@ try {
                     <ul class="navbar-nav float-left mr-auto">
                         <li class="nav-item d-none d-md-block"><a class="nav-link sidebartoggler waves-effect waves-light" href="javascript:void(0)" data-sidebartype="mini-sidebar"><i class="mdi mdi-menu font-24"></i></a></li>
                         <!-- ============================================================== -->
+                    
                         <!-- Search -->
                         <!-- ============================================================== -->
                         <li class="nav-item search-box"> <a class="nav-link waves-effect waves-dark" href="javascript:void(0)"><i class="ti-search"></i></a>
@@ -145,6 +173,7 @@ try {
                                 <a class="dropdown-item" href="#">Something else here</a>
                             </div>
                         </li>
+                     
                         <!-- ============================================================== -->
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" id="2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="font-24 mdi mdi-comment-processing"></i>
@@ -179,7 +208,8 @@ try {
                                 </ul>
                             </div>
                         </li>
-                        <!-- ============================================================== -->
+                   
+
                         <!-- User profile and search -->
                         <!-- ============================================================== -->
                         <li class="nav-item dropdown">

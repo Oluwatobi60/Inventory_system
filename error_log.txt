@@ -5472,3 +5472,6 @@ Stack trace:
 [2025-09-09 14:19:10] Failed to fetch request statistics: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'date_added' in 'where clause'
 [2025-09-09 15:11:49] Login successful for user 'Tobestic'
 [2025-09-09 15:11:49] Failed to fetch request statistics: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'date_added' in 'where clause'
+[2025-09-09 16:19:47] Login successful for user 'Tobestic'
+[2025-09-09 16:26:39] Pagination details
+[2025-09-11 17:22:59] Login successful for user 'Tobestic'

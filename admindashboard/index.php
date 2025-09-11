@@ -104,7 +104,7 @@ try {
     $total_asset = $row ? $row['total_asset'] : 0;
 
     // Fetch number of assets added today
-    $query = "SELECT COUNT(*) AS new_added_asset FROM asset_table WHERE DATE(date_added) = CURDATE()";
+    $query = "SELECT COUNT(*) AS new_added_asset FROM asset_table WHERE DATE(dateofpurchase) = CURDATE()";
     $stmt = $conn->query($query);
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
     $new_added_asset = $row ? $row['new_added_asset'] : 0;
@@ -116,7 +116,7 @@ try {
     $total_users = $row ? $row['total_users'] : 0;
 
     // Fetch total staff allocated asset (from staff_allocation table, counting unique staff_id)
-    $query = "SELECT COUNT(DISTINCT id) AS staff_allocated FROM staff_allocation";
+    $query = "SELECT COUNT(DISTINCT id) AS staff_allocated FROM staff_table";
     $stmt = $conn->query($query);
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
     $staff_allocated = $row ? $row['staff_allocated'] : 0;
@@ -127,13 +127,19 @@ try {
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
     $maintenance_report = $row ? $row['maintenance_report'] : 0;
 } catch (PDOException $e) {
-    logError("Failed to fetch request statistics: " . $e->getMessage());
+    // TEMPORARY DEBUGGING: Show the error on the screen
+    die("Database Error: " . $e->getMessage());
+    
+    // Keep your original logging for later
+    // logError("Failed to fetch request statistics: " . $e->getMessage());
     $total_asset = 0;
     $new_added_asset = 0;
     $total_users = 0;
     $staff_allocated = 0;
-    $maintenance_report = 0;    
+    $maintenance_report = 0;
 }
+
+
 ?>
 
 <!DOCTYPE html>
@@ -522,7 +528,7 @@ try {
                                 <div class="row align-items-center">
                                     <div class="col mr-2">
                                         <div class="text-xs font-weight-bold text-uppercase mb-1">Total Users</div>
-                                        <div class="h2 mb-0 font-weight-bold count-up" data-count="<?php echo $total_users; ?>">0</div>
+                                        <div class="h5 mb-0 font-weight-bold"><?php echo $total_users; ?></div>
                                     </div>
                                     <div class="col-auto">
                                         <i class="mdi mdi-account-multiple fa-3x opacity-75"></i>
@@ -531,44 +537,55 @@ try {
                             </div>
                         </div>
                     </div>
-              
-                    
                     <div class="col-xl-3 col-md-6 mb-4">
                         <div class="card stat-card shadow-lg rounded-lg h-100 bg-gradient-success text-white animated-card">
                             <div class="card-body">
                                 <div class="row align-items-center">
                                     <div class="col mr-2">
                                         <div class="text-xs font-weight-bold text-uppercase mb-1">Staff Allocated Asset</div>
-                                        <div class="h2 mb-0 font-weight-bold count-up" data-count="<?php echo $staff_allocated; ?>">0</div>
+                                        <div class="h5 mb-0 font-weight-bold"><?php echo $staff_allocated; ?></div>
                                     </div>
                                     <div class="col-auto">
-                                        <i class="mdi mdi-account-check fa-3x opacity-75"></i>
+                                        <i class="mdi mdi-account-tie fa-3x opacity-75"></i>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                     <div class="col-xl-3 col-md-6 mb-4">
                         <div class="card stat-card shadow-lg rounded-lg h-100 bg-gradient-warning text-white animated-card">
                             <div class="card-body">
                                 <div class="row align-items-center">
                                     <div class="col mr-2">
                                         <div class="text-xs font-weight-bold text-uppercase mb-1">Maintenance Report</div>
-                                        <div class="h2 mb-0 font-weight-bold count-up" data-count="<?php echo $maintenance_report; ?>">0</div>
+                                        <div class="h5 mb-0 font-weight-bold"><?php echo $maintenance_report; ?></div>
                                     </div>
                                     <div class="col-auto">
-                                        <i class="mdi mdi-account-check fa-3x opacity-75"></i>
+                                        <i class="mdi mdi-wrench fa-3x opacity-75"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card stat-card shadow-lg rounded-lg h-100 bg-gradient-secondary text-white animated-card">
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-uppercase mb-1">New Added Assets</div>
+                                        <div class="h5 mb-0 font-weight-bold"><?php echo $new_added_asset; ?></div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="mdi mdi-plus-box fa-3x opacity-75"></i>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
                 <!-- Charts Section -->
                 <div class="row">
-                    <div class="col-xl-8 col-lg-7">
+                    <div class="col-xl-6 col-lg-6">
                         <div class="card shadow-lg rounded-lg mb-4">
                             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-light">
                                 <h6 class="m-0 font-weight-bold text-primary">Asset Overview</h6>
@@ -576,6 +593,18 @@ try {
                             <div class="card-body">
                                 <div class="chart-area">
                                     <canvas id="assetBarChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-6 col-lg-6">
+                        <div class="card shadow-lg rounded-lg mb-4">
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-light">
+                                <h6 class="m-0 font-weight-bold text-primary">Statistics Overview</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-pie pt-4 pb-2" style="height:350px;">
+                                    <canvas id="statisticsPieChart"></canvas>
                                 </div>
                             </div>
                         </div>
@@ -686,6 +715,44 @@ try {
             }
         }
     });
+
+    // Pie Chart for Statistics
+var pieCtx = document.getElementById('statisticsPieChart').getContext('2d');
+var statisticsPieChart = new Chart(pieCtx, {
+    type: 'pie',
+    data: {
+        labels: ['Total Users', 'Staff Allocated Asset', 'Maintenance Report', 'New Added Assets'],
+        datasets: [{
+            data: [
+                <?php echo $total_users; ?>,
+                <?php echo $staff_allocated; ?>,
+                <?php echo $maintenance_report; ?>,
+                <?php echo $new_added_asset; ?>
+            ],
+            backgroundColor: [
+                'rgba(78, 115, 223, 0.8)',
+                'rgba(28, 200, 138, 0.8)',
+                'rgba(246, 194, 62, 0.8)',
+                'rgba(231, 74, 59, 0.8)'
+            ],
+            borderColor: [
+                'rgb(78, 115, 223)',
+                'rgb(28, 200, 138)',
+                'rgb(246, 194, 62)',
+                'rgb(231, 74, 59)'
+            ],
+            borderWidth: 2
+        }]
+    },
+    options: {
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                position: 'bottom'
+            }
+        }
+    }
+});
     </script>
 
 <style>

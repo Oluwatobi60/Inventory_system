@@ -4,7 +4,7 @@
     <div class="scroll-sidebar">
         <!-- Brand Logo and Name -->
         <div class="brand-container p-3 mb-4 text-center">
-            <h4 class="text-white mb-0">Inventory System</h4>
+            <h4 class="text-white mb-0">Asset Managem System</h4>
         </div>
         
         <!-- Sidebar navigation-->

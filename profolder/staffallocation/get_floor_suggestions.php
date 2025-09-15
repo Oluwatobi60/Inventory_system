@@ -6,11 +6,11 @@ $term = isset($_GET['term']) ? trim($_GET['term']) : '';
 
 try {
     // Prepare query to search for employees with proper error handling
-    $sql = "SELECT DISTINCT assigned_employee 
+    $sql = "SELECT DISTINCT floor 
             FROM staff_table 
-            WHERE assigned_employee LIKE :term 
-            AND assigned_employee != '' 
-            ORDER BY assigned_employee 
+            WHERE floor LIKE :term 
+            AND floor != '' 
+            ORDER BY floor 
             LIMIT 10";
     
     $stmt = $conn->prepare($sql);
@@ -19,10 +19,10 @@ try {
     
     $suggestions = array();
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        if (!empty($row['assigned_employee'])) {
+        if (!empty($row['floor'])) {
             $suggestions[] = array(
-                'value' => $row['assigned_employee'],
-                'label' => $row['assigned_employee']
+                'value' => $row['floor'],
+                'label' => $row['floor']
             );
         }
     }
@@ -36,8 +36,8 @@ try {
     
 } catch (PDOException $e) {
     // Log the error
-    error_log("Error in get_employee_suggestions.php: " . $e->getMessage());
-    
+    error_log("Error in get_floor_suggestions.php: " . $e->getMessage());
+
     // Return empty array with error status
     header('HTTP/1.1 500 Internal Server Error');
     echo json_encode(array('error' => 'Database error'));

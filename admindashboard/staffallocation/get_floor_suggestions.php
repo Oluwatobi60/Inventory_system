@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__) . "/../../include/config.php";
+require_once dirname(__FILE__) . "../../include/config.php";
 
 // Get search term from request
 $term = isset($_GET['term']) ? trim($_GET['term']) : '';

@@ -13,7 +13,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="../../admindashboard/assets/images/logo.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../admindashboard/assets/images/isalu-logo.png">
     <title>Admin||Dashboard</title>
     <!-- Custom CSS -->
     <link href="../../admindashboard/assets/libs/flot/css/float-chart.css" rel="stylesheet">

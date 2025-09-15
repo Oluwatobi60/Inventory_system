@@ -157,7 +157,7 @@ try {
                         <th scope="col">Reg No.</th>
                         <th scope="col">Asset Name</th>
                         <th scope="col">Department</th>
-                        <th scope="col">Assigned To</th>
+                        <th scope="col">Floor</th>
                       <!--   <th scope="col">Requested By</th> -->
                         <th scope="col">Quantity</th>
                         <th scope="col">Allocation Date</th>
@@ -175,7 +175,7 @@ try {
                         $reg_no = htmlspecialchars($row['reg_no']);
                         $asset_name = htmlspecialchars($row['asset_name']);
                         $department = htmlspecialchars($row['department']);
-                        $assigned_employee = htmlspecialchars($row['assigned_employee']);
+                        $floor = htmlspecialchars($row['floor']);
                       /*   $requested_by = htmlspecialchars($row['requested_by']); */
                         $quantity = (int)$row['quantity'];
                         $request_date = htmlspecialchars($row['formatted_date']);
@@ -186,7 +186,7 @@ try {
                             <td><?php echo $reg_no; ?></td>
                             <td><?php echo $asset_name; ?></td>
                             <td><?php echo $department; ?></td>
-                            <td><?php echo $assigned_employee; ?></td>
+                            <td><?php echo $floor; ?></td>
                            <!--  <td><?php //echo $requested_by; ?></td>  -->
                             <td><span class="badge badge-info"><?php echo $quantity; ?></span></td>
                             <td><?php echo $request_date; ?></td>                            <td>

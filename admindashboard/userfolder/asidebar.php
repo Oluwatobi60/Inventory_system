@@ -1,8 +1,8 @@
 <aside class="left-sidebar" data-sidebarbg="skin5">
     <div class="scroll-sidebar">
         <nav class="sidebar-nav">
-            <div class="sidebar-header p-3 border-bottom">
-                <h3 class="text-center mb-0" style="color: #2255a4; font-weight: 600;">Asset Management</h3>
+              <div class="brand-container p-3 mb-4 text-center">
+            <h4 class="text-white mb-0">Asset Managem System</h4>
             </div>
             <ul id="sidebarnav" class="pt-4">
                 <li class="sidebar-item">
@@ -26,34 +26,6 @@
                     </a>
                 </li>
 
-              <!--   <li class="sidebar-item">
-                    <a class="sidebar-link has-arrow waves-effect" href="javascript:void(0)">
-                        <i class="mdi mdi-file-document text-danger"></i>
-                        <span class="hide-menu">Request Module</span>
-                    </a>
-                    <ul aria-expanded="false" class="collapse first-level">
-                        <li class="sidebar-item">
-                            <a href="../requestasset.php" class="sidebar-link">
-                                <i class="mdi mdi-arrow-right-bold"></i>
-                                <span class="hide-menu">Asset Request</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a href="../borrowasset.php" class="sidebar-link">
-                                <i class="mdi mdi-arrow-right-bold"></i>
-                                <span>Borrow Asset</span>
-                            </a>
-                        </li>
-                       
-                    </ul>
-                </li> -->
-<!-- 
-                 <li class="sidebar-item">
-                            <a href="../assethistory.php" class="sidebar-link">
-                                <i class="mdi mdi-history"></i>
-                                <span>Report</span>
-                            </a>
-                </li> -->
 
                 <li class="sidebar-item">
                     <a class="sidebar-link waves-effect" href="maintenance.php">

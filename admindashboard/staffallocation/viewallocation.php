@@ -13,7 +13,32 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/logo.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../admindashboard/assets/images/isalu-logo.png">
+    <style>
+        .logo-icon img.light-logo {
+            width: 60px !important;
+            max-height: 60px;
+            object-fit: contain;
+            background: linear-gradient(135deg, #e0e7ff 60%, #fff 100%);
+            border-radius: 50%;
+            box-shadow: 0 4px 18px rgba(30,144,255,0.10), 0 1.5px 6px rgba(0,0,0,0.07);
+            padding: 7px;
+            margin: 4px 0 4px 0;
+            border: 2.5px solid #1e90ff22;
+            transition: box-shadow 0.3s, transform 0.2s, border 0.2s;
+        }
+          .logo-icon img.light-logo:hover {
+            box-shadow: 0 8px 32px rgba(30,144,255,0.18);
+            border: 2.5px solid #1e90ff;
+            transform: scale(1.08) rotate(-2deg);
+        }
+        @media (max-width: 600px) {
+            .logo-icon img.light-logo {
+                width: 48px !important;
+                max-height: 48px;
+            }
+        }
+    </style>
     <title>Admin||Dashboard</title>
     <!-- Custom CSS -->
     <link href="../assets/libs/flot/css/float-chart.css" rel="stylesheet">
@@ -52,13 +77,13 @@
                     <!-- ============================================================== -->
                     <!-- Logo -->
                     <!-- ============================================================== -->
-                    <a class="navbar-brand" href="../index.php">
+                    <a class="navbar-brand" href="index.php">
                         <!-- Logo icon -->
                         <b class="logo-icon p-l-10">
                             <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
                             <!-- Dark Logo icon -->
-                            <img src="../assets/images/logo.png" alt="homepage" class="light-logo" width="100px"/>
-                           
+                            <img src="../assets/images/isalu-logo.png" alt="homepage" class="light-logo" />
+
                         </b>
                         <!--End Logo icon -->
                          <!-- Logo text -->
@@ -144,7 +169,7 @@
                         <!-- User profile and search -->
                         <!-- ============================================================== -->
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="assets/images/users/1.jpg" alt="user" class="rounded-circle" width="31"></a>
+                            <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="../assets/images/users/1.jpg" alt="user" class="rounded-circle" width="31"></a>
                             <div class="dropdown-menu dropdown-menu-right user-dd animated">
                                 <a class="dropdown-item" href="javascript:void(0)"><i class="ti-user m-r-5 m-l-5"></i> My Profile</a>
                                 <a class="dropdown-item" href="javascript:void(0)"><i class="ti-wallet m-r-5 m-l-5"></i> My Balance</a>
@@ -280,8 +305,8 @@
 
                     <div class="col-md-8 m-auto">
                         <div class="form-group shadow-sm">
-                            <label for="requested_by" class="col-form-label">Employee Name:</label>
-                            <input type="text" id="requested_by" class="form-control" name="asset_cat" value="<?php echo htmlspecialchars($row['assigned_employee']); ?>" disabled>
+                            <label for="requested_by" class="col-form-label">Floor:</label>
+                            <input type="text" id="requested_by" class="form-control" name="asset_cat" value="<?php echo htmlspecialchars($row['floor']); ?>" disabled>
                         </div>
                     </div>
 

@@ -1,9 +1,9 @@
 <aside class="left-sidebar" data-sidebarbg="skin5">
     <div class="scroll-sidebar">
         <nav class="sidebar-nav">
-            <div class="sidebar-header p-3 border-bottom">
-                <h3 class="text-center mb-0" style="color: #2255a4; font-weight: 600;">Asset Management</h3>
-            </div>
+           <div class="brand-container p-3 mb-4 text-center">
+            <h4 class="text-white mb-0">Asset Managem System</h4>
+        </div>
             <ul id="sidebarnav" class="pt-4">
                 <li class="sidebar-item">
                     <a class="sidebar-link waves-effect" href="../index.php">

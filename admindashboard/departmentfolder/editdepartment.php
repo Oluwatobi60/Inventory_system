@@ -4,12 +4,19 @@
 $id = $_GET['id']; // Retrieve the id from the URL parameters
 
 if (isset($_POST['submit'])) {
-    $department = $conn->real_escape_string($_POST['department']);
-    $update_sql = "UPDATE department_table SET department='$department' WHERE id='$id'";
-    if ($conn->query($update_sql) === TRUE) {
-        echo "<script>alert('Record updated successfully'); window.location.href='../department.php';</script>";
-    } else {
-        echo "<script>alert('Error updating record: ' . $conn->error')</script>";
+    $department = trim($_POST['department']);
+    try {
+        $update_sql = "UPDATE department_table SET department = :department WHERE id = :id";
+        $stmt = $conn->prepare($update_sql);
+        $stmt->bindParam(':department', $department, PDO::PARAM_STR);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        if ($stmt->execute()) {
+            echo "<script>alert('Record updated successfully'); window.location.href='../department.php';</script>";
+        } else {
+            echo "<script>alert('Error updating record')</script>";
+        }
+    } catch (PDOException $e) {
+        echo "<script>alert('Error: " . htmlspecialchars($e->getMessage()) . "')</script>";
     }
 }
 ?>
@@ -25,7 +32,35 @@ if (isset($_POST['submit'])) {
     <meta name="description" content="">
     <meta name="author" content="">
     <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/logo.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/isalu-logo.png">
+
+       <style>
+          .logo-icon img.light-logo {
+            width: 60px !important;
+            max-height: 60px;
+            object-fit: contain;
+            background: linear-gradient(135deg, #e0e7ff 60%, #fff 100%);
+            border-radius: 50%;
+            box-shadow: 0 4px 18px rgba(30,144,255,0.10), 0 1.5px 6px rgba(0,0,0,0.07);
+            padding: 7px;
+            margin: 4px 0 4px 0;
+            border: 2.5px solid #1e90ff22;
+            transition: box-shadow 0.3s, transform 0.2s, border 0.2s;
+        }
+          .logo-icon img.light-logo:hover {
+            box-shadow: 0 8px 32px rgba(30,144,255,0.18);
+            border: 2.5px solid #1e90ff;
+            transform: scale(1.08) rotate(-2deg);
+        }
+        @media (max-width: 600px) {
+            .logo-icon img.light-logo {
+                width: 48px !important;
+                max-height: 48px;
+            }
+        }
+    </style>
+
+
     <title>Admin||Dashboard</title>
     <!-- Custom CSS -->
     <link href="../assets/libs/flot/css/float-chart.css" rel="stylesheet">
@@ -56,7 +91,7 @@ if (isset($_POST['submit'])) {
         <!-- ============================================================== -->
         <!-- Topbar header - style you can find in pages.scss -->
         <!-- ============================================================== -->
-        <header class="topbar" data-navbarbg="skin5">
+     <header class="topbar" data-navbarbg="skin5">
             <nav class="navbar top-navbar navbar-expand-md navbar-dark">
                 <div class="navbar-header" data-logobg="skin5">
                     <!-- This is for the sidebar toggle which is visible on mobile only -->
@@ -69,13 +104,12 @@ if (isset($_POST['submit'])) {
                         <b class="logo-icon p-l-10">
                             <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
                             <!-- Dark Logo icon -->
-                            <img src="../assets/images/logo-icon.png" alt="homepage" class="light-logo" />
+                            <img src="../assets/images/isalu-logo.png" alt="homepage" class="light-logo" />
                         </b>
                         <!--End Logo icon -->
-                         <!-- Logo text -->
+                        <!-- Logo text -->
                         <span class="logo-text">
-                            <!-- Dark Logo text -->
-                            <img src="../assets/images/logo.png" alt="homepage" class="light-logo" width="100px"/>
+                            <!--You can put here text as well // <i class="wi wi-sunset"></i> //-->
                         </span>
                     </a>
                     <a class="topbartoggler d-block d-md-none waves-effect waves-light" href="javascript:void(0)" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><i class="ti-more"></i></a>
@@ -108,7 +142,7 @@ if (isset($_POST['submit'])) {
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="mdi mdi-bell font-24"></i>
                             </a>
-                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="#">Action</a>
                                 <a class="dropdown-item" href="#">Another action</a>
                                 <div class="dropdown-divider"></div>
@@ -123,13 +157,13 @@ if (isset($_POST['submit'])) {
                                 <ul class="list-style-none">
                                     <li>
                                         <div class="">
-                                             <!-- Message -->
+                                            <!-- Message -->
                                             <a href="javascript:void(0)" class="link border-top">
                                                 <div class="d-flex no-block align-items-center p-10">
                                                     <span class="btn btn-success btn-circle"><i class="ti-calendar"></i></span>
                                                     <div class="m-l-10">
-                                                        <h5 class="m-b-0">Event today</h5> 
-                                                        <span class="mail-desc">Just a reminder that event</span> 
+                                                        <h5 class="m-b-0">Event today</h5>
+                                                        <span class="mail-desc">Just a reminder that event</span>
                                                     </div>
                                                 </div>
                                             </a>
@@ -138,22 +172,20 @@ if (isset($_POST['submit'])) {
                                                 <div class="d-flex no-block align-items-center p-10">
                                                     <span class="btn btn-info btn-circle"><i class="ti-settings"></i></span>
                                                     <div class="m-l-10">
-                                                        <h5 class="m-b-0">Settings</h5> 
-                                                        <span class="mail-desc">You can customize this template</span> 
+                                                        <h5 class="m-b-0">Settings</h5>
+                                                        <span class="mail-desc">You can customize this template</span>
                                                     </div>
                                                 </div>
                                             </a>
-                                           
                                         </div>
                                     </li>
                                 </ul>
                             </div>
                         </li>
-                        <!-- ============================================================== -->
                         <!-- User profile and search -->
                         <!-- ============================================================== -->
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="../assets/images/users/1.jpg" alt="user" class="rounded-circle" width="31"></a>
+                            <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="assets/images/users/1.jpg" alt="user" class="rounded-circle" width="31"></a>
                             <div class="dropdown-menu dropdown-menu-right user-dd animated">
                                 <a class="dropdown-item" href="javascript:void(0)"><i class="ti-user m-r-5 m-l-5"></i> My Profile</a>
                                 <a class="dropdown-item" href="javascript:void(0)"><i class="ti-wallet m-r-5 m-l-5"></i> My Balance</a>
@@ -225,9 +257,11 @@ if (isset($_POST['submit'])) {
                  <?php
                     require "../include/config.php";
                     $id = $_GET['id'];
-                    $sql = "SELECT * FROM department_table WHERE id = '$id'";
-                    $result = $conn->query($sql);
-                    $row = $result->fetch_assoc();
+                    $sql = "SELECT * FROM department_table WHERE id = :id";
+                    $stmt = $conn->prepare($sql);
+                    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+                    $stmt->execute();
+                    $row = $stmt->fetch(PDO::FETCH_ASSOC);
                 ?>
 
                 <!-- START OF UPDATING -->

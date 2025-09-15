@@ -334,7 +334,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit-request'])) {
     async function fetchAssetSuggestions(searchTerm) {
         try {
             console.log('Fetching suggestions for:', searchTerm);
-            const response = await fetch(`/asset_management/admindashboard/staffallocation/search_asset.php?q=${encodeURIComponent(searchTerm)}`, {
+            const response = await fetch(`/inventory_sys/admindashboard/staffallocation/search_asset.php?q=${encodeURIComponent(searchTerm)}`, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
@@ -365,7 +365,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit-request'])) {
     // Function to check asset quantity
     async function checkAssetQuantity(assetName) {
         try {
-            const response = await fetch(`/asset_management/admindashboard/staffallocation/check_quantity.php?asset=${encodeURIComponent(assetName)}`);
+            const response = await fetch(`/inventory_sys/admindashboard/staffallocation/check_quantity.php?asset=${encodeURIComponent(assetName)}`);
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }

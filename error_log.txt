@@ -5475,3 +5475,57 @@ Stack trace:
 [2025-09-09 16:19:47] Login successful for user 'Tobestic'
 [2025-09-09 16:26:39] Pagination details
 [2025-09-11 17:22:59] Login successful for user 'Tobestic'
+[2025-09-11 17:32:42] Category deleted successfully (ID: 6)
+[2025-09-11 17:32:55] Pagination details
+[2025-09-11 17:34:22] Pagination details
+[2025-09-11 17:35:33] Pagination details
+[2025-09-11 17:36:01] Login successful for user 'Tobestic'
+[2025-09-11 17:36:07] Pagination details
+[2025-09-11 17:36:32] Pagination details
+[2025-09-11 17:36:47] Login successful for user 'daraminds'
+[2025-09-11 17:36:56] Pagination details
+[2025-09-11 17:37:10] Pagination details
+[2025-09-11 17:37:31] Login successful for user 'Tobestic'
+[2025-09-11 17:40:20] New asset added successfully: HP 820 G3 (Reg No: ISL913)
+[2025-09-11 17:40:33] Pagination details
+[2025-09-11 17:43:51] Pagination details
+[2025-09-11 17:47:00] Pagination details
+[2025-09-11 17:48:32] Pagination details
+[2025-09-11 17:51:15] Pagination details
+[2025-09-11 17:54:55] Pagination details
+[2025-09-11 17:55:13] Pagination details
+[2025-09-11 17:57:34] Pagination details
+[2025-09-11 17:58:59] Pagination details
+[2025-09-11 18:01:40] Pagination details
+[2025-09-11 18:04:04] Pagination details
+[2025-09-11 18:34:29] Pagination details
+[2025-09-11 18:39:42] Pagination details
+[2025-09-11 18:43:11] Pagination details
+[2025-09-15 09:32:34] Login successful for user 'Tobestic'
+[2025-09-15 09:33:29] Pagination details
+[2025-09-15 09:44:42] Pagination details
+[2025-09-15 09:45:33] Pagination details
+[2025-09-15 09:47:06] Pagination details
+[2025-09-15 09:48:52] Pagination details
+[2025-09-15 10:25:53] Login successful for user 'Tobestic'
+[2025-09-15 10:26:01] Pagination details
+[2025-09-15 10:31:14] Pagination details
+[2025-09-15 10:55:55] Pagination details
+[2025-09-15 11:19:49] Pagination details
+[2025-09-15 11:21:17] Pagination details
+[2025-09-15 11:26:15] Pagination details
+[2025-09-15 11:32:01] Pagination details
+[2025-09-15 11:41:36] Pagination details
+[2025-09-15 11:43:10] Pagination details
+[2025-09-15 11:52:44] Pagination details
+[2025-09-15 11:53:25] Pagination details
+[2025-09-15 11:55:02] Pagination details
+[2025-09-15 11:55:22] Pagination details
+[2025-09-15 12:16:34] Login successful for user 'Tobestic'
+[2025-09-15 12:16:40] Pagination details
+[2025-09-15 12:16:44] Database error in stafftable.php: SQLSTATE[42S22]: Column not found: 1054 Unknown column 's.assigned_employee' in 'where clause'
+SQL Query: SELECT department FROM department_table ORDER BY department
+Parameters: offset=0, limit=7
+[2025-09-15 12:21:25] Pagination details
+[2025-09-15 12:21:36] Pagination details
+[2025-09-15 12:21:39] Pagination details

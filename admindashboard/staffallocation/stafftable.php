@@ -17,10 +17,10 @@ $offset = ($page - 1) * $items_per_page;
 $where_clause = "WHERE 1=1";
 $params = [];
 
-// Add employee filter if provided
-if (isset($_GET['employee']) && !empty($_GET['employee'])) {
-    $where_clause .= " AND s.assigned_employee LIKE :employee";
-    $params[':employee'] = "%" . $_GET['employee'] . "%";
+// Add floor filter if provided
+if (isset($_GET['floor']) && !empty($_GET['floor'])) {
+    $where_clause .= " AND s.floor LIKE :floor";
+    $params[':floor'] = "%" . $_GET['floor'] . "%";
 }
 
 // Params array is already initialized above with the employee filter
@@ -129,10 +129,10 @@ try {
                     <form id="filterForm" method="GET" class="row align-items-center">
                         <div class="col-md-4">
                             <div class="employee-filter">
-                                <label for="employee" class="form-label">Filter by Employee:</label>
-                                <input type="text" class="form-control" id="employee" name="employee" 
-                                       value="<?php echo isset($_GET['employee']) ? htmlspecialchars($_GET['employee']) : ''; ?>" 
-                                       placeholder="Type employee name...">
+                                <label for="floor" class="form-label">Filter by Floor:</label>
+                                <input type="text" class="form-control" id="floor" name="floor" 
+                                       value="<?php echo isset($_GET['floor']) ? htmlspecialchars($_GET['floor']) : ''; ?>" 
+                                       placeholder="Type floor...">
                             </div>
                         </div>
                         <div class="col-md-2">
@@ -157,7 +157,7 @@ try {
                         <th scope="col">Reg No.</th>
                         <th scope="col">Asset Name</th>
                         <th scope="col">Department</th>
-                        <th scope="col">Assigned To</th>
+                        <th scope="col">Floor</th>
                       <!--   <th scope="col">Requested By</th> -->
                         <th scope="col">Quantity</th>
                         <th scope="col">Allocation Date</th>
@@ -175,7 +175,7 @@ try {
                         $reg_no = htmlspecialchars($row['reg_no']);
                         $asset_name = htmlspecialchars($row['asset_name']);
                         $department = htmlspecialchars($row['department']);
-                        $assigned_employee = htmlspecialchars($row['assigned_employee']);
+                        $floor = htmlspecialchars($row['floor']);
                       /*   $requested_by = htmlspecialchars($row['requested_by']); */
                         $quantity = (int)$row['quantity'];
                         $request_date = htmlspecialchars($row['formatted_date']);
@@ -186,7 +186,7 @@ try {
                             <td><?php echo $reg_no; ?></td>
                             <td><?php echo $asset_name; ?></td>
                             <td><?php echo $department; ?></td>
-                            <td><?php echo $assigned_employee; ?></td>
+                            <td><?php echo $floor; ?></td>
                            <!--  <td><?php //echo $requested_by; ?></td>  -->
                             <td><span class="badge badge-info"><?php echo $quantity; ?></span></td>
                             <td><?php echo $request_date; ?></td>                            <td>
@@ -294,12 +294,12 @@ try {
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
 <script>
     $(document).ready(function() {
-        $("#employee").autocomplete({
-            source: "get_employee_suggestions.php",
+        $("#floor").autocomplete({
+            source: "get_floor_suggestions.php",
             minLength: 2,
             select: function(event, ui) {
                 if (ui.item) {
-                    $("#employee").val(ui.item.value);
+                    $("#floor").val(ui.item.value);
                     $("#filterForm").submit();
                 }
             },
@@ -334,7 +334,7 @@ try {
             button.disabled = true;
             button.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Processing...';
 
-            const response = await fetch('/asset_management/userfolder/allocation/submit_repair.php', {
+            const response = await fetch('/inventory_sys/admindashboard/staffallocation/submit_repair.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

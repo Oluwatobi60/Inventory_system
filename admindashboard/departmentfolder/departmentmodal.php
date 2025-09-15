@@ -3,6 +3,7 @@ require "include/config.php";
 
 if(isset($_POST['submit'])){
     $department = trim($_POST['department']);
+    $floor = trim($_POST['floor']);
     
     try {
         // Check if department already exists
@@ -10,15 +11,15 @@ if(isset($_POST['submit'])){
         $check_stmt = $conn->prepare($check_sql);
         $check_stmt->bindParam(':department', $department, PDO::PARAM_STR);
         $check_stmt->execute();
-        
         if ($check_stmt->fetchColumn() > 0) {
             echo "<script>alert('Department already exists')</script>";
         } else {
             // Insert new department
-            $sql = "INSERT INTO department_table (department) VALUES (:department)";
+            $sql = "INSERT INTO department_table (department, floor) VALUES (:department, :floor)";
             $stmt = $conn->prepare($sql);
             $stmt->bindParam(':department', $department, PDO::PARAM_STR);
-            
+            $stmt->bindParam(':floor', $floor, PDO::PARAM_STR);
+
             if($stmt->execute()){
                 echo "<script>alert('New Department Added successfully')</script>";
             } else {
@@ -61,6 +62,17 @@ if(isset($_POST['submit'])){
                                             </div>
                                         </div>
                                     </div>
+
+
+                                     <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="floor" class="col-form-label">Floor:</label>
+                                                <input type="text" class="form-control" name="floor" id="floor" placeholder="Enter Floor" required>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                         <button type="submit" class="btn btn-primary" name="submit">Submit</button>

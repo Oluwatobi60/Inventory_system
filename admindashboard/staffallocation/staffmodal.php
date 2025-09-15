@@ -52,12 +52,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit-request'])) {
     $qtys = isset($_POST['qty']) ? $_POST['qty'] : [];
     $categories = isset($_POST['category']) ? $_POST['category'] : [];
     $department = isset($_POST['department']) ? $_POST['department'] : '';
-    $assignedEmployee = isset($_POST['employee']) ? $_POST['employee'] : '';
+    $floor = isset($_POST['floor']) ? $_POST['floor'] : '';
     $requestedBy = isset($_SESSION['username']) ? $_SESSION['username'] : '';
     $date = isset($_POST['dates']) ? $_POST['dates'] : '';
 
     // Basic validation
-    if (empty($department) || empty($assignedEmployee) || empty($date) || empty($assetNames)) {
+    if (empty($department) || empty($floor) || empty($date) || empty($assetNames)) {
         echo "<script>alert('Please fill in all required fields and add at least one asset.');</script>";
         exit;
     }
@@ -93,8 +93,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit-request'])) {
             if ($availableQty < $qty) {
                 throw new Exception("Insufficient quantity for '$assetName'. Available: $availableQty, Requested: $qty");
             }            // Insert request with timestamp
-            $sql = "INSERT INTO staff_table (reg_no, asset_name, description, quantity, category, department, assigned_employee, requested_by, request_date) 
-                    VALUES (:reg_no, :asset_name, :description, :quantity, :category, :department, :assigned_employee, :requested_by, :date)";
+            $sql = "INSERT INTO staff_table (reg_no, asset_name, description, quantity, category, department, floor, requested_by, request_date) 
+                    VALUES (:reg_no, :asset_name, :description, :quantity, :category, :department, :floor, :requested_by, :date)";
             $stmt = $conn->prepare($sql);
             
             // Convert date to datetime format
@@ -104,9 +104,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit-request'])) {
             $stmt->bindParam(':asset_name', $assetName, PDO::PARAM_STR);
             $stmt->bindParam(':description', $description, PDO::PARAM_STR);
             $stmt->bindParam(':quantity', $qty, PDO::PARAM_INT);
-        $stmt->bindParam(':category', $category, PDO::PARAM_STR);
+            $stmt->bindParam(':category', $category, PDO::PARAM_STR);
             $stmt->bindParam(':department', $department, PDO::PARAM_STR);
-            $stmt->bindParam(':assigned_employee', $assignedEmployee, PDO::PARAM_STR);
+            $stmt->bindParam(':floor', $floor, PDO::PARAM_STR);
             $stmt->bindParam(':requested_by', $requestedBy, PDO::PARAM_STR);
             $stmt->bindParam(':date', $datetime, PDO::PARAM_STR);
             
@@ -256,7 +256,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit-request'])) {
                                                 <label for="department-select" class="col-form-label">Department:</label> <!-- Label for department -->
                                                 <select id="department-select" class="form-control" name="department"> <!-- Dropdown for department -->
                                                     <option selected disabled>Select Department</option> 
-                                                    <?php                                     $sql = "SELECT department FROM department_table ORDER BY department";
+                                                    <?php                                     
+                                                    $sql = "SELECT department FROM department_table ORDER BY department";
                                                     $stmt = $conn->prepare($sql);
                                                     $stmt->execute();
                                                     while($row = $stmt->fetch()){
@@ -269,14 +270,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit-request'])) {
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="employee-select" class="col-form-label">Assigned Employee:</label> <!-- Label for assigned employee -->
-                                                <select id="employee-select" class="form-control" name="employee"> <!-- Dropdown for assigned employee -->
-                                                    <option selected disabled>Select Employee</option>                                
-                                                <?php                                       $sql_user = "SELECT * FROM user_table";
-                                                    $stmt_user = $conn->prepare($sql_user);
-                                                    $stmt_user->execute();
-                                                    while($row = $stmt_user->fetch()){
-                                                        echo "<option value='".htmlspecialchars($row['firstname']." ".$row['lastname'])."'>".htmlspecialchars($row['firstname']." ".$row['lastname'])."</option>";
+                                                <label for="floor-select" class="col-form-label">Floor:</label> <!-- Label for assigned floor -->
+                                                <select id="floor-select" class="form-control" name="floor"> <!-- Dropdown for assigned floor -->
+                                                    <option selected disabled>Select Floor</option>                                
+                                                <?php                                       
+                                                $sql_floor = "SELECT floor FROM department_table";
+                                                    $stmt_floor = $conn->prepare($sql_floor);
+                                                    $stmt_floor->execute();
+                                                    while($row = $stmt_floor->fetch()){
+                                                        echo "<option value='".htmlspecialchars($row['floor'])."'>".htmlspecialchars($row['floor'])."</option>";
                                                     }
                                                     ?>
                                                 </select>
@@ -334,7 +336,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit-request'])) {
     async function fetchAssetSuggestions(searchTerm) {
         try {
             console.log('Fetching suggestions for:', searchTerm);
-            const response = await fetch(`/asset_management/admindashboard/staffallocation/search_asset.php?q=${encodeURIComponent(searchTerm)}`, {
+            const response = await fetch(`/inventory_sys/admindashboard/staffallocation/search_asset.php?q=${encodeURIComponent(searchTerm)}`, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
@@ -365,7 +367,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit-request'])) {
     // Function to check asset quantity
     async function checkAssetQuantity(assetName) {
         try {
-            const response = await fetch(`/asset_management/admindashboard/staffallocation/check_quantity.php?asset=${encodeURIComponent(assetName)}`);
+            const response = await fetch(`/inventory_sys/admindashboard/staffallocation/check_quantity.php?asset=${encodeURIComponent(assetName)}`);
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
@@ -513,55 +515,59 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit-request'])) {
         });
     });
 
-    // Handle department selection and employee population
-    document.getElementById('department-select').addEventListener('change', function() {
-        const selectedDepartment = this.value;
-        const employeeSelect = document.getElementById('employee-select');
-        
-        console.log('Selected department:', selectedDepartment);
-        
-        // Clear current options
-        employeeSelect.innerHTML = '<option value="" selected disabled>Select Employee</option>';
-        
-        if (selectedDepartment) {
-            // Show loading state
-            employeeSelect.innerHTML = '<option value="" selected disabled>Loading employees...</option>';            // Fetch employees for the selected department
-            fetch('/asset_management/admindashboard/staffallocation/get_employees.php?department-select=' + encodeURIComponent(selectedDepartment))
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok: ' + response.status);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    console.log('Received employees:', data);
-                    
-                    // Reset the select element
-                    employeeSelect.innerHTML = '<option value="" selected disabled>Select Employee</option>';
-                    
-                    if (data.error) {
-                        throw new Error(data.error);
-                    }
-                    
-                    // Add employee options
-                    data.forEach(employee => {
-                        const option = document.createElement('option');
-                        option.value = employee.name;
-                        option.textContent = employee.name;
-                        employeeSelect.appendChild(option);
-                    });
-                    
-                    // Enable the employee select
-                    employeeSelect.disabled = false;
-                })
-                .catch(error => {
-                    console.error('Error fetching employees:', error);
-                    employeeSelect.innerHTML = '<option value="" selected disabled>Error loading employees</option>';
-                });
-        } else {
-            employeeSelect.disabled = true;
-        }
-    });
+  
+   // Handle department selection and floor population
+document.getElementById('department-select').addEventListener('change', function() {
+    const selectedDepartment = this.value;
+    const floorSelect = document.getElementById('floor-select');
+    
+    console.log('Selected department:', selectedDepartment);
+    
+    // Clear current options and disable until data loads
+    floorSelect.innerHTML = '<option value="" selected disabled>Loading floor...</option>';
+    floorSelect.disabled = true;
+
+    if (selectedDepartment) {
+        fetch('/inventory_sys/admindashboard/staffallocation/get_floor.php?department-select=' + encodeURIComponent(selectedDepartment))
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok: ' + response.status);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Received floor data:', data);
+                
+                // Reset the select element
+                floorSelect.innerHTML = '<option value="" selected disabled>Select Floor</option>';
+                
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+                
+                // Add floor option
+                if (data.floor) {
+                    const option = document.createElement('option');
+                    option.value = data.floor;
+                    option.textContent = data.floor;
+                    floorSelect.appendChild(option);
+                    floorSelect.disabled = false;
+                } else {
+                    throw new Error('No floor found for this department');
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching floor:', error);
+                floorSelect.innerHTML = '<option value="" selected disabled>Error loading floor</option>';
+            });
+    } else {
+        floorSelect.innerHTML = '<option value="" selected disabled>Select Department First</option>';
+        floorSelect.disabled = true;
+    }
+    
+    // Update form validation
+    updateSubmitButtonState();
+});
 
     // Add asset button functionality
     let assetIndex = 1; // Start index for assets
@@ -631,7 +637,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit-request'])) {
     function updateSubmitButtonState() {
         const allAssetEntries = document.querySelectorAll('.asset-entry');
         const departmentSelect = document.getElementById('department-select');
-        const employeeSelect = document.getElementById('employee-select');
+        const floorSelect = document.getElementById('floor-select');
         const dateInput = document.getElementById('dates');
         let isValid = true;
 
@@ -651,7 +657,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit-request'])) {
         }
 
         // Check other required fields
-        isValid = isValid && departmentSelect.value && employeeSelect.value && dateInput.value;
+        isValid = isValid && departmentSelect.value && floorSelect.value && dateInput.value;
         submitButton.disabled = !isValid;
     }
 
@@ -665,7 +671,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit-request'])) {
 
     // Monitor changes to select fields and date
     document.getElementById('department-select').addEventListener('change', updateSubmitButtonState);
-    document.getElementById('employee-select').addEventListener('change', updateSubmitButtonState);
+    document.getElementById('floor-select').addEventListener('change', updateSubmitButtonState);
     document.getElementById('dates').addEventListener('change', updateSubmitButtonState);
     document.getElementById('dates').addEventListener('input', updateSubmitButtonState);
 

@@ -29,12 +29,12 @@ if(isset($_POST['submit'])) {
             echo "<script>alert('Registration Number already exists'); window.location.href='assets.php';</script>";
         } else {
             if (!empty($asset_cat)) {
-                $sql = "INSERT INTO asset_table (reg_no, asset_name, description, quantity, category, dateofpurchase) 
-                       VALUES (:reg_no, :asset_name, :asset_desc, :asset_qty, :asset_cat, :date_of_purchase)";
+                $sql = "INSERT INTO asset_table (reg_no, assets_name, description, quantity, category, dateofpurchase) 
+                       VALUES (:reg_no, :assets_name, :asset_desc, :asset_qty, :asset_cat, :date_of_purchase)";
                 $stmt = $conn->prepare($sql);
                 
                 $stmt->bindParam(':reg_no', $reg_no);
-                $stmt->bindParam(':asset_name', $asset_name);
+                $stmt->bindParam(':assets_name', $asset_name);
                 $stmt->bindParam(':asset_desc', $asset_desc);
                 $stmt->bindParam(':asset_qty', $asset_qty, PDO::PARAM_INT);
                 $stmt->bindParam(':asset_cat', $asset_cat);

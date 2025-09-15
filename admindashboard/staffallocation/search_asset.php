@@ -18,12 +18,12 @@ try {
     $normalizedQuery = preg_replace('/\s+/', ' ', trim($query));
     
     // First try exact matches
+    error_log("Trying exact match SQL");
     $sql = "SELECT asset_name, reg_no, category, description, CAST(quantity AS SIGNED) as quantity 
             FROM asset_table 
             WHERE (LOWER(asset_name) = LOWER(:exact)
                    OR LOWER(reg_no) = LOWER(:exact))
                   AND asset_name IS NOT NULL
-                  AND reg_no IS NOT NULL
             ORDER BY 
                 CASE WHEN LOWER(asset_name) = LOWER(:exact) THEN 1
                      WHEN LOWER(reg_no) = LOWER(:exact) THEN 2
@@ -31,21 +31,20 @@ try {
                 END,
                 asset_name 
             LIMIT 10";
-    
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':exact', $normalizedQuery, PDO::PARAM_STR);
     $stmt->execute();
     $assets = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
+    error_log("Exact match results: " . count($assets));
     // If no exact matches, try partial matches with improved relevance
     if (empty($assets)) {
+        error_log("Trying partial match SQL");
         $sql = "SELECT asset_name, reg_no, category, description, CAST(quantity AS SIGNED) as quantity 
                 FROM asset_table 
                 WHERE (LOWER(asset_name) LIKE LOWER(:search)
                        OR LOWER(reg_no) LIKE LOWER(:search)
                        OR LOWER(category) LIKE LOWER(:search))
                   AND asset_name IS NOT NULL
-                  AND reg_no IS NOT NULL
                 ORDER BY 
                     CASE WHEN LOWER(asset_name) LIKE LOWER(:exact) THEN 1
                          WHEN LOWER(reg_no) LIKE LOWER(:exact) THEN 2
@@ -53,17 +52,17 @@ try {
                     END,
                     asset_name 
                 LIMIT 10";
-        
         $stmt = $conn->prepare($sql);
         $searchPattern = "%" . $normalizedQuery . "%";
         $stmt->bindParam(':search', $searchPattern, PDO::PARAM_STR);
         $stmt->bindParam(':exact', $normalizedQuery, PDO::PARAM_STR);
         $stmt->execute();
         $assets = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        error_log("Partial match results: " . count($assets));
     }
-    
     // If still no assets found, broaden the search criteria
     if (empty($assets)) {
+        error_log("Trying broad match SQL");
         $sql = "SELECT asset_name, reg_no, category, description, CAST(quantity AS SIGNED) as quantity 
                 FROM asset_table 
                 WHERE (LOWER(asset_name) LIKE LOWER(:broadSearch)
@@ -71,7 +70,6 @@ try {
                        OR LOWER(category) LIKE LOWER(:broadSearch)
                        OR LOWER(description) LIKE LOWER(:broadSearch))
                   AND asset_name IS NOT NULL
-                  AND reg_no IS NOT NULL
                 ORDER BY 
                     CASE WHEN LOWER(asset_name) LIKE LOWER(:exact) THEN 1
                          WHEN LOWER(reg_no) LIKE LOWER(:exact) THEN 2
@@ -79,13 +77,13 @@ try {
                     END,
                     asset_name 
                 LIMIT 10";
-        
         $stmt = $conn->prepare($sql);
         $broadSearchPattern = "%" . $normalizedQuery . "%";
         $stmt->bindParam(':broadSearch', $broadSearchPattern, PDO::PARAM_STR);
         $stmt->bindParam(':exact', $normalizedQuery, PDO::PARAM_STR);
         $stmt->execute();
         $assets = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        error_log("Broad match results: " . count($assets));
     }
     
     // Ensure quantity is treated as a number

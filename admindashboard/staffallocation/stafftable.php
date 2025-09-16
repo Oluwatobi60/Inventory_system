@@ -139,7 +139,7 @@ try {
                             <label class="form-label">&nbsp;</label>
                             <button type="submit" class="btn btn-primary d-block">Apply Filter</button>
                         </div>
-                        <?php if (isset($_GET['employee'])): ?>
+                        <?php if (isset($_GET['floor'])): ?>
                             <div class="col-md-2">
                                 <label class="form-label">&nbsp;</label>
                                 <a href="?<?php echo isset($_GET['page']) ? 'page=' . $_GET['page'] : ''; ?>" 
@@ -151,7 +151,8 @@ try {
             </div>
             <!-- Responsive table wrapper -->
             <div class="table-responsive">
-                <table class="table shadow table-striped table-bordered table-hover">                <thead class="thead-dark">
+                <table class="table shadow table-striped table-bordered table-hover">               
+                     <thead class="thead-dark">
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Reg No.</th>
@@ -196,9 +197,19 @@ try {
                                 <a href="staffallocation/deleteallocation.php?id=<?php echo $id; ?>" class="btn btn-danger btn-sm">
                                     <i class="fa fa-trash"></i>
                                 </a>
-                                <?php if ($row['is_under_repair']): ?>
+                                <?php if ($row['is_under_repair'] && (!isset($row['withdrawn']) || !$row['withdrawn'])): ?>
                                     <button class="btn btn-secondary btn-sm" disabled>
                                         <i class="fa fa-wrench"></i> Under Repair
+                                    </button>
+                                    <button onclick="markRepairCompleted(<?php echo $id; ?>)" class="btn btn-success btn-sm">
+                                        <i class="fa fa-check"></i> Repair Completed
+                                    </button>
+                                    <button onclick="withdrawAsset(<?php echo $id; ?>)" class="btn btn-danger btn-sm">
+                                        <i class="fa fa-ban"></i> Withdrawn
+                                    </button>
+                                <?php elseif (isset($row['withdrawn']) && $row['withdrawn']): ?>
+                                    <button onclick="replaceAsset(<?php echo $id; ?>)" class="btn btn-primary btn-sm">
+                                        <i class="fa fa-refresh"></i> Replace
                                     </button>
                                 <?php else: ?>
                                     <button onclick="markForRepair(<?php echo $id; ?>, <?php 
@@ -228,12 +239,12 @@ try {
                 <?php
                 // Preserve filter parameters in pagination URLs
                 $filter_params = '';
-                if (isset($_GET['employee']) && !empty($_GET['employee'])) {
-                    $filter_params .= '&employee=' . urlencode($_GET['employee']);
+                if (isset($_GET['floor']) && !empty($_GET['floor'])) {
+                    $filter_params .= '&floor=' . urlencode($_GET['floor']);
                 }
 
                 // Show pagination only if there are items
-                if ($total_items > 0):                    // Previous page link
+                if ($total_items > 0):               // Previous page link
                     if ($page > 1): ?>
                         <li class="page-item">
                             <a class="page-link" href="?page=<?php echo ($page - 1) . $filter_params; ?>" aria-label="Previous">
@@ -322,12 +333,13 @@ try {
 
         // Add loading indicator
         $(document).ajaxStart(function() {
-            $("#employee").addClass("loading");
+            $("#floor").addClass("loading");
         }).ajaxStop(function() {
-            $("#employee").removeClass("loading");
+            $("#floor").removeClass("loading");
         });
     });
 
+    //mark asset for repair
     async function markForRepair(assetId, assetInfo) {
         try {
             const button = event.target.closest('button');
@@ -367,6 +379,108 @@ try {
             button.disabled = false;
             button.innerHTML = '<i class="fa fa-wrench"></i> Need Repair';
             alert('An error occurred while marking the asset for repair');
+        }
+    }
+
+    //mark repair as completed
+    async function markRepairCompleted(assetId) {
+        try {
+            const button = event.target.closest('button');
+            button.disabled = true;
+            button.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Processing...';
+            const response = await fetch('/inventory_sys/admindashboard/staffallocation/complete_repair.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ asset_id: assetId })
+            });
+            const data = await response.json();
+            if (data.success) {
+                button.innerHTML = '<i class="fa fa-check"></i> Repair Completed';
+                button.className = 'btn btn-success btn-sm';
+                button.disabled = true;
+                alert('Repair marked as completed');
+            } else {
+                button.disabled = false;
+                button.innerHTML = '<i class="fa fa-check"></i> Repair Completed';
+                alert(data.message || 'Failed to mark repair as completed');
+            }
+        } catch (error) {
+            console.error('Error marking repair as completed:', error);
+            button.disabled = false;
+            button.innerHTML = '<i class="fa fa-check"></i> Repair Completed';
+            alert('An error occurred while marking the repair as completed');
+        }
+    }
+
+    //mark repair as withdrawn
+    async function withdrawAsset(assetId) {
+        try {
+            const button = event.target.closest('button');
+            button.disabled = true;
+            button.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Processing...';
+            const response = await fetch('/inventory_sys/admindashboard/staffallocation/withdraw_asset.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ asset_id: assetId })
+            });
+            const data = await response.json();
+            if (data.success) {
+                button.innerHTML = '<i class="fa fa-ban"></i> Withdrawn';
+                button.className = 'btn btn-danger btn-sm';
+                button.disabled = true;
+                alert('Asset has been withdrawn');
+                // Optionally, show the Replace button
+                location.reload();
+            } else {
+                button.disabled = false;
+                button.innerHTML = '<i class="fa fa-ban"></i> Withdrawn';
+                alert(data.message || 'Failed to withdraw asset');
+            }
+        } catch (error) {
+            console.error('Error withdrawing asset:', error);
+            button.disabled = false;
+            button.innerHTML = '<i class="fa fa-ban"></i> Withdrawn';
+            alert('An error occurred while withdrawing the asset');
+        }
+    }
+
+    //mark asset as replaced
+    async function replaceAsset(assetId) {
+        try {
+            const button = event.target.closest('button');
+            button.disabled = true;
+            button.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Processing...';
+            const response = await fetch('/inventory_sys/admindashboard/staffallocation/replace_asset.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ asset_id: assetId })
+            });
+            const data = await response.json();
+            if (data.success) {
+                button.innerHTML = '<i class="fa fa-refresh"></i> Replaced';
+                button.className = 'btn btn-primary btn-sm';
+                button.disabled = true;
+                alert('Asset has been replaced');
+                location.reload();
+            } else {
+                button.disabled = false;
+                button.innerHTML = '<i class="fa fa-refresh"></i> Replace';
+                alert(data.message || 'Failed to replace asset');
+            }
+        } catch (error) {
+            console.error('Error replacing asset:', error);
+            button.disabled = false;
+            button.innerHTML = '<i class="fa fa-refresh"></i> Replace';
+            alert('An error occurred while replacing the asset');
         }
     }
 </script>

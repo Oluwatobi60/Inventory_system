@@ -5579,3 +5579,357 @@ Parameters: offset=0, limit=7
 [2025-09-15 16:35:54] Login successful for user 'tobestic'
 [2025-09-15 16:39:47] Pagination details
 [2025-09-15 16:42:23] Pagination details
+[2025-09-16 09:19:03] Login successful for user 'Tobestic'
+[2025-09-16 09:19:17] Pagination details
+[2025-09-16 09:38:33] Pagination details
+[2025-09-16 09:38:37] Processing repair request
+[2025-09-16 09:38:37] Started database transaction
+[2025-09-16 09:38:37] Checking asset status
+[2025-09-16 09:38:37] Asset status check
+[2025-09-16 09:42:53] Pagination details
+[2025-09-16 09:44:44] Pagination details
+[2025-09-16 09:45:59] Pagination details
+[2025-09-16 09:49:25] Pagination details
+[2025-09-16 09:49:40] Pagination details
+[2025-09-16 09:50:04] Pagination details
+[2025-09-16 09:50:09] Processing repair request
+[2025-09-16 09:50:09] Started database transaction
+[2025-09-16 09:50:09] Checking asset status
+[2025-09-16 09:50:09] Asset status check
+[2025-09-16 09:50:17] Pagination details
+[2025-09-16 09:50:56] Pagination details
+[2025-09-16 09:50:59] Pagination details
+[2025-09-16 09:51:03] Processing repair request
+[2025-09-16 09:51:03] Started database transaction
+[2025-09-16 09:51:03] Checking asset status
+[2025-09-16 09:51:03] Asset status check
+[2025-09-16 09:51:03] Application error
+[2025-09-16 09:51:12] Processing repair request
+[2025-09-16 09:51:12] Started database transaction
+[2025-09-16 09:51:12] Checking asset status
+[2025-09-16 09:51:12] Asset status check
+[2025-09-16 09:51:12] Application error
+[2025-09-16 09:51:20] Processing repair request
+[2025-09-16 09:51:20] Started database transaction
+[2025-09-16 09:51:20] Checking asset status
+[2025-09-16 09:51:20] Asset status check
+[2025-09-16 09:51:20] Application error
+[2025-09-16 09:51:29] Pagination details
+[2025-09-16 09:51:34] Processing repair request
+[2025-09-16 09:51:34] Started database transaction
+[2025-09-16 09:51:34] Checking asset status
+[2025-09-16 09:51:34] Asset status check
+[2025-09-16 09:51:34] Application error
+[2025-09-16 09:54:32] Pagination details
+[2025-09-16 09:54:42] Pagination details
+[2025-09-16 09:54:54] Pagination details
+[2025-09-16 09:54:58] Pagination details
+[2025-09-16 09:55:00] Pagination details
+[2025-09-16 09:55:03] Processing repair request
+[2025-09-16 09:55:03] Started database transaction
+[2025-09-16 09:55:03] Checking asset status
+[2025-09-16 09:55:03] Asset status check
+[2025-09-16 09:55:03] Application error
+[2025-09-16 09:55:06] Processing repair request
+[2025-09-16 09:55:06] Started database transaction
+[2025-09-16 09:55:06] Checking asset status
+[2025-09-16 09:55:06] Asset status check
+[2025-09-16 09:55:06] Application error
+[2025-09-16 09:55:45] Pagination details
+[2025-09-16 09:55:53] Pagination details
+[2025-09-16 09:56:00] Pagination details
+[2025-09-16 09:56:27] Pagination details
+[2025-09-16 09:56:43] Processing repair request
+[2025-09-16 09:56:43] Started database transaction
+[2025-09-16 09:56:43] Checking asset status
+[2025-09-16 09:56:43] Asset status check
+[2025-09-16 09:56:48] Pagination details
+[2025-09-16 09:57:24] Pagination details
+[2025-09-16 09:57:37] Pagination details
+[2025-09-16 09:57:56] Processing repair request
+[2025-09-16 09:57:56] Started database transaction
+[2025-09-16 09:57:56] Checking asset status
+[2025-09-16 09:57:56] Asset status check
+[2025-09-16 09:58:01] Pagination details
+[2025-09-16 10:02:23] Pagination details
+[2025-09-16 10:02:59] Pagination details
+[2025-09-16 10:04:13] Pagination details
+[2025-09-16 10:04:44] Processing repair request
+[2025-09-16 10:04:44] Started database transaction
+[2025-09-16 10:04:44] Checking asset status
+[2025-09-16 10:04:44] Asset status check
+[2025-09-16 10:04:47] Pagination details
+[2025-09-16 10:06:31] Pagination details
+[2025-09-16 10:12:11] Pagination details
+[2025-09-16 10:12:14] Processing repair request
+[2025-09-16 10:12:14] Started database transaction
+[2025-09-16 10:12:14] Checking asset status
+[2025-09-16 10:12:14] Asset status check
+[2025-09-16 10:12:18] Pagination details
+[2025-09-16 10:16:52] Pagination details
+[2025-09-16 10:17:01] Pagination details
+[2025-09-16 10:19:35] Pagination details
+[2025-09-16 10:19:51] Processing repair request
+[2025-09-16 10:19:51] Started database transaction
+[2025-09-16 10:19:51] Checking asset status
+[2025-09-16 10:19:51] Asset status check
+[2025-09-16 10:20:00] Pagination details
+[2025-09-16 10:20:14] Pagination details
+[2025-09-16 10:20:33] Pagination details
+[2025-09-16 10:20:49] Processing repair request
+[2025-09-16 10:20:49] Started database transaction
+[2025-09-16 10:20:49] Checking asset status
+[2025-09-16 10:20:49] Asset status check
+[2025-09-16 10:20:53] Pagination details
+[2025-09-16 10:20:58] Pagination details
+[2025-09-16 10:26:00] Pagination details
+[2025-09-16 10:26:06] Pagination details
+[2025-09-16 10:27:52] Pagination details
+[2025-09-16 10:27:56] Pagination details
+[2025-09-16 10:28:00] Pagination details
+[2025-09-16 10:29:11] Pagination details
+[2025-09-16 10:34:54] Pagination details
+[2025-09-16 10:36:54] Pagination details
+[2025-09-16 10:37:03] Pagination details
+[2025-09-16 10:37:09] Pagination details
+[2025-09-16 10:37:16] Pagination details
+[2025-09-16 10:41:36] Pagination details
+[2025-09-16 10:41:49] Pagination details
+[2025-09-16 10:43:18] Pagination details
+[2025-09-16 10:45:02] Pagination details
+[2025-09-16 10:57:22] Pagination details
+[2025-09-16 11:19:10] Login successful for user 'Tobestic'
+[2025-09-16 11:19:15] Pagination details
+[2025-09-16 12:28:24] Login successful for user 'Tobestic'
+[2025-09-16 12:28:28] Pagination details
+[2025-09-16 12:28:40] Pagination details
+[2025-09-16 12:28:48] Pagination details
+[2025-09-16 12:28:54] Pagination details
+[2025-09-16 12:29:01] Pagination details
+[2025-09-16 12:29:09] Pagination details
+[2025-09-16 12:29:18] Pagination details
+[2025-09-16 12:29:25] Pagination details
+[2025-09-16 12:33:55] Pagination details
+[2025-09-16 12:34:08] Pagination details
+[2025-09-16 12:36:34] Pagination details
+[2025-09-16 12:38:53] Pagination details
+[2025-09-16 12:40:15] Pagination details
+[2025-09-16 12:40:23] Pagination details
+[2025-09-16 12:40:39] Pagination details
+[2025-09-16 12:40:57] Pagination details
+[2025-09-16 12:41:03] Pagination details
+[2025-09-16 12:41:06] Pagination details
+[2025-09-16 12:41:10] Pagination details
+[2025-09-16 12:41:13] Pagination details
+[2025-09-16 13:05:25] Login successful for user 'Tobestic'
+[2025-09-16 13:05:29] Pagination details
+[2025-09-16 13:05:41] Pagination details
+[2025-09-16 13:05:47] Pagination details
+[2025-09-16 13:09:24] Pagination details
+[2025-09-16 13:10:40] Pagination details
+[2025-09-16 13:11:26] Pagination details
+[2025-09-16 13:11:32] Pagination details
+[2025-09-16 13:11:35] Pagination details
+[2025-09-16 13:11:39] Pagination details
+[2025-09-16 13:11:42] Pagination details
+[2025-09-16 13:11:50] Processing repair request
+[2025-09-16 13:11:50] Started database transaction
+[2025-09-16 13:11:50] Checking asset status
+[2025-09-16 13:11:50] Asset status check
+[2025-09-16 13:11:53] Pagination details
+[2025-09-16 13:12:01] Pagination details
+[2025-09-16 13:12:05] Processing repair request
+[2025-09-16 13:12:05] Started database transaction
+[2025-09-16 13:12:05] Checking asset status
+[2025-09-16 13:12:05] Asset status check
+[2025-09-16 13:12:08] Pagination details
+[2025-09-16 13:12:11] Pagination details
+[2025-09-16 13:12:14] Pagination details
+[2025-09-16 13:12:18] Pagination details
+[2025-09-16 13:12:20] Pagination details
+[2025-09-16 13:12:45] Pagination details
+[2025-09-16 13:13:13] Login successful for user 'daraminds'
+[2025-09-16 13:14:27] Pagination details
+[2025-09-16 13:14:30] Pagination details
+[2025-09-16 13:17:27] Pagination details
+[2025-09-16 13:17:52] Pagination details
+[2025-09-16 13:17:57] Pagination details
+[2025-09-16 13:19:57] Pagination details
+[2025-09-16 13:20:43] Pagination details
+[2025-09-16 13:21:07] Pagination details
+[2025-09-16 13:21:34] Pagination details
+[2025-09-16 13:22:08] Pagination details
+[2025-09-16 13:22:43] Pagination details
+[2025-09-16 13:23:07] Login successful for user 'Tobestic'
+[2025-09-16 13:23:10] Pagination details
+[2025-09-16 13:24:28] Login successful for user 'daraminds'
+[2025-09-16 13:24:33] Pagination details
+[2025-09-16 13:39:30] Pagination details
+[2025-09-16 13:39:51] Login successful for user 'Tobestic'
+[2025-09-16 13:39:54] Pagination details
+[2025-09-16 13:39:57] Processing repair request
+[2025-09-16 13:39:57] Started database transaction
+[2025-09-16 13:39:57] Checking asset status
+[2025-09-16 13:39:57] Asset status check
+[2025-09-16 13:39:57] Application error
+[2025-09-16 13:40:06] Processing repair request
+[2025-09-16 13:40:06] Started database transaction
+[2025-09-16 13:40:06] Checking asset status
+[2025-09-16 13:40:06] Asset status check
+[2025-09-16 13:40:06] Application error
+[2025-09-16 13:40:57] Pagination details
+[2025-09-16 13:41:04] Pagination details
+[2025-09-16 13:41:17] Pagination details
+[2025-09-16 13:41:34] Processing repair request
+[2025-09-16 13:41:34] Started database transaction
+[2025-09-16 13:41:34] Checking asset status
+[2025-09-16 13:41:34] Asset status check
+[2025-09-16 13:41:56] Pagination details
+[2025-09-16 13:42:10] Pagination details
+[2025-09-16 13:42:18] Processing repair request
+[2025-09-16 13:42:18] Started database transaction
+[2025-09-16 13:42:18] Checking asset status
+[2025-09-16 13:42:18] Asset status check
+[2025-09-16 13:42:21] Pagination details
+[2025-09-16 13:42:41] Pagination details
+[2025-09-16 13:42:43] Processing repair request
+[2025-09-16 13:42:43] Started database transaction
+[2025-09-16 13:42:43] Checking asset status
+[2025-09-16 13:42:43] Asset status check
+[2025-09-16 13:42:47] Pagination details
+[2025-09-16 13:44:21] Pagination details
+[2025-09-16 13:44:25] Pagination details
+[2025-09-16 13:44:29] Pagination details
+[2025-09-16 13:44:38] Pagination details
+[2025-09-16 13:44:40] Processing repair request
+[2025-09-16 13:44:40] Started database transaction
+[2025-09-16 13:44:40] Checking asset status
+[2025-09-16 13:44:40] Asset status check
+[2025-09-16 13:44:40] Application error
+[2025-09-16 13:44:46] Pagination details
+[2025-09-16 13:44:48] Processing repair request
+[2025-09-16 13:44:48] Started database transaction
+[2025-09-16 13:44:48] Checking asset status
+[2025-09-16 13:44:48] Asset status check
+[2025-09-16 13:44:48] Application error
+[2025-09-16 13:45:34] Pagination details
+[2025-09-16 13:46:18] Pagination details
+[2025-09-16 13:46:31] Processing repair request
+[2025-09-16 13:46:31] Started database transaction
+[2025-09-16 13:46:31] Checking asset status
+[2025-09-16 13:46:31] Asset status check
+[2025-09-16 13:46:37] Pagination details
+[2025-09-16 13:47:13] Pagination details
+[2025-09-16 13:47:47] Processing repair request
+[2025-09-16 13:47:47] Started database transaction
+[2025-09-16 13:47:47] Checking asset status
+[2025-09-16 13:47:47] Asset status check
+[2025-09-16 13:47:52] Pagination details
+[2025-09-16 13:48:15] Pagination details
+[2025-09-16 13:48:37] Pagination details
+[2025-09-16 13:50:48] Pagination details
+[2025-09-16 13:50:56] Pagination details
+[2025-09-16 13:51:11] Pagination details
+[2025-09-16 13:51:14] Processing repair request
+[2025-09-16 13:51:14] Started database transaction
+[2025-09-16 13:51:14] Checking asset status
+[2025-09-16 13:51:14] Asset status check
+[2025-09-16 13:51:18] Pagination details
+[2025-09-16 13:51:26] Pagination details
+[2025-09-16 13:51:28] Processing repair request
+[2025-09-16 13:51:28] Started database transaction
+[2025-09-16 13:51:28] Checking asset status
+[2025-09-16 13:51:28] Asset status check
+[2025-09-16 13:51:31] Pagination details
+[2025-09-16 13:51:34] Pagination details
+[2025-09-16 13:51:36] Pagination details
+[2025-09-16 13:51:39] Pagination details
+[2025-09-16 13:51:41] Processing repair request
+[2025-09-16 13:51:41] Started database transaction
+[2025-09-16 13:51:41] Checking asset status
+[2025-09-16 13:51:41] Asset status check
+[2025-09-16 13:51:41] Application error
+[2025-09-16 13:53:09] Pagination details
+[2025-09-16 13:56:53] Pagination details
+[2025-09-16 13:57:05] Pagination details
+[2025-09-16 13:57:11] Processing repair request
+[2025-09-16 13:57:11] Started database transaction
+[2025-09-16 13:57:11] Checking asset status
+[2025-09-16 13:57:11] Asset status check
+[2025-09-16 13:57:15] Pagination details
+[2025-09-16 13:57:20] Pagination details
+[2025-09-16 13:57:22] Processing repair request
+[2025-09-16 13:57:23] Started database transaction
+[2025-09-16 13:57:23] Checking asset status
+[2025-09-16 13:57:23] Asset status check
+[2025-09-16 13:57:25] Pagination details
+[2025-09-16 13:57:30] Pagination details
+[2025-09-16 13:57:33] Pagination details
+[2025-09-16 13:57:35] Processing repair request
+[2025-09-16 13:57:35] Started database transaction
+[2025-09-16 13:57:35] Checking asset status
+[2025-09-16 13:57:35] Asset status check
+[2025-09-16 13:57:45] Pagination details
+[2025-09-16 13:57:51] Pagination details
+[2025-09-16 13:57:55] Pagination details
+[2025-09-16 13:57:58] Processing repair request
+[2025-09-16 13:57:58] Started database transaction
+[2025-09-16 13:57:58] Checking asset status
+[2025-09-16 13:57:58] Asset status check
+[2025-09-16 13:58:00] Pagination details
+[2025-09-16 13:58:06] Pagination details
+[2025-09-16 13:58:08] Pagination details
+[2025-09-16 13:58:11] Pagination details
+[2025-09-16 13:58:17] Pagination details
+[2025-09-16 14:02:43] Login successful for user 'daraminds'
+[2025-09-16 14:03:24] Pagination details
+[2025-09-16 14:03:38] Pagination details
+[2025-09-16 14:09:46] Pagination details
+[2025-09-16 14:10:07] Pagination details
+[2025-09-16 14:11:07] Pagination details
+[2025-09-16 14:13:40] Pagination details
+[2025-09-16 14:13:42] Processing repair request
+[2025-09-16 14:13:43] Started database transaction
+[2025-09-16 14:13:43] Checking asset status
+[2025-09-16 14:13:43] Asset status check
+[2025-09-16 14:13:46] Pagination details
+[2025-09-16 14:13:51] Pagination details
+[2025-09-16 14:14:52] Pagination details
+[2025-09-16 14:16:27] Pagination details
+[2025-09-16 14:16:36] Pagination details
+[2025-09-16 14:16:40] Pagination details
+[2025-09-16 14:16:42] Processing repair request
+[2025-09-16 14:16:42] Started database transaction
+[2025-09-16 14:16:42] Checking asset status
+[2025-09-16 14:16:42] Asset status check
+[2025-09-16 14:16:45] Pagination details
+[2025-09-16 14:16:50] Pagination details
+[2025-09-16 14:16:54] Processing repair request
+[2025-09-16 14:16:54] Started database transaction
+[2025-09-16 14:16:54] Checking asset status
+[2025-09-16 14:16:54] Asset status check
+[2025-09-16 14:16:57] Pagination details
+[2025-09-16 14:17:05] Pagination details
+[2025-09-16 14:17:07] Pagination details
+[2025-09-16 14:17:55] Pagination details
+[2025-09-16 14:18:03] Pagination details
+[2025-09-16 14:18:05] Processing repair request
+[2025-09-16 14:18:05] Started database transaction
+[2025-09-16 14:18:05] Checking asset status
+[2025-09-16 14:18:05] Asset status check
+[2025-09-16 14:18:08] Pagination details
+[2025-09-16 14:18:14] Pagination details
+[2025-09-16 14:18:16] Processing repair request
+[2025-09-16 14:18:16] Started database transaction
+[2025-09-16 14:18:16] Checking asset status
+[2025-09-16 14:18:16] Asset status check
+[2025-09-16 14:18:20] Pagination details
+[2025-09-16 14:18:28] Pagination details
+[2025-09-16 14:18:31] Pagination details
+[2025-09-16 14:18:35] Pagination details
+[2025-09-16 14:18:38] Processing repair request
+[2025-09-16 14:18:38] Started database transaction
+[2025-09-16 14:18:38] Checking asset status
+[2025-09-16 14:18:38] Asset status check
+[2025-09-16 14:18:41] Pagination details
+[2025-09-16 14:18:47] Pagination details

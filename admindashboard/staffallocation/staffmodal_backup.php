@@ -127,8 +127,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit-request'])) {
 
         // Commit transaction
         $conn->commit();
-        echo "<script>alert('All assets allocated successfully!');</script>";
-
+        $_SESSION['success_message'] = 'All assets allocated successfully!';
+        header("Location: staffallocation.php");
+        exit;
+        
     } catch (Exception $e) {
         // Roll back the transaction on error
         if ($conn->inTransaction()) {
@@ -136,6 +138,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit-request'])) {
         }
         echo "<script>alert('Error: " . addslashes($e->getMessage()) . "');</script>";
     }
+}
+
+if (isset($_SESSION['success_message'])) {
+    echo '<script>alert("' . addslashes($_SESSION['success_message']) . '");</script>';
+    unset($_SESSION['success_message']);
 }
 ?>
 

@@ -257,7 +257,7 @@ if (isset($_SESSION['success_message'])) {
             font-weight: 600;
         }
     </style>
-    <title>Admin||Dashboard</title>
+    <title>Procurement||Dashboard</title>
     <!-- Custom CSS -->
     <link href="../admindashboard/assets/libs/flot/css/float-chart.css" rel="stylesheet">
     <!-- Custom CSS -->

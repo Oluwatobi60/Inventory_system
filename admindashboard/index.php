@@ -81,10 +81,10 @@ try {
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
     $total_accessories_quantity = $row['total_quantity'] ?? 0;
 
-    // Get AC quantity
-    $stmt->execute(['AC']);
+    // Get Desktop quantity
+    $stmt->execute(['Desktops']);
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    $total_ac_quantity = $row['total_quantity'] ?? 0;
+    $total_desktop_quantity = $row['total_quantity'] ?? 0;
 } catch (PDOException $e) {
     logError("Failed to fetch asset quantities: " . $e->getMessage());
     // Set default values if query fails
@@ -92,7 +92,7 @@ try {
     $total_furniture_quantity = 0;
     $total_laptop_quantity = 0;
     $total_accessories_quantity = 0;
-    $total_ac_quantity = 0;
+    $total_desktop_quantity = 0;
 }
 
 // Section: Fetch Request Statistics
@@ -139,7 +139,31 @@ try {
     $maintenance_report = 0;
 }
 
-
+// Section: Fetch Repair Status Statistics
+try {
+    $status_counts = [
+        'Under Repair' => 0,
+        'Completed' => 0,
+        'Withdrawn' => 0,
+        'Replaced' => 0
+    ];
+    $query = "SELECT status, COUNT(*) AS count FROM repair_asset WHERE status IN ('Under Repair', 'Completed', 'Withdrawn', 'Replaced') GROUP BY status";
+    $stmt = $conn->query($query);
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $status = $row['status'];
+        $count = (int)$row['count'];
+        if (isset($status_counts[$status])) {
+            $status_counts[$status] = $count;
+        }
+    }
+} catch (PDOException $e) {
+    $status_counts = [
+        'Under Repair' => 0,
+        'Completed' => 0,
+        'Withdrawn' => 0,
+        'Replaced' => 0
+    ];
+}
 ?>
 
 <!DOCTYPE html>
@@ -505,8 +529,8 @@ try {
                             <div class="card-body">
                                 <div class="row align-items-center">
                                     <div class="col">
-                                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">AC</div>
-                                        <div class="h5 mb-0 font-weight-bold"><?php echo $total_ac_quantity; ?></div>
+                                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Desktops</div>
+                                        <div class="h5 mb-0 font-weight-bold"><?php echo $total_desktop_quantity; ?></div>
                                     </div>
                                     <div class="col-auto">
                                         <i class="mdi mdi-air-conditioner fa-2x text-info"></i>
@@ -585,7 +609,7 @@ try {
                 </div>
                 <!-- Charts Section -->
                 <div class="row">
-                    <div class="col-xl-6 col-lg-6">
+                    <div class="col-xl-4 col-lg-4">
                         <div class="card shadow-lg rounded-lg mb-4">
                             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-light">
                                 <h6 class="m-0 font-weight-bold text-primary">Asset Overview</h6>
@@ -597,7 +621,7 @@ try {
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl-6 col-lg-6">
+                    <div class="col-xl-4 col-lg-4">
                         <div class="card shadow-lg rounded-lg mb-4">
                             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-light">
                                 <h6 class="m-0 font-weight-bold text-primary">Statistics Overview</h6>
@@ -609,7 +633,23 @@ try {
                             </div>
                         </div>
                     </div>
+
+ <!-- Repair Status Chart Section -->
+                      <div class="col-xl-4 col-lg-4">
+                        <div class="card shadow-lg rounded-lg mb-4">
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-light">
+                                <h6 class="m-0 font-weight-bold text-primary">Repair Status Report</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-area">
+                                    <canvas id="repairStatusChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
+             
             </div>
 
             <!-- footer -->
@@ -664,7 +704,7 @@ try {
         // Define the data structure
         data: {
             // Define labels for each asset category
-            labels: ['Printers', 'Furniture', 'Laptops', 'Accessories', 'AC'],
+            labels: ['Printers', 'Furniture', 'Laptops', 'Accessories', 'Desktops'],
             datasets: [{
                 label: 'Asset Quantities',
                 data: [
@@ -672,7 +712,7 @@ try {
                     <?php echo $total_furniture_quantity; ?>, 
                     <?php echo $total_laptop_quantity; ?>, 
                     <?php echo $total_accessories_quantity; ?>, 
-                    <?php echo $total_ac_quantity; ?>
+                    <?php echo $total_desktop_quantity; ?>
                 ],
                 backgroundColor: [
                     'rgba(78, 115, 223, 0.8)',
@@ -749,6 +789,60 @@ var statisticsPieChart = new Chart(pieCtx, {
         plugins: {
             legend: {
                 position: 'bottom'
+            }
+        }
+    }
+});
+
+// Repair Status Bar Chart
+var repairStatusCtx = document.getElementById('repairStatusChart').getContext('2d');
+var repairStatusChart = new Chart(repairStatusCtx, {
+    type: 'bar',
+    data: {
+        labels: ['Under Repair', 'Completed', 'Withdrawn', 'Replaced'],
+        datasets: [{
+            label: 'Asset Count',
+            data: [
+                <?php echo $status_counts['Under Repair']; ?>,
+                <?php echo $status_counts['Completed']; ?>,
+                <?php echo $status_counts['Withdrawn']; ?>,
+                <?php echo $status_counts['Replaced']; ?>
+            ],
+            backgroundColor: [
+                'rgba(78, 115, 223, 0.8)',
+                'rgba(28, 200, 138, 0.8)',
+                'rgba(231, 74, 59, 0.8)',
+                'rgba(54, 185, 204, 0.8)'
+            ],
+            borderColor: [
+                'rgb(78, 115, 223)',
+                'rgb(28, 200, 138)',
+                'rgb(231, 74, 59)',
+                'rgb(54, 185, 204)'
+            ],
+            borderWidth: 2,
+            borderRadius: 5
+        }]
+    },
+    options: {
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                display: false
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                grid: {
+                    drawBorder: false,
+                    color: 'rgba(0, 0, 0, 0.1)'
+                }
+            },
+            x: {
+                grid: {
+                    display: false
+                }
             }
         }
     }

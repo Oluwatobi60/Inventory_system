@@ -11,8 +11,8 @@ if ($asset_id <= 0) {
 }
 
 try {
-    // Mark the asset as withdrawn in repair_asset
-    $sql = "UPDATE repair_asset SET status = 'Withdrawn', withdrawn_date = NOW() WHERE asset_id = :asset_id AND status = 'Under Repair'";
+    // Mark the asset as withdrawn in repair_asset and set withdrawn field to 1
+    $sql = "UPDATE repair_asset SET status = 'Withdrawn', withdrawn_date = NOW(), withdrawn = 1 WHERE asset_id = :asset_id AND status = 'Under Repair'";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':asset_id', $asset_id, PDO::PARAM_INT);
     $stmt->execute();

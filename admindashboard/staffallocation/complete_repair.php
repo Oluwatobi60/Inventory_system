@@ -12,11 +12,13 @@ if ($asset_id <= 0) {
 }
 
 try {
-    // Update the repair status to Completed
-    $sql = "UPDATE repair_asset SET status = NULL, completed_date = NOW() WHERE asset_id = :asset_id AND status = 'Under Repair'";
+    // Update the repair status to Completed and set complete field to 1
+    $sql = "UPDATE repair_asset SET status = NULL, completed_date = NOW(), completed = 1 WHERE asset_id = :asset_id AND status = 'Under Repair'";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':asset_id', $asset_id, PDO::PARAM_INT);
     $stmt->execute();
+
+    
     // Also reset status in staff_table if you have a status column
     $sql2 = "UPDATE staff_table SET status = NULL WHERE id = :asset_id";
     $stmt2 = $conn->prepare($sql2);

@@ -62,7 +62,7 @@
                   <li class="sidebar-item">
                             <a href="assethistory.php" class="sidebar-link">
                                 <i class="mdi mdi-history"></i>
-                                <span>Report</span>
+                                <span>Report Center</span>
                             </a>
                     </li> 
 

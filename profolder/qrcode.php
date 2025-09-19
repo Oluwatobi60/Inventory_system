@@ -13,7 +13,7 @@ require_once "../admindashboard/include/config.php";
     <meta name="author" content="">
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="../admindashboard/assets/images/isalu-logo.png">
-    <title>Procurement||Dashboard</title>
+    <title>Facility||Dashboard</title>
 
       <style>
   .logo-icon img.light-logo {

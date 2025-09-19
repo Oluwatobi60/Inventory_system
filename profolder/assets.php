@@ -31,10 +31,9 @@ if (!isset($_SESSION['username'])) {
     <meta name="author" content="">
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="../admindashboard/assets/images/isalu-logo.png">
-    <title>Procurement||Dashboard</title>
-
+    <!-- Google Fonts for modern look -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;900&display=swap" rel="stylesheet">
     <style>
-
         .logo-icon img.light-logo {
             width: 60px !important;
             max-height: 60px;
@@ -59,11 +58,17 @@ if (!isset($_SESSION['username'])) {
             }
         }
     </style>
+    <title>Facility||Dashboard</title>
     <!-- Custom CSS -->
     <link href="../admindashboard/assets/libs/flot/css/float-chart.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="../admindashboard/dist/css/style.min.css" rel="stylesheet">
- 
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
 </head>
 
 <body>
@@ -83,7 +88,7 @@ if (!isset($_SESSION['username'])) {
         <!-- ============================================================== -->
         <!-- Topbar header - style you can find in pages.scss -->
         <!-- ============================================================== -->
-     <header class="topbar" data-navbarbg="skin5">
+        <header class="topbar" data-navbarbg="skin5">
             <nav class="navbar top-navbar navbar-expand-md navbar-dark">
                 <div class="navbar-header" data-logobg="skin5">
                     <!-- This is for the sidebar toggle which is visible on mobile only -->
@@ -183,7 +188,7 @@ if (!isset($_SESSION['username'])) {
                         <!-- User profile and search -->
                         <!-- ============================================================== -->
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="../admindashboard/assets/images/users/1.jpg" alt="user" class="rounded-circle" width="31"></a>
+                            <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="assets/images/users/1.jpg" alt="user" class="rounded-circle" width="31"></a>
                             <div class="dropdown-menu dropdown-menu-right user-dd animated">
                                 <a class="dropdown-item" href="javascript:void(0)"><i class="ti-user m-r-5 m-l-5"></i> My Profile</a>
                                 <a class="dropdown-item" href="javascript:void(0)"><i class="ti-wallet m-r-5 m-l-5"></i> My Balance</a>
@@ -202,7 +207,7 @@ if (!isset($_SESSION['username'])) {
                     </ul>
                 </div>
             </nav>
-        </header> 
+        </header>
         <!-- ============================================================== -->
         <!-- End Topbar header -->
       
@@ -220,21 +225,7 @@ if (!isset($_SESSION['username'])) {
             <!-- ============================================================== -->
             <!-- Bread crumb and right sidebar toggle -->
             <!-- ============================================================== -->
-             <div class="page-breadcrumb">
-                <div class="row">
-                    <div class="col-12 d-flex no-block align-items-center">
-                        <h4 class="page-title">Assets List</h4>
-                        <div class="ml-auto text-right">
-                            <nav aria-label="breadcrumb">
-                                <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">Library</li>
-                                </ol>
-                            </nav>
-                        </div>
-                    </div>
-                </div>
-            </div>
+      
             <!-- ============================================================== -->
             <!-- End Bread crumb and right sidebar toggle -->
             <!-- ============================================================== -->
@@ -242,10 +233,91 @@ if (!isset($_SESSION['username'])) {
             <!-- Container fluid  -->
             <!-- ============================================================== -->
             <div class="container-fluid">
-                <!-- ============================================================== -->
-                <!-- Sales Cards  -->
-                
-                <!-- ============================================================== -->
+                <!-- Export Options Card -->
+                <div class="row mb-4 mt-3">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h4 class="card-title mb-0">Export Assets Data</h4>
+                                    <div class="export-buttons">
+                                        <a href="assetfolder/export_excel.php<?php 
+                            echo (isset($_GET['start_date']) || isset($_GET['end_date'])) 
+                                ? '?start_date=' . $_GET['start_date'] . '&end_date=' . $_GET['end_date'] 
+                                : ''; 
+                        ?>" class="btn btn-success btn-rounded mr-2 shadow-sm">
+                                            <i class="fas fa-file-excel mr-2"></i>
+                                            <span>Export to Excel</span>
+                                        </a>
+                                        <a href="assetfolder/export_pdf.php<?php 
+                            echo (isset($_GET['start_date']) || isset($_GET['end_date'])) 
+                                ? '?start_date=' . $_GET['start_date'] . '&end_date=' . $_GET['end_date'] 
+                                : ''; 
+                        ?>" class="btn btn-danger btn-rounded shadow-sm">
+                                            <i class="fas fa-file-pdf mr-2"></i>
+                                            <span>Export to PDF</span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <p class="text-muted mb-0">
+                                        <i class="fas fa-info-circle mr-1"></i>
+                                        Export your asset data in your preferred format. The exported file will include all filtered data based on your selected date range.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Date Filter Form -->
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                        <div class="card shadow-sm">
+                            <div class="card-header bg-light">
+                                <h4 class="mb-0"><i class="fas fa-calendar-alt mr-2"></i>Filter Assets by Date</h4>
+                            </div>
+                            <div class="card-body">
+                                <form id="dateFilterForm" method="GET" class="row align-items-end">
+                                    <div class="col-md-4">
+                                        <div class="form-group mb-md-0">
+                                            <label for="start_date" class="text-muted font-weight-bold">Start Date</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="far fa-calendar"></i></span>
+                                                </div>
+                                                <input type="date" class="form-control" id="start_date" name="start_date" 
+                                                    value="<?php echo isset($_GET['start_date']) ? $_GET['start_date'] : ''; ?>">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group mb-md-0">
+                                            <label for="end_date" class="text-muted font-weight-bold">End Date</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="far fa-calendar"></i></span>
+                                                </div>
+                                                <input type="date" class="form-control" id="end_date" name="end_date" 
+                                                    value="<?php echo isset($_GET['end_date']) ? $_GET['end_date'] : ''; ?>">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group mb-0 d-flex">
+                                            <button type="submit" class="btn btn-primary btn-lg mr-2 px-4">
+                                                <i class="fas fa-filter mr-2"></i>Apply Filter
+                                            </button>
+                                            <a href="assets.php" class="btn btn-outline-secondary btn-lg px-4">
+                                                <i class="fas fa-undo-alt mr-2"></i>Reset
+                                            </a>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- MODAL SECTION-->
                 <?php 
@@ -308,7 +380,7 @@ if (!isset($_SESSION['username'])) {
     <!--Custom JavaScript -->
     <script src="../admindashboard/dist/js/custom.min.js"></script>
     <!--This page JavaScript -->
-    <!-- <script src="dist/js/pages/dashboards/dashboard1.js"></script> -->
+    <!-- <script src="../admindashboard/dist/js/pages/dashboards/dashboard1.js"></script> -->
     <!-- Charts js Files -->
     <script src="../admindashboard/assets/libs/flot/excanvas.js"></script>
     <script src="../admindashboard/assets/libs/flot/jquery.flot.js"></script>

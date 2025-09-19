@@ -59,11 +59,11 @@
                     </a>
                 </li>
 
-                <!-- <li class="sidebar-item"> 
+                <li class="sidebar-item"> 
                     <a class="sidebar-link waves-effect waves-dark sidebar-link" href="assethistory.php" aria-expanded="false">
-                        <i class="mdi mdi-history"></i><span class="hide-menu">Report</span>
+                        <i class="mdi mdi-history"></i><span class="hide-menu">Report Center</span>
                     </a>
-                </li> -->
+                </li> 
 
                 <li class="sidebar-item">
                     <a href="../admindashboard/logout.php" class="sidebar-link">

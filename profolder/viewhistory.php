@@ -1,7 +1,24 @@
-<?php
- require "../admindashboard/include/config.php";
-?>
+<?php  
+session_start(); // Start the session to manage user sessions
 
+// Set session timeout to 20 minutes
+$timeout_duration = 1200; // 20 minutes in seconds
+
+if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY']) > $timeout_duration) {
+    // If the session has been inactive for too long, destroy it
+    session_unset();
+    session_destroy();
+    header("Location: ../index.php"); // Redirect to login page
+    exit();
+}
+$_SESSION['LAST_ACTIVITY'] = time(); // Update last activity timestamp
+
+// Check if the user is logged in
+if (!isset($_SESSION['username'])) {
+    header("Location: ../index.php"); // Redirect to login page if not logged in
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
 
@@ -14,7 +31,7 @@
     <meta name="author" content="">
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="../admindashboard/assets/images/logo.png">
-    <title>Admin||Dashboard</title>
+    <title>Facility||Dashboard</title>
     <!-- Custom CSS -->
     <link href="../admindashboard/assets/libs/flot/css/float-chart.css" rel="stylesheet">
     <!-- Custom CSS -->
@@ -31,12 +48,12 @@
     <!-- ============================================================== -->
     <!-- Preloader - style you can find in spinners.css -->
     <!-- ============================================================== -->
-   <!--  <div class="preloader">
+    <div class="preloader">
         <div class="lds-ripple">
             <div class="lds-pos"></div>
             <div class="lds-pos"></div>
         </div>
-    </div> -->
+    </div>
     <!-- ============================================================== -->
     <!-- Main wrapper - style you can find in pages.scss -->
     <!-- ============================================================== -->
@@ -184,7 +201,7 @@
              <div class="page-breadcrumb">
                 <div class="row">
                     <div class="col-12 d-flex no-block align-items-center mt-3">
-                        <h4 class="page-title">View Request</h4>
+                        <h4 class="page-title">View Report Status</h4>
                     </div>
                 </div>
             </div>
@@ -205,80 +222,156 @@
                    /*  require "modal.php"; */
                 ?>
                    <!--END OF MODAL SECTION-->
-                <!-- ============================================================== -->
-                 <?php
+                <!-- ============================================================== -->                <?php
                     require "../admindashboard/include/config.php";
-                    $id = $_GET['id'];
-                    $sql = "SELECT * FROM request_table WHERE id = '$id'";
-                    $result = $conn->query($sql);
-                    $row = $result->fetch_assoc();
+                    
+                    try {
+                        // Validate and sanitize input
+                        if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
+                            throw new Exception('Invalid request ID');
+                        }
+                        $id = (int)$_GET['id'];
+                        
+                        // Prepare and execute the query
+                        $sql = "SELECT * FROM repair_asset WHERE id = :id";
+                        $stmt = $conn->prepare($sql);
+                        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+                        $stmt->execute();
+                        
+                        // Fetch the result
+                        if (!$row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                            throw new Exception('Request not found');
+                        }
+                    } catch (Exception $e) {
+                        echo "<div class='alert alert-danger'>" . htmlspecialchars($e->getMessage()) . "</div>";
+                        echo "<div class='col-md-8'><a href='assethistory.php' class='btn btn-primary'><i class='fa fa-backward'></i> Back</a></div>";
+                        exit;
+                    }
                 ?>
 
                 <!-- START OF UPDATING -->
-                 <div class="shadow p-4 mt-5 bg-white rounded">
-                   <div class="row bg-light rounded"><!-- start row-->
-                    <div class="col-md-8 m-auto">
-                        <div class="form-group shadow-sm">
-                            <label for="" class="form-label">Registration No:</label>
-                                <input type="text" id="" class="form-control"  value="<?php echo $row['reg_no']; ?>"  disabled>
+                <div class="shadow p-4 mt-5 bg-white rounded">
+                    <div class="row bg-light rounded">
+                        <?php
+                        // Determine context for highlighting
+                        $context_label = '';
+                        $context_date = '';
+                        if ($row['status'] === 'Under Repair') {
+                            $context_label = 'Report Date:';
+                            $context_date = $row['report_date'];
+                        } elseif (!empty($row['completed']) && $row['completed'] == 1) {
+                            $context_label = 'Completed Date:';
+                            $context_date = $row['completed_date'];
+                        } elseif (!empty($row['replaced']) && $row['replaced'] == 1) {
+                            $context_label = 'Replaced Date:';
+                            $context_date = $row['replaced_date'];
+                        }
+                        ?>
+                        <div class="col-md-8 m-auto">
+                            <div class="form-group mb-4">
+                                <label class="form-label font-weight-bold text-primary" for="reg_no">Registration No:</label>
+                                <div class="input-group">
+                                    <input type="text" id="reg_no" class="form-control border-info shadow-sm" value="<?php echo $row['reg_no']; ?>" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8 m-auto">
+                            <div class="form-group mb-4">
+                                <label class="form-label font-weight-bold text-primary" for="asset_name">Asset Name:</label>
+                                <div class="input-group">
+                                    <input type="text" id="asset_name" class="form-control border-info shadow-sm" value="<?php echo $row['asset_name']; ?>" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8 m-auto">
+                            <div class="form-group mb-4">
+                                <label class="form-label font-weight-bold text-primary" for="desc">Description:</label>
+                                <div class="input-group">
+                                    <textarea id="desc" rows="3" class="form-control border-info shadow-sm" disabled><?php echo $row['description']; ?></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8 m-auto">
+                            <div class="form-group mb-4">
+                                <label class="form-label font-weight-bold text-primary" for="qty">Quantity:</label>
+                                <div class="input-group">
+                                    <input type="number" id="qty" class="form-control border-info shadow-sm" value="<?php echo $row['quantity']; ?>" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8 m-auto">
+                            <div class="form-group mb-4">
+                                <label class="form-label font-weight-bold text-primary" for="category">Category:</label>
+                                <div class="input-group">
+                                    <input type="text" id="category" class="form-control border-info shadow-sm" value="<?php echo $row['category']; ?>" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8 m-auto">
+                            <div class="form-group mb-4">
+                                <label class="form-label font-weight-bold text-primary" for="department">Department:</label>
+                                <div class="input-group">
+                                    <input type="text" id="department" class="form-control border-info shadow-sm" value="<?php echo $row['department']; ?>" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8 m-auto">
+                            <div class="form-group mb-4">
+                                <label class="form-label font-weight-bold text-primary" for="reported_by">Reported by:</label>
+                                <div class="input-group">
+                                    <input type="text" id="reported_by" class="form-control border-info shadow-sm" value="<?php echo $row['reported_by']; ?>" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Contextual Date Field -->
+                        <?php if ($context_label && $context_date): ?>
+                        <div class="col-md-8 m-auto">
+                            <div class="form-group mb-4">
+                                <label class="form-label font-weight-bold text-success" for="context_date"><?php echo $context_label; ?></label>
+                                <div class="input-group">
+                                    <input type="text" id="context_date" class="form-control border-success shadow-sm" value="<?php echo $context_date; ?>" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <?php endif; ?>
+                        <!-- Always show all date fields for completeness -->
+                      <!--   <div class="col-md-8 m-auto">
+                            <div class="form-group mb-4">
+                                <label class="form-label font-weight-bold text-primary" for="report_date">Reported Date:</label>
+                                <div class="input-group">
+                                    <input type="text" id="report_date" class="form-control border-info shadow-sm" value="<?php echo $row['report_date']; ?>" disabled>
+                                </div>
+                            </div>
+                        </div> -->
+                       <!--  <div class="col-md-8 m-auto">
+                            <div class="form-group mb-4">
+                                <label class="form-label font-weight-bold text-primary" for="completed_date">Completed Date:</label>
+                                <div class="input-group">
+                                    <input type="text" id="completed_date" class="form-control border-info shadow-sm" value="<?php echo $row['completed_date']; ?>" disabled>
+                                </div>
+                            </div>
+                        </div> -->
+                        <div class="col-md-8 m-auto">
+                            <div class="form-group mb-4">
+                                <label class="form-label font-weight-bold text-primary" for="withdrawn_date">Withdrawn Date:</label>
+                                <div class="input-group">
+                                    <input type="text" id="withdrawn_date" class="form-control border-info shadow-sm" value="<?php echo $row['withdrawn_date']; ?>" disabled>
+                                </div>
+                            </div>
+                        </div>
+                   <!--      <div class="col-md-8 m-auto">
+                            <div class="form-group mb-4">
+                                <label class="form-label font-weight-bold text-primary" for="replaced_date">Replaced Date:</label>
+                                <div class="input-group">
+                                    <input type="text" id="replaced_date" class="form-control border-info shadow-sm" value="<?php echo $row['replaced_date']; ?>" disabled>
+                                </div>
+                            </div>
+                        </div> -->
+                        <div class="col-md-8 text-center mb-3">
+                            <a href="assethistory.php"><button class="btn btn-primary"><i class='fa fa-backward'></i> Back</button></a>
                         </div>
                     </div>
-
-                    <div class="col-md-8 m-auto">
-                        <div class="form-group shadow-sm">
-                            <label for="" class="form-label">Asset Name:</label>
-                                <input type="text" id="" class="form-control" name="asset_name" value="<?php echo $row['asset_name']; ?>" disabled>
-                        </div>
-                    </div>
-
-                    <div class="col-md-8 m-auto">
-                        <div class="form-group shadow-sm">
-                            <label for="" class="form-label">Description:</label>
-                                <textarea name="desc" id="" rows="3" class="form-control" disabled><?php echo $row['description']; ?></textarea>
-                        </div>
-                    </div>
-
-                    <div class="col-md-8 m-auto">
-                        <div class="form-group shadow-sm">
-                            <label for="" class="form-label">Quantity:</label>
-                                <input type="number" id="" class="form-control" name="qty" value="<?php echo $row['quantity']; ?>" disabled>
-                        </div>
-                    </div>
-
-                    <div class="col-md-8 m-auto">
-                        <div class="form-group shadow-sm">
-                            <label for="category" class="col-form-label">Category:</label>
-                                <input type="text" id="category" class="form-control"  value="<?php echo $row['category']; ?>" disabled>
-                        </div>
-                    </div>
-
-                    <div class="col-md-8 m-auto">
-                        <div class="form-group shadow-sm">
-                            <label for="category" class="col-form-label">Department:</label>
-                                <input type="text" id="department" class="form-control"  value="<?php echo $row['department']; ?>" disabled>
-                        </div>
-                    </div>
-
-                    <div class="col-md-8 m-auto">
-                        <div class="form-group shadow-sm">
-                            <label for="category" class="col-form-label">Requested by:</label>
-                                <input type="text" id="category" class="form-control" name="asset_cat" value="<?php echo $row['assigned_employee']; ?>" disabled>
-                        </div>
-                    </div>
-
-                    <div class="col-md-8 m-auto">
-                        <div class="form-group shadow-sm">
-                            <label for="" class="form-label">Date Added:</label>
-                                <input type="text" id="" class="form-control" name="date_added" value="<?php echo $row['request_date']; ?>" disabled>
-                        </div>
-                    </div>
-
-                    <div class="col-md-8">
-                        <a href="assethistory.php"><button class="btn btn-primary"><i class='fa fa-backward'></i></button></a>
-                    </div>
-                   
-                 </div><!-- End row-->
-                 </div>
+                </div>
                 <!-- END OF UPDATING -->
                  
                 <!-- Sales chart -->
@@ -339,6 +432,30 @@
     <script src="../admindashboard/assets/libs/flot/jquery.flot.crosshair.js"></script>
     <script src="../admindashboard/assets/libs/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
     <script src="../admindashboard/dist/js/pages/chart/chart-page-init.js"></script>
+    <style>
+.form-label {
+    font-size: 1.1rem;
+    margin-bottom: 0.3em;
+    letter-spacing: 0.5px;
+}
+.input-group .form-control {
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1.5px solid #b6d4fe;
+    box-shadow: 0 2px 8px rgba(30,144,255,0.07);
+    font-size: 1rem;
+    padding: 0.7em 1em;
+}
+.form-group {
+    margin-bottom: 1.5em;
+}
+.shadow {
+    box-shadow: 0 8px 32px rgba(30,144,255,0.13), 0 1.5px 6px rgba(0,0,0,0.09);
+}
+.bg-light {
+    background: linear-gradient(135deg, #e0e7ff 60%, #fff 100%);
+}
+</style>
 
 </body>
 

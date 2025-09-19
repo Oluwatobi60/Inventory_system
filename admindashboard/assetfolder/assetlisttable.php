@@ -25,7 +25,6 @@ try {
         }
         $where_clause .= " AND DATE(dateofpurchase) >= :start_date";
     }
-
     if (isset($_GET['end_date']) && !empty($_GET['end_date'])) {
         $end_date = $_GET['end_date'];
         if (!strtotime($end_date)) {

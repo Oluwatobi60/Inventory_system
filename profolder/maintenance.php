@@ -251,7 +251,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit-request'])) {
             }
         }
     </style>
-    <title>Procurement||Dashboard</title>
+    <title>Facility||Dashboard</title>
     <!-- Custom CSS -->
     <link href="../admindashboard/assets/libs/flot/css/float-chart.css" rel="stylesheet">
     <!-- Custom CSS -->

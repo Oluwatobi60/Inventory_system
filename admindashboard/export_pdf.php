@@ -1,19 +1,29 @@
 <?php
- require "../admindashboard/include/config.php";
+require "../admindashboard/include/config.php";
 require '../vendor/autoload.php';
+
+// Use PDO for database connection
+// Assuming $conn is a PDO instance, if not, create it:
+if (!isset($conn) || !($conn instanceof PDO)) {
+    $dsn = "mysql:host=$servername;dbname=$dbname;charset=utf8mb4";
+    $conn = new PDO($dsn, $username, $password, [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+    ]);
+}
 
 // Initialize the WHERE clause
 $where_clause = "WHERE 1=1";
+$params = [];
 
 // Add date filtering if dates are provided
 if (isset($_GET['start_date']) && !empty($_GET['start_date'])) {
-    $start_date = $_GET['start_date'];
-    $where_clause .= " AND DATE(dateofpurchase) >= '$start_date'";
+    $where_clause .= " AND DATE(dateofpurchase) >= :start_date";
+    $params[':start_date'] = $_GET['start_date'];
 }
 
 if (isset($_GET['end_date']) && !empty($_GET['end_date'])) {
-    $end_date = $_GET['end_date'];
-    $where_clause .= " AND DATE(dateofpurchase) <= '$end_date'";
+    $where_clause .= " AND DATE(dateofpurchase) <= :end_date";
+    $params[':end_date'] = $_GET['end_date'];
 }
 
 $query = "SELECT reg_no, asset_name, description, category, dateofpurchase, quantity 
@@ -21,7 +31,8 @@ $query = "SELECT reg_no, asset_name, description, category, dateofpurchase, quan
          $where_clause 
          ORDER BY reg_no ASC";
 
-$result = $conn->query($query);
+$stmt = $conn->prepare($query);
+$stmt->execute($params);
 
 use TCPDF as TCPDF;
 
@@ -71,24 +82,24 @@ $query = "SELECT r.*, a.asset_name, a.description, a.category
           FROM request_table r 
           LEFT JOIN asset_table a ON r.reg_no = a.reg_no 
           WHERE (r.hod_approved = 1 OR r.pro_approved = 1)";
+$params = [];
 
-// Add date filtering if dates are provided
 if (isset($_GET['start_date']) && !empty($_GET['start_date'])) {
-    $start_date = $_GET['start_date'];
-    $query .= " AND DATE(r.request_date) >= '$start_date'";
+    $query .= " AND DATE(r.request_date) >= :req_start_date";
+    $params[':req_start_date'] = $_GET['start_date'];
 }
 
 if (isset($_GET['end_date']) && !empty($_GET['end_date'])) {
-    $end_date = $_GET['end_date'];
-    $query .= " AND DATE(r.request_date) <= '$end_date'";
+    $query .= " AND DATE(r.request_date) <= :req_end_date";
+    $params[':req_end_date'] = $_GET['end_date'];
 }
 
 $query .= " ORDER BY r.request_date DESC";
-$result = $conn->query($query);
+$stmt = $conn->prepare($query);
+$stmt->execute($params);
 
-// Add data rows with multicell support
 $yPos = 17;
-while ($data = $result->fetch_assoc()) {
+while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
     $xPos = 5;
     $maxHeight = 12; // Minimum row height
     

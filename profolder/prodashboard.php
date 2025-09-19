@@ -90,7 +90,7 @@ try {
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" type="image/png" sizes="16x16" href="../admindashboard/assets/images/isalu-logo.png">
-    <title>Procurement||Dashboard</title>
+    <title>Facility||Dashboard</title>
     <link href="../admindashboard/assets/libs/flot/css/float-chart.css" rel="stylesheet">
     <link href="../admindashboard/dist/css/style.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
@@ -102,7 +102,7 @@ try {
             transition: transform 0.3s ease;
             margin-bottom: 20px;
         }
-        
+         
         .stat-card:hover {
             transform: translateY(-5px);
         }

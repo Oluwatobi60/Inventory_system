@@ -197,6 +197,7 @@ try {
                 max-height: 48px;
             }
         }
+        
     </style>
 </head>
 

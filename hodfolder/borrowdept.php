@@ -1,60 +1,24 @@
-<?php
-require_once dirname(__FILE__) . "/../include/config.php";
-require_once dirname(__FILE__) . "/../../include/utils.php";
+<?php  
+session_start(); // Start the session to manage user sessions
 
-try {
-    // Validate and sanitize input
-    if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
-        throw new Exception("Invalid asset ID");
-    }
-    
-    $id = (int)$_GET['id'];
+// Set session timeout to 20 minutes
+$timeout_duration = 1200; // 20 minutes in seconds
 
-    if (isset($_POST['submit'])) {
-        // Sanitize and validate inputs
-        $asset_name = trim($_POST['asset_name']);
-        $desc = trim($_POST['desc']);
-        $qty = (int)$_POST['qty'];
-        $asset_cat = isset($_POST['asset_cat']) ? trim($_POST['asset_cat']) : '';
-        $date = trim($_POST['dates']);
+if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY']) > $timeout_duration) {
+    // If the session has been inactive for too long, destroy it
+    session_unset();
+    session_destroy();
+    header("Location: ../userfolder/index.php"); // Redirect to login page
+    exit();
+}
+$_SESSION['LAST_ACTIVITY'] = time(); // Update last activity timestamp
 
-        // Validate required fields
-        if (empty($asset_name) || empty($desc) || empty($asset_cat) || empty($date)) {
-            throw new Exception("All fields are required");
-        }
-
-        if ($qty < 0) {
-            throw new Exception("Quantity cannot be negative");
-        }
-
-        // Update the asset using prepared statement
-        $update_sql = "UPDATE asset_table 
-                      SET asset_name = :asset_name, 
-                          description = :description, 
-                          quantity = :quantity, 
-                          category = :category, 
-                          dateofpurchase = :date 
-                      WHERE id = :id";
-                      
-        $stmt = $conn->prepare($update_sql);
-        $stmt->bindParam(':asset_name', $asset_name);
-        $stmt->bindParam(':description', $desc);
-        $stmt->bindParam(':quantity', $qty, PDO::PARAM_INT);
-        $stmt->bindParam(':category', $asset_cat);
-        $stmt->bindParam(':date', $date);
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-        
-        if ($stmt->execute()) {
-            logError("Asset updated successfully (ID: $id)");
-            echo "<script>alert('Asset updated successfully'); window.location.href='../assets.php';</script>";
-            exit();
-        } else {
-            throw new PDOException("Failed to update asset");
-        }
-    }
+// Check if the user is logged in
+if (!isset($_SESSION['username'])) {
+    header("Location: ../userfolder/index.php"); // Redirect to login page if not logged in
+    exit();
+}
 ?>
-
-
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
 
@@ -66,51 +30,30 @@ try {
     <meta name="description" content="">
     <meta name="author" content="">
     <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/isalu-logo.png">
-     <style>
-        .logo-icon img.light-logo {
-            width: 60px !important;
-            max-height: 60px;
-            object-fit: contain;
-            background: linear-gradient(135deg, #e0e7ff 60%, #fff 100%);
-            border-radius: 50%;
-            box-shadow: 0 4px 18px rgba(30,144,255,0.10), 0 1.5px 6px rgba(0,0,0,0.07);
-            padding: 7px;
-            margin: 4px 0 4px 0;
-            border: 2.5px solid #1e90ff22;
-            transition: box-shadow 0.3s, transform 0.2s, border 0.2s;
-        }
-          .logo-icon img.light-logo:hover {
-            box-shadow: 0 8px 32px rgba(30,144,255,0.18);
-            border: 2.5px solid #1e90ff;
-            transform: scale(1.08) rotate(-2deg);
-        }
-        @media (max-width: 600px) {
-            .logo-icon img.light-logo {
-                width: 48px !important;
-                max-height: 48px;
-            }
-        }
-    </style>
-
-    <title>Admin||Dashboard</title>
+    <link rel="icon" type="image/png" sizes="16x16" href="../admindashboard/assets/images/logo.png">
+    <title>HOD||Dashboard</title>
     <!-- Custom CSS -->
-    <link href="../assets/libs/flot/css/float-chart.css" rel="stylesheet">
+    <link href="../admindashboard/assets/libs/flot/css/float-chart.css" rel="stylesheet">
     <!-- Custom CSS -->
-    <link href="../dist/css/style.min.css" rel="stylesheet">
- 
+    <link href="../admindashboard/dist/css/style.min.css" rel="stylesheet">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
 </head>
 
 <body>
     <!-- ============================================================== -->
     <!-- Preloader - style you can find in spinners.css -->
     <!-- ============================================================== -->
-  <!--   <div class="preloader">
+  <!--  <div class="preloader">
         <div class="lds-ripple">
             <div class="lds-pos"></div>
             <div class="lds-pos"></div>
         </div>
-    </div> -->
+    </div>  -->
     <!-- ============================================================== -->
     <!-- Main wrapper - style you can find in pages.scss -->
     <!-- ============================================================== -->
@@ -118,7 +61,7 @@ try {
         <!-- ============================================================== -->
         <!-- Topbar header - style you can find in pages.scss -->
         <!-- ============================================================== -->
-       <header class="topbar" data-navbarbg="skin5">
+        <header class="topbar" data-navbarbg="skin5">
             <nav class="navbar top-navbar navbar-expand-md navbar-dark">
                 <div class="navbar-header" data-logobg="skin5">
                     <!-- This is for the sidebar toggle which is visible on mobile only -->
@@ -131,15 +74,12 @@ try {
                         <b class="logo-icon p-l-10">
                             <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
                             <!-- Dark Logo icon -->
-                            <img src="../assets/images/isalu-logo.png" alt="homepage" class="light-logo" />
-
+                            <img src="../admindashboard/assets/images/logo.png" alt="homepage" class="light-logo" width="100px"/>
                         </b>
                         <!--End Logo icon -->
-                         <!-- Logo text -->
-                        <span class="logo-text">
+                        <!-- Logo text -->
                         
-                            
-                     
+                    </a>
                     <a class="topbartoggler d-block d-md-none waves-effect waves-light" href="javascript:void(0)" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><i class="ti-more"></i></a>
                 </div>
                 <!-- ============================================================== -->
@@ -152,7 +92,6 @@ try {
                     <ul class="navbar-nav float-left mr-auto">
                         <li class="nav-item d-none d-md-block"><a class="nav-link sidebartoggler waves-effect waves-light" href="javascript:void(0)" data-sidebartype="mini-sidebar"><i class="mdi mdi-menu font-24"></i></a></li>
                         <!-- ============================================================== -->
-                    
                         <!-- Search -->
                         <!-- ============================================================== -->
                         <li class="nav-item search-box"> <a class="nav-link waves-effect waves-dark" href="javascript:void(0)"><i class="ti-search"></i></a>
@@ -171,14 +110,13 @@ try {
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="mdi mdi-bell font-24"></i>
                             </a>
-                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="#">Action</a>
                                 <a class="dropdown-item" href="#">Another action</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#">Something else here</a>
                             </div>
                         </li>
-                     
                         <!-- ============================================================== -->
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" id="2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="font-24 mdi mdi-comment-processing"></i>
@@ -187,13 +125,13 @@ try {
                                 <ul class="list-style-none">
                                     <li>
                                         <div class="">
-                                             <!-- Message -->
+                                            <!-- Message -->
                                             <a href="javascript:void(0)" class="link border-top">
                                                 <div class="d-flex no-block align-items-center p-10">
                                                     <span class="btn btn-success btn-circle"><i class="ti-calendar"></i></span>
                                                     <div class="m-l-10">
-                                                        <h5 class="m-b-0">Event today</h5> 
-                                                        <span class="mail-desc">Just a reminder that event</span> 
+                                                        <h5 class="m-b-0">Event today</h5>
+                                                        <span class="mail-desc">Just a reminder that event</span>
                                                     </div>
                                                 </div>
                                             </a>
@@ -202,23 +140,25 @@ try {
                                                 <div class="d-flex no-block align-items-center p-10">
                                                     <span class="btn btn-info btn-circle"><i class="ti-settings"></i></span>
                                                     <div class="m-l-10">
-                                                        <h5 class="m-b-0">Settings</h5> 
-                                                        <span class="mail-desc">You can customize this template</span> 
+                                                        <h5 class="m-b-0">Settings</h5>
+                                                        <span class="mail-desc">You can customize this template</span>
                                                     </div>
                                                 </div>
                                             </a>
-                                           
                                         </div>
                                     </li>
                                 </ul>
                             </div>
                         </li>
-                   
-
+                        <!-- ============================================================== -->
                         <!-- User profile and search -->
                         <!-- ============================================================== -->
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="../assets/images/users/1.jpg" alt="user" class="rounded-circle" width="31"></a>
+                            <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img src="assets/images/users/1.jpg" alt="user" class="rounded-circle" width="31">
+                                <span class="ml-2"><?php echo htmlspecialchars($_SESSION['username']); ?></span>
+                                <span class="ml-1" style="display: inline-block; width: 10px; height: 10px; background-color: green; border-radius: 50%;"></span>
+                            </a>
                             <div class="dropdown-menu dropdown-menu-right user-dd animated">
                                 <a class="dropdown-item" href="javascript:void(0)"><i class="ti-user m-r-5 m-l-5"></i> My Profile</a>
                                 <a class="dropdown-item" href="javascript:void(0)"><i class="ti-wallet m-r-5 m-l-5"></i> My Balance</a>
@@ -226,9 +166,7 @@ try {
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="javascript:void(0)"><i class="ti-settings m-r-5 m-l-5"></i> Account Setting</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="javascript:void(0)"><i class="fa fa-power-off m-r-5 m-l-5"></i> Logout</a>
-                                <div class="dropdown-divider"></div>
-                                <div class="p-l-30 p-10"><a href="javascript:void(0)" class="btn btn-sm btn-success btn-rounded">View Profile</a></div>
+                                <a class="dropdown-item" href="logout.php"><i class="fa fa-power-off m-r-5 m-l-5"></i> Logout</a>
                             </div>
                         </li>
                         <!-- ============================================================== -->
@@ -257,16 +195,8 @@ try {
             <!-- ============================================================== -->
              <div class="page-breadcrumb">
                 <div class="row">
-                    <div class="col-12 d-flex no-block align-items-center">
-                        <h4 class="page-title">Update Asset</h4>
-                        <div class="ml-auto text-right">
-                            <nav aria-label="breadcrumb">
-                                <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">Library</li>
-                                </ol>
-                            </nav>
-                        </div>
+                    <div class="col-12 d-flex no-block align-items-center mt-3">
+                        <h4 class="page-title">Borrow Asset</h4>
                     </div>
                 </div>
             </div>
@@ -284,96 +214,16 @@ try {
 
                 <!-- MODAL SECTION-->
                 <?php 
-                   /*  require "modal.php"; */
+                     require "deptborrow/deptborrowmodal.php"; 
                 ?>
-                   <!--END OF MODAL SECTION-->                <!-- ============================================================== -->                
-                <?php
-                    // Fetch current asset data
-                    $sql = "SELECT * FROM asset_table WHERE id = :id";
-                    $stmt = $conn->prepare($sql);
-                    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-                    $stmt->execute();
-                    
-                    if (!($row = $stmt->fetch(PDO::FETCH_ASSOC))) {
-                        logError("Asset not found: ID $id");
-                        echo "<script>alert('Asset not found'); window.location.href='../assets.php';</script>";
-                        exit();
-                    }
-                ?>
+                   <!--END OF MODAL SECTION-->
+                <!-- ============================================================== -->
+                 
 
-                <!-- START OF UPDATING -->
-                 <form action="" method="POST" class="shadow p-4 mt-5 bg-white rounded">
-                  
-                 <div class="row bg-light rounded"><!-- start row-->
-                    <div class="col-md-8 m-auto">
-                        <div class="form-group shadow-sm">
-                            <label for="" class="form-label">Registration No:</label>
-                                <input type="text" id="" class="form-control" name="asset_model" value="<?php echo $row['reg_no']; ?>"  disabled>
-                        </div>
-                    </div>
+                <!-- START OF ASSET LIST TABLE -->
+                <?php require "deptborrow/deptborrowassettable.php"; ?>
 
-                    <div class="col-md-8 m-auto">
-                        <div class="form-group shadow-sm">
-                            <label for="" class="form-label">Asset Name:</label>
-                                <input type="text" id="" class="form-control" name="asset_name" value="<?php echo $row['asset_name']; ?>">
-                        </div>
-                    </div>
-
-                    <div class="col-md-8 m-auto">
-                        <div class="form-group shadow-sm">
-                            <label for="" class="form-label">Asset Name:</label>
-                                <textarea name="desc" id="" rows="3" class="form-control" ><?php echo $row['description']; ?></textarea>
-                        </div>
-                    </div>
-
-                    <div class="col-md-8 m-auto">
-                        <div class="form-group shadow-sm">
-                            <label for="" class="form-label">Quantity:</label>
-                                <input type="number" id="" class="form-control" name="qty" value="<?php echo $row['quantity']; ?>">
-                        </div>
-                    </div>
-
-                    <div class="col-md-8 m-auto">
-                        <div class="form-group shadow-sm">
-                            <label for="category" class="col-form-label">Category:</label>
-                                <select id="category" class="form-control" name="asset_cat">
-                                    <option selected disabled><?php echo $row['category']; ?></option>                                        <?php
-                                        try {
-                                            $cat_sql = "SELECT * FROM category ORDER BY category ASC";
-                                            $cat_stmt = $conn->prepare($cat_sql);
-                                            $cat_stmt->execute();
-                                            
-                                            while($cat_row = $cat_stmt->fetch(PDO::FETCH_ASSOC)) {
-                                                $category = htmlspecialchars($cat_row['category']);
-                                                echo "<option value='" . $category . "'>" . $category . "</option>";
-                                            }
-                                        } catch (PDOException $e) {
-                                            logError("Error fetching categories in editasset.php: " . $e->getMessage());
-                                        }
-                                        ?>
-                                </select>
-                                                               
-                        </div>
-                    </div>
-
-                    <div class="col-md-8 m-auto">
-                        <div class="form-group shadow-sm">
-                            <label for="" class="form-label">Date:</label>
-                                <input type="date" id="" class="form-control" name="dates" value="<?php echo $row['dateofpurchase']; ?>">
-                        </div>
-                    </div>                    <div class="col-md-8 m-auto">
-                        <button type="submit" name="submit" class="btn btn-primary shadow">Update</button>
-                        <a href="../assets.php" class="btn btn-secondary shadow">Cancel</a>
-                    </div>
-                 </div><!-- End row-->                 </form>                
-                <?php
-                } catch (Exception $e) {
-                    logError("Error in editasset.php: " . $e->getMessage());
-                    echo "<script>alert('Error: " . addslashes($e->getMessage()) . "'); window.location.href='../assets.php';</script>";
-                    exit();
-                }
-                ?>
-                <!-- END OF UPDATING -->
+                <!-- END OF ASSET LIST TABLE -->
                  
                 <!-- Sales chart -->
                 <!-- ============================================================== -->
@@ -395,7 +245,7 @@ try {
             <!-- ============================================================== -->
             <!-- footer -->
             <!-- ============================================================== -->
-            <?php require "../include/footer.php" ?>
+            <?php require "../admindashboard/include/footer.php" ?>
             <!-- ============================================================== -->
             <!-- End footer -->
             <!-- ============================================================== -->
@@ -410,31 +260,30 @@ try {
     <!-- ============================================================== -->
     <!-- All Jquery -->
     <!-- ============================================================== -->
-    <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="../admindashboard/assets/libs/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap tether Core JavaScript -->
-    <script src="../assets/libs/popper.js/dist/umd/popper.min.js"></script>
-    <script src="../assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="../assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
-    <script src="../assets/extra-libs/sparkline/sparkline.js"></script>
+    <script src="../admindashboard/assets/libs/popper.js/dist/umd/popper.min.js"></script>
+    <script src="../admindashboard/assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="../admindashboard/assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
+    <script src="../admindashboard/assets/extra-libs/sparkline/sparkline.js"></script>
     <!--Wave Effects -->
-    <script src="../dist/js/waves.js"></script>
+    <script src="../admindashboard/dist/js/waves.js"></script>
     <!--Menu sidebar -->
-    <script src="../dist/js/sidebarmenu.js"></script>
+    <script src="../admindashboard/dist/js/sidebarmenu.js"></script>
     <!--Custom JavaScript -->
-    <script src="../dist/js/custom.min.js"></script>
+    <script src="../admindashboard/dist/js/custom.min.js"></script>
     <!--This page JavaScript -->
     <!-- <script src="dist/js/pages/dashboards/dashboard1.js"></script> -->
     <!-- Charts js Files -->
-    <script src="../assets/libs/flot/excanvas.js"></script>
-    <script src="../assets/libs/flot/jquery.flot.js"></script>
-    <script src="../assets/libs/flot/jquery.flot.pie.js"></script>
-    <script src="../assets/libs/flot/jquery.flot.time.js"></script>
-    <script src="../assets/libs/flot/jquery.flot.stack.js"></script>
-    <script src="../assets/libs/flot/jquery.flot.crosshair.js"></script>
-    <script src="../assets/libs/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
-    <script src="../dist/js/pages/chart/chart-page-init.js"></script>
+    <script src="../admindashboard/assets/libs/flot/excanvas.js"></script>
+    <script src="../admindashboard/assets/libs/flot/jquery.flot.js"></script>
+    <script src="../admindashboard/assets/libs/flot/jquery.flot.pie.js"></script>
+    <script src="../admindashboard/assets/libs/flot/jquery.flot.time.js"></script>
+    <script src="../admindashboard/assets/libs/flot/jquery.flot.stack.js"></script>
+    <script src="../admindashboard/assets/libs/flot/jquery.flot.crosshair.js"></script>
+    <script src="../admindashboard/assets/libs/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
+    <script src="../admindashboard/dist/js/pages/chart/chart-page-init.js"></script>
 
 </body>
 
 </html>
-

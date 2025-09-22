@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__) . "/../include/config.php";
+require_once dirname(__FILE__) . "/../../include/config.php";
 require_once dirname(__FILE__) . "/../../include/utils.php";
 
 try {
@@ -66,7 +66,7 @@ try {
     <meta name="description" content="">
     <meta name="author" content="">
     <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/isalu-logo.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../admindashboard/assets/images/isalu-logo.png">
      <style>
         .logo-icon img.light-logo {
             width: 60px !important;
@@ -93,11 +93,11 @@ try {
         }
     </style>
 
-    <title>Admin||Dashboard</title>
+    <title>User||Dashboard</title>
     <!-- Custom CSS -->
-    <link href="../assets/libs/flot/css/float-chart.css" rel="stylesheet">
+    <link href="../../admindashboard/assets/libs/flot/css/float-chart.css" rel="stylesheet">
     <!-- Custom CSS -->
-    <link href="../dist/css/style.min.css" rel="stylesheet">
+    <link href="../../admindashboard/dist/css/style.min.css" rel="stylesheet">
  
 </head>
 
@@ -131,7 +131,7 @@ try {
                         <b class="logo-icon p-l-10">
                             <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
                             <!-- Dark Logo icon -->
-                            <img src="../assets/images/isalu-logo.png" alt="homepage" class="light-logo" />
+                            <img src="../../admindashboard/assets/images/isalu-logo.png" alt="homepage" class="light-logo" />
 
                         </b>
                         <!--End Logo icon -->
@@ -218,7 +218,7 @@ try {
                         <!-- User profile and search -->
                         <!-- ============================================================== -->
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="../assets/images/users/1.jpg" alt="user" class="rounded-circle" width="31"></a>
+                            <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="../../admindashboard/assets/images/users/1.jpg" alt="user" class="rounded-circle" width="31"></a>
                             <div class="dropdown-menu dropdown-menu-right user-dd animated">
                                 <a class="dropdown-item" href="javascript:void(0)"><i class="ti-user m-r-5 m-l-5"></i> My Profile</a>
                                 <a class="dropdown-item" href="javascript:void(0)"><i class="ti-wallet m-r-5 m-l-5"></i> My Balance</a>
@@ -395,7 +395,7 @@ try {
             <!-- ============================================================== -->
             <!-- footer -->
             <!-- ============================================================== -->
-            <?php require "../include/footer.php" ?>
+            <?php require "../../admindashboard/include/footer.php" ?>
             <!-- ============================================================== -->
             <!-- End footer -->
             <!-- ============================================================== -->
@@ -410,29 +410,29 @@ try {
     <!-- ============================================================== -->
     <!-- All Jquery -->
     <!-- ============================================================== -->
-    <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="../../admindashboard/assets/libs/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap tether Core JavaScript -->
-    <script src="../assets/libs/popper.js/dist/umd/popper.min.js"></script>
-    <script src="../assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="../assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
-    <script src="../assets/extra-libs/sparkline/sparkline.js"></script>
+    <script src="../../admindashboard/assets/libs/popper.js/dist/umd/popper.min.js"></script>
+    <script src="../../admindashboard/assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="../../admindashboard/assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
+    <script src="../../admindashboard/assets/extra-libs/sparkline/sparkline.js"></script>
     <!--Wave Effects -->
-    <script src="../dist/js/waves.js"></script>
+    <script src="../../admindashboard/dist/js/waves.js"></script>
     <!--Menu sidebar -->
-    <script src="../dist/js/sidebarmenu.js"></script>
+    <script src="../../admindashboard/dist/js/sidebarmenu.js"></script>
     <!--Custom JavaScript -->
-    <script src="../dist/js/custom.min.js"></script>
+    <script src="../../admindashboard/dist/js/custom.min.js"></script>
     <!--This page JavaScript -->
     <!-- <script src="dist/js/pages/dashboards/dashboard1.js"></script> -->
     <!-- Charts js Files -->
-    <script src="../assets/libs/flot/excanvas.js"></script>
-    <script src="../assets/libs/flot/jquery.flot.js"></script>
-    <script src="../assets/libs/flot/jquery.flot.pie.js"></script>
-    <script src="../assets/libs/flot/jquery.flot.time.js"></script>
-    <script src="../assets/libs/flot/jquery.flot.stack.js"></script>
-    <script src="../assets/libs/flot/jquery.flot.crosshair.js"></script>
-    <script src="../assets/libs/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
-    <script src="../dist/js/pages/chart/chart-page-init.js"></script>
+    <script src="../../admindashboard/assets/libs/flot/excanvas.js"></script>
+    <script src="../../admindashboard/assets/libs/flot/jquery.flot.js"></script>
+    <script src="../../admindashboard/assets/libs/flot/jquery.flot.pie.js"></script>
+    <script src="../../admindashboard/assets/libs/flot/jquery.flot.time.js"></script>
+    <script src="../../admindashboard/assets/libs/flot/jquery.flot.stack.js"></script>
+    <script src="../../admindashboard/assets/libs/flot/jquery.flot.crosshair.js"></script>
+    <script src="../../admindashboard/assets/libs/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
+    <script src="../../admindashboard/dist/js/pages/chart/chart-page-init.js"></script>
 
 </body>
 

@@ -1,59 +1,6 @@
 <?php
-require_once dirname(__FILE__) . "/../include/config.php";
-require_once dirname(__FILE__) . "/../../include/utils.php";
-
-try {
-    // Validate and sanitize input
-    if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
-        throw new Exception("Invalid asset ID");
-    }
-    
-    $id = (int)$_GET['id'];
-
-    if (isset($_POST['submit'])) {
-        // Sanitize and validate inputs
-        $asset_name = trim($_POST['asset_name']);
-        $desc = trim($_POST['desc']);
-        $qty = (int)$_POST['qty'];
-        $asset_cat = isset($_POST['asset_cat']) ? trim($_POST['asset_cat']) : '';
-        $date = trim($_POST['dates']);
-
-        // Validate required fields
-        if (empty($asset_name) || empty($desc) || empty($asset_cat) || empty($date)) {
-            throw new Exception("All fields are required");
-        }
-
-        if ($qty < 0) {
-            throw new Exception("Quantity cannot be negative");
-        }
-
-        // Update the asset using prepared statement
-        $update_sql = "UPDATE asset_table 
-                      SET asset_name = :asset_name, 
-                          description = :description, 
-                          quantity = :quantity, 
-                          category = :category, 
-                          dateofpurchase = :date 
-                      WHERE id = :id";
-                      
-        $stmt = $conn->prepare($update_sql);
-        $stmt->bindParam(':asset_name', $asset_name);
-        $stmt->bindParam(':description', $desc);
-        $stmt->bindParam(':quantity', $qty, PDO::PARAM_INT);
-        $stmt->bindParam(':category', $asset_cat);
-        $stmt->bindParam(':date', $date);
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-        
-        if ($stmt->execute()) {
-            logError("Asset updated successfully (ID: $id)");
-            echo "<script>alert('Asset updated successfully'); window.location.href='../assets.php';</script>";
-            exit();
-        } else {
-            throw new PDOException("Failed to update asset");
-        }
-    }
+ require "../include/config.php";
 ?>
-
 
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
@@ -66,51 +13,30 @@ try {
     <meta name="description" content="">
     <meta name="author" content="">
     <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/isalu-logo.png">
-     <style>
-        .logo-icon img.light-logo {
-            width: 60px !important;
-            max-height: 60px;
-            object-fit: contain;
-            background: linear-gradient(135deg, #e0e7ff 60%, #fff 100%);
-            border-radius: 50%;
-            box-shadow: 0 4px 18px rgba(30,144,255,0.10), 0 1.5px 6px rgba(0,0,0,0.07);
-            padding: 7px;
-            margin: 4px 0 4px 0;
-            border: 2.5px solid #1e90ff22;
-            transition: box-shadow 0.3s, transform 0.2s, border 0.2s;
-        }
-          .logo-icon img.light-logo:hover {
-            box-shadow: 0 8px 32px rgba(30,144,255,0.18);
-            border: 2.5px solid #1e90ff;
-            transform: scale(1.08) rotate(-2deg);
-        }
-        @media (max-width: 600px) {
-            .logo-icon img.light-logo {
-                width: 48px !important;
-                max-height: 48px;
-            }
-        }
-    </style>
-
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/logo.png">
     <title>Admin||Dashboard</title>
     <!-- Custom CSS -->
     <link href="../assets/libs/flot/css/float-chart.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="../dist/css/style.min.css" rel="stylesheet">
- 
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
 </head>
 
 <body>
     <!-- ============================================================== -->
     <!-- Preloader - style you can find in spinners.css -->
     <!-- ============================================================== -->
-  <!--   <div class="preloader">
+    <div class="preloader">
         <div class="lds-ripple">
             <div class="lds-pos"></div>
             <div class="lds-pos"></div>
         </div>
-    </div> -->
+    </div>
     <!-- ============================================================== -->
     <!-- Main wrapper - style you can find in pages.scss -->
     <!-- ============================================================== -->
@@ -118,7 +44,7 @@ try {
         <!-- ============================================================== -->
         <!-- Topbar header - style you can find in pages.scss -->
         <!-- ============================================================== -->
-       <header class="topbar" data-navbarbg="skin5">
+        <header class="topbar" data-navbarbg="skin5">
             <nav class="navbar top-navbar navbar-expand-md navbar-dark">
                 <div class="navbar-header" data-logobg="skin5">
                     <!-- This is for the sidebar toggle which is visible on mobile only -->
@@ -126,13 +52,13 @@ try {
                     <!-- ============================================================== -->
                     <!-- Logo -->
                     <!-- ============================================================== -->
-                    <a class="navbar-brand" href="index.php">
+                    <a class="navbar-brand" href="../index.php">
                         <!-- Logo icon -->
                         <b class="logo-icon p-l-10">
                             <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
                             <!-- Dark Logo icon -->
-                            <img src="../assets/images/isalu-logo.png" alt="homepage" class="light-logo" />
-
+                            <img src="../assets/images/logo.png" alt="homepage" class="light-logo" width="100px"/>
+                           
                         </b>
                         <!--End Logo icon -->
                          <!-- Logo text -->
@@ -218,7 +144,7 @@ try {
                         <!-- User profile and search -->
                         <!-- ============================================================== -->
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="../assets/images/users/1.jpg" alt="user" class="rounded-circle" width="31"></a>
+                            <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="assets/images/users/1.jpg" alt="user" class="rounded-circle" width="31"></a>
                             <div class="dropdown-menu dropdown-menu-right user-dd animated">
                                 <a class="dropdown-item" href="javascript:void(0)"><i class="ti-user m-r-5 m-l-5"></i> My Profile</a>
                                 <a class="dropdown-item" href="javascript:void(0)"><i class="ti-wallet m-r-5 m-l-5"></i> My Balance</a>
@@ -257,16 +183,8 @@ try {
             <!-- ============================================================== -->
              <div class="page-breadcrumb">
                 <div class="row">
-                    <div class="col-12 d-flex no-block align-items-center">
-                        <h4 class="page-title">Update Asset</h4>
-                        <div class="ml-auto text-right">
-                            <nav aria-label="breadcrumb">
-                                <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">Library</li>
-                                </ol>
-                            </nav>
-                        </div>
+                    <div class="col-12 d-flex no-block align-items-center mt-3">
+                        <h4 class="page-title">View Request</h4>
                     </div>
                 </div>
             </div>
@@ -286,93 +204,81 @@ try {
                 <?php 
                    /*  require "modal.php"; */
                 ?>
-                   <!--END OF MODAL SECTION-->                <!-- ============================================================== -->                
-                <?php
-                    // Fetch current asset data
-                    $sql = "SELECT * FROM asset_table WHERE id = :id";
-                    $stmt = $conn->prepare($sql);
-                    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-                    $stmt->execute();
-                    
-                    if (!($row = $stmt->fetch(PDO::FETCH_ASSOC))) {
-                        logError("Asset not found: ID $id");
-                        echo "<script>alert('Asset not found'); window.location.href='../assets.php';</script>";
-                        exit();
-                    }
+                   <!--END OF MODAL SECTION-->
+                <!-- ============================================================== -->
+                 <?php
+                    require "../include/config.php";
+                    $id = $_GET['id'];
+                    $sql = "SELECT * FROM borrow_table WHERE id = '$id'";
+                    $result = $conn->query($sql);
+                    $row = $result->fetch_assoc();
                 ?>
 
                 <!-- START OF UPDATING -->
-                 <form action="" method="POST" class="shadow p-4 mt-5 bg-white rounded">
-                  
-                 <div class="row bg-light rounded"><!-- start row-->
+                 <div class="shadow p-4 mt-5 bg-white rounded">
+                   <div class="row bg-light rounded"><!-- start row-->
                     <div class="col-md-8 m-auto">
                         <div class="form-group shadow-sm">
                             <label for="" class="form-label">Registration No:</label>
-                                <input type="text" id="" class="form-control" name="asset_model" value="<?php echo $row['reg_no']; ?>"  disabled>
+                                <input type="text" id="" class="form-control"  value="<?php echo $row['reg_no']; ?>"  disabled>
                         </div>
                     </div>
 
                     <div class="col-md-8 m-auto">
                         <div class="form-group shadow-sm">
                             <label for="" class="form-label">Asset Name:</label>
-                                <input type="text" id="" class="form-control" name="asset_name" value="<?php echo $row['asset_name']; ?>">
+                                <input type="text" id="" class="form-control" name="asset_name" value="<?php echo $row['asset_name']; ?>" disabled>
                         </div>
                     </div>
 
                     <div class="col-md-8 m-auto">
                         <div class="form-group shadow-sm">
-                            <label for="" class="form-label">Asset Name:</label>
-                                <textarea name="desc" id="" rows="3" class="form-control" ><?php echo $row['description']; ?></textarea>
+                            <label for="" class="form-label">Description:</label>
+                                <textarea name="desc" id="" rows="3" class="form-control" disabled><?php echo $row['purpose']; ?></textarea>
                         </div>
                     </div>
 
                     <div class="col-md-8 m-auto">
                         <div class="form-group shadow-sm">
                             <label for="" class="form-label">Quantity:</label>
-                                <input type="number" id="" class="form-control" name="qty" value="<?php echo $row['quantity']; ?>">
+                                <input type="number" id="" class="form-control" name="qty" value="<?php echo $row['quantity']; ?>" disabled>
                         </div>
                     </div>
 
                     <div class="col-md-8 m-auto">
                         <div class="form-group shadow-sm">
                             <label for="category" class="col-form-label">Category:</label>
-                                <select id="category" class="form-control" name="asset_cat">
-                                    <option selected disabled><?php echo $row['category']; ?></option>                                        <?php
-                                        try {
-                                            $cat_sql = "SELECT * FROM category ORDER BY category ASC";
-                                            $cat_stmt = $conn->prepare($cat_sql);
-                                            $cat_stmt->execute();
-                                            
-                                            while($cat_row = $cat_stmt->fetch(PDO::FETCH_ASSOC)) {
-                                                $category = htmlspecialchars($cat_row['category']);
-                                                echo "<option value='" . $category . "'>" . $category . "</option>";
-                                            }
-                                        } catch (PDOException $e) {
-                                            logError("Error fetching categories in editasset.php: " . $e->getMessage());
-                                        }
-                                        ?>
-                                </select>
-                                                               
+                                <input type="text" id="category" class="form-control"  value="<?php echo $row['category']; ?>" disabled>
                         </div>
                     </div>
 
                     <div class="col-md-8 m-auto">
                         <div class="form-group shadow-sm">
-                            <label for="" class="form-label">Date:</label>
-                                <input type="date" id="" class="form-control" name="dates" value="<?php echo $row['dateofpurchase']; ?>">
+                            <label for="category" class="col-form-label">Department:</label>
+                                <input type="text" id="department" class="form-control"  value="<?php echo $row['department']; ?>" disabled>
                         </div>
-                    </div>                    <div class="col-md-8 m-auto">
-                        <button type="submit" name="submit" class="btn btn-primary shadow">Update</button>
-                        <a href="../assets.php" class="btn btn-secondary shadow">Cancel</a>
                     </div>
-                 </div><!-- End row-->                 </form>                
-                <?php
-                } catch (Exception $e) {
-                    logError("Error in editasset.php: " . $e->getMessage());
-                    echo "<script>alert('Error: " . addslashes($e->getMessage()) . "'); window.location.href='../assets.php';</script>";
-                    exit();
-                }
-                ?>
+
+                    <div class="col-md-8 m-auto">
+                        <div class="form-group shadow-sm">
+                            <label for="category" class="col-form-label">Borrowed by:</label>
+                                <input type="text" id="category" class="form-control" name="asset_cat" value="<?php echo $row['employee_name']; ?>" disabled>
+                        </div>
+                    </div>
+
+                    <div class="col-md-8 m-auto">
+                        <div class="form-group shadow-sm">
+                            <label for="" class="form-label">Date Added:</label>
+                                <input type="text" id="" class="form-control" name="date_added" value="<?php echo $row['borrow_date']; ?>" disabled>
+                        </div>
+                    </div>
+
+                    <div class="col-md-8">
+                        <a href="../requestasset.php"><button class="btn btn-primary"><i class='fa fa-backward'></i></button></a>
+                    </div>
+                   
+                 </div><!-- End row-->
+                 </div>
                 <!-- END OF UPDATING -->
                  
                 <!-- Sales chart -->

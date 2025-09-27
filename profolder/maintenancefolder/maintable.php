@@ -10,7 +10,7 @@
                             <th scope="col">Description</th>
                             <th scope="col">Last Service Date</th>
                             <th scope="col">Next Service Date</th>
-                            <th scope="col">Action</th>
+                            <!-- <th scope="col">Action</th> -->
                             </tr>
                         </thead>                        <?php
                                 try {
@@ -40,12 +40,12 @@
                                         echo "<td>" . htmlspecialchars($row['description']) . "</td>";
                                         echo "<td style='color:red;'>" . htmlspecialchars($row['last_service']) . "</td>";
                                         echo "<td style='color:green;'>" . htmlspecialchars($row['next_service']) . "</td>";
-                                        echo "<td>
-                                            <a href='maintenancefolder/deletemain.php?id=" . htmlspecialchars($row['id']) . "' 
+                                       // echo "<td>
+                                            /* <a href='maintenancefolder/deletemain.php?id=" . htmlspecialchars($row['id']) . "' 
                                                onclick='return confirm(\"Are you sure you want to delete this record?\");'>
                                                <i class='fa fa-trash' style='color:red'></i>
-                                            </a>
-                                        </td>";
+                                            </a> */
+                                        /* </td>"; */
                                         echo "</tr>";
                                     }
                                     

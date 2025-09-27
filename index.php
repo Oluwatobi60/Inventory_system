@@ -63,8 +63,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Fetch the user data
             $user = $stmt->fetch(PDO::FETCH_ASSOC);            // Check if user exists
             if ($user !== false) {
-                // Verify password match without logging sensitive data
-                if ($password === $user['password']) {
+                $db_password = $user['password'];
+                // Try password_verify first, fallback to plain text if not hashed
+                $is_bcrypt = (strlen($db_password) === 60 && (substr($db_password, 0, 4) === '$2y$' || substr($db_password, 0, 4) === '$2a$' || substr($db_password, 0, 4) === '$2b$'));
+                if (($is_bcrypt && password_verify($password, $db_password)) || (!$is_bcrypt && $password === $db_password)) {
                     // Log successful login attempt without password info
                     logError("Login successful for user '$username'");
 

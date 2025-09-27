@@ -6211,3 +6211,85 @@ Parameters: offset=0, limit=7
 [2025-09-22 19:06:25] Pagination details
 [2025-09-22 19:14:06] Pagination details
 [2025-09-22 19:17:55] Pagination details
+[2025-09-22 19:22:32] Pagination details
+[2025-09-22 19:22:49] Login successful for user 'Tobestic'
+[2025-09-22 20:04:56] Login successful for user 'Tobestic'
+[2025-09-22 20:08:10] Login successful for user 'Tobestic'
+[2025-09-22 20:08:14] Login successful for user 'TOBESTIC'
+[2025-09-22 20:36:16] Login successful for user 'Tobestic'
+[2025-09-22 20:38:31] Asset deleted successfully (ID: 28)
+[2025-09-22 22:05:51] Login successful for user 'Tobestic'
+[2025-09-22 22:06:49] Login successful for user 'Tobestics'
+[2025-09-22 22:12:53] Login successful for user 'Tobestic'
+[2025-09-22 22:13:58] Login successful for user 'Tobestics'
+[2025-09-22 22:14:12] Login successful for user 'Tobestic'
+[2025-09-22 22:14:41] Login successful for user 'Tobestics'
+[2025-09-22 22:16:28] Login successful for user 'Tobestics'
+[2025-09-22 22:17:47] Pagination details
+[2025-09-22 22:19:29] Pagination details
+[2025-09-22 22:19:44] Processing repair request
+[2025-09-22 22:19:44] Started database transaction
+[2025-09-22 22:19:44] Checking asset status
+[2025-09-22 22:19:44] Asset status check
+[2025-09-22 22:20:00] Pagination details
+[2025-09-22 22:20:41] Pagination details
+[2025-09-22 22:22:02] Pagination details
+[2025-09-22 22:30:57] Login successful for user 'Tobestics'
+[2025-09-22 22:31:07] Pagination details
+[2025-09-23 10:06:30] Login successful for user 'Tobestic'
+[2025-09-23 10:06:46] Login successful for user 'Tobestics'
+[2025-09-23 10:07:02] Login successful for user 'Tobestic'
+[2025-09-23 10:11:00] Login successful for user 'daraminds'
+[2025-09-23 10:59:45] Login successful for user 'daraminds'
+[2025-09-23 11:11:11] Login successful for user 'daraminds'
+[2025-09-23 11:21:49] Pagination details
+[2025-09-23 11:21:59] Pagination details
+[2025-09-23 11:22:02] Processing repair request
+[2025-09-23 11:22:02] Started database transaction
+[2025-09-23 11:22:02] Checking asset status
+[2025-09-23 11:22:02] Asset status check
+[2025-09-23 11:22:07] Pagination details
+[2025-09-23 11:23:03] Login successful for user 'daraminds'
+[2025-09-23 11:23:28] Login successful for user 'Tobestic'
+[2025-09-23 11:23:46] Login successful for user 'daraminds'
+[2025-09-23 12:18:51] Login successful for user 'Tobestic'
+[2025-09-23 12:19:26] Login successful for user 'Tobestic'
+[2025-09-23 12:25:03] Login failed: Password mismatch for user 'odes'.
+[2025-09-23 12:26:42] Login failed: Password mismatch for user 'odes'.
+[2025-09-23 12:27:38] Login failed: Password mismatch for user 'odes'.
+[2025-09-23 12:42:11] Login failed: Password mismatch for user 'odes'.
+[2025-09-23 12:42:23] Login failed: Password mismatch for user 'odes'.
+[2025-09-23 12:45:15] Login failed: Password mismatch for user 'odes'.
+[2025-09-23 12:45:22] Login failed: Password mismatch for user 'odes'.
+[2025-09-23 12:45:54] Login successful for user 'Tobestic'
+[2025-09-23 12:48:09] Login failed: Password mismatch for user 'admin'.
+[2025-09-23 12:48:32] Login failed: Password mismatch for user 'admin'.
+[2025-09-23 12:50:28] Login successful for user 'Tobestic'
+[2025-09-23 12:53:15] Login successful for user 'admin'
+[2025-09-23 12:53:44] Login successful for user 'facility'
+[2025-09-23 12:54:26] Login successful for user 'facility'
+[2025-09-23 13:26:28] Pagination details
+[2025-09-23 13:26:31] Pagination details
+[2025-09-23 13:26:33] Pagination details
+[2025-09-23 13:33:02] Pagination details
+[2025-09-23 13:33:35] Pagination details
+[2025-09-23 13:33:43] Pagination details
+[2025-09-23 13:34:45] Pagination details
+[2025-09-23 13:34:53] Pagination details
+[2025-09-23 13:34:55] Pagination details
+[2025-09-23 13:35:59] Pagination details
+[2025-09-23 13:38:02] Pagination details
+[2025-09-23 13:46:08] Login successful for user 'facility'
+[2025-09-23 13:46:39] Login successful for user 'facility'
+[2025-09-23 13:48:17] Login successful for user 'facility'
+[2025-09-23 14:27:40] Login failed: Password mismatch for user 'facility'.
+[2025-09-23 14:28:03] Login failed: Password mismatch for user 'facility'.
+[2025-09-23 14:28:10] Login failed: Password mismatch for user 'facility'.
+[2025-09-23 14:28:32] Login successful for user 'facility'
+[2025-09-23 14:28:53] Login successful for user 'facility'
+[2025-09-23 14:29:09] Pagination details
+[2025-09-23 14:30:21] Pagination details
+[2025-09-23 14:33:25] Pagination details
+[2025-09-27 14:39:13] Login successful for user 'Tobestic'
+[2025-09-27 14:47:07] Pagination details
+[2025-09-27 14:50:48] Pagination details

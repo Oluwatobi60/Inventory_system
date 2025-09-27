@@ -67,7 +67,7 @@
 
                 <li class="sidebar-item">
                     <a href="../admindashboard/logout.php" class="sidebar-link">
-                        <i class="mdi mdi-logout"></i><span class="hide-menu"> Logout </span>
+                        <i class="fa fa-power-off"></i><span class="hide-menu"> Logout </span>
                     </a>
                 </li>
             </ul>

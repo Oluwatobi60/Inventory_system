@@ -34,7 +34,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
     }
 
     // Verify if the confirm password matches the plain text password
-    if ($cpass === $password) {        // Prepare the SQL query to insert user data into the database
+    if ($cpass === $password) {
+        // Hash the password before storing
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+        // Prepare the SQL query to insert user data into the database
         $sql = "INSERT INTO user_table (firstname, lastname, username, email, password, role, phone, department) 
                 VALUES (:firstname, :lastname, :username, :email, :password, :role, :phone, :department)";
         $stmt = $conn->prepare($sql); // Prepare the SQL statement
@@ -44,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
             $stmt->bindParam(':lastname', $lastname, PDO::PARAM_STR);
             $stmt->bindParam(':username', $username, PDO::PARAM_STR);
             $stmt->bindParam(':email', $email, PDO::PARAM_STR);
-            $stmt->bindParam(':password', $password, PDO::PARAM_STR);
+            $stmt->bindParam(':password', $hashed_password, PDO::PARAM_STR);
             $stmt->bindParam(':role', $role, PDO::PARAM_STR);
             $stmt->bindParam(':phone', $phone, PDO::PARAM_STR);
             $stmt->bindParam(':department', $department, PDO::PARAM_STR);

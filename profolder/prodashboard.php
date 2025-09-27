@@ -33,35 +33,35 @@ try {
     $pro_first_name = $pro_row['firstname'] ?? '';
     $pro_last_name = $pro_row['lastname'] ?? '';
 
-    // Fetch total "Today Request" based on quantity
-    $query = "SELECT SUM(quantity) AS total_today_request_quantity FROM request_table WHERE DATE(request_date) = CURDATE()";
-    $stmt = $conn->query($query);
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    $total_today_request_quantity = $row['total_today_request_quantity'] ?? 0; // Default to 0 if no record
 
-    // Fetch total "This Month Request" based on quantity
-    $query = "SELECT SUM(quantity) AS total_this_month_request_quantity FROM request_table WHERE MONTH(request_date) = MONTH(CURDATE()) AND YEAR(request_date) = YEAR(CURDATE())";
-    $stmt = $conn->query($query);
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    $total_this_month_request_quantity = $row['total_this_month_request_quantity'] ?? 0; // Default to 0 if no record
 
-    // Fetch total "HOD Approved" requests
-    $query = "SELECT COUNT(*) AS total_hod_approved FROM request_table WHERE hod_approved = 1";
+ // Fetch total "Total withdrawals" based on quantity
+    $query = "SELECT SUM(quantity) AS total_withdrawals FROM repair_asset WHERE withdrawn = 1";
     $stmt = $conn->query($query);
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    $total_hod_approved = $row['total_hod_approved'] ?? 0; // Default to 0 if no record
+    $total_withdrawals = $row['total_withdrawals'] ?? 0; // Default to 0 if no record
 
-    // Fetch total "HOD Not Approved" requests
-    $query = "SELECT COUNT(*) AS total_hod_not_approved FROM request_table WHERE hod_approved = 0";
-    $stmt = $conn->query($query);
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    $total_hod_not_approved = $row['total_hod_not_approved'] ?? 0; // Default to 0 if no record
 
-    // Fetch total "All Previous Days Not Approved by HOD or Procurement" requests
-    $query = "SELECT COUNT(*) AS total_previous_days_not_approved FROM request_table WHERE (hod_approved = 0 OR pro_approved = 0) AND DATE(request_date) < CURDATE()";
+    // Fetch total "Total Replaced Assets" based on quantity
+    $query = "SELECT SUM(quantity) AS total_replaced_assets FROM repair_asset WHERE replaced = 1 ";
     $stmt = $conn->query($query);
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    $total_previous_days_not_approved = $row['total_previous_days_not_approved'] ?? 0; // Default to 0 if no record    // Fetch total number of all assets
+    $total_replaced_assets = $row['total_replaced_assets'] ?? 0; // Default to 0 if no record
+
+
+    // Fetch total "Total completed repair assets"
+    $query = "SELECT SUM(quantity) AS total_completed_repair_assets FROM repair_asset WHERE completed = 1";
+    $stmt = $conn->query($query);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    $total_completed_repair_assets = $row['total_completed_repair_assets'] ?? 0; // Default to 0 if no record
+
+    // Fetch total "Assets Under Repair" requests
+    $query = "SELECT SUM(quantity) AS total_assets_under_repair FROM repair_asset WHERE status = 'under repair'";
+    $stmt = $conn->query($query);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    $total_assets_under_repair = $row['total_assets_under_repair'] ?? 0; // Default to 0 if no record
+
+    // Fetch total number of all assets
     $query = "SELECT COUNT(*) AS total_assets FROM asset_table";
     $stmt = $conn->query($query);
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -70,12 +70,11 @@ try {
 } catch (PDOException $e) {
     // Log error and set default values
     error_log("Database error in prodashboard.php: " . $e->getMessage());
-    $total_hod_not_approved = 0;
-    $total_previous_days_not_approved = 0;
+    $total_withdrawals = 0;
+    $total_assets_under_repair = 0;
     $total_assets = 0;
-    $total_today_request_quantity = 0;
-    $total_this_month_request_quantity = 0;
-    $total_hod_approved = 0;
+    $total_replaced_assets = 0;
+    $total_completed_repair_assets = 0;
     $pro_first_name = 'User';
     $pro_last_name = '';
 }
@@ -265,55 +264,27 @@ try {
                         </li>
                      
                         <!-- ============================================================== -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" id="2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="font-24 mdi mdi-comment-processing"></i>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right mailbox animated bounceInDown" aria-labelledby="2">
-                                <ul class="list-style-none">
-                                    <li>
-                                        <div class="">
-                                             <!-- Message -->
-                                            <a href="javascript:void(0)" class="link border-top">
-                                                <div class="d-flex no-block align-items-center p-10">
-                                                    <span class="btn btn-success btn-circle"><i class="ti-calendar"></i></span>
-                                                    <div class="m-l-10">
-                                                        <h5 class="m-b-0">Event today</h5> 
-                                                        <span class="mail-desc">Just a reminder that event</span> 
-                                                    </div>
-                                                </div>
-                                            </a>
-                                            <!-- Message -->
-                                            <a href="javascript:void(0)" class="link border-top">
-                                                <div class="d-flex no-block align-items-center p-10">
-                                                    <span class="btn btn-info btn-circle"><i class="ti-settings"></i></span>
-                                                    <div class="m-l-10">
-                                                        <h5 class="m-b-0">Settings</h5> 
-                                                        <span class="mail-desc">You can customize this template</span> 
-                                                    </div>
-                                                </div>
-                                            </a>
-                                           
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
+                      
                    
 
                         <!-- User profile and search -->
                         <!-- ============================================================== -->
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="../admindashboard/assets/images/users/1.jpg" alt="user" class="rounded-circle" width="31"></a>
+                            <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="../admindashboard/assets/images/users/1.jpg" alt="user" class="rounded-circle" width="31"> <?php echo htmlspecialchars($pro_first_name . ' ' . $pro_last_name); ?></a> 
                             <div class="dropdown-menu dropdown-menu-right user-dd animated">
-                                <a class="dropdown-item" href="javascript:void(0)"><i class="ti-user m-r-5 m-l-5"></i> My Profile</a>
-                                <a class="dropdown-item" href="javascript:void(0)"><i class="ti-wallet m-r-5 m-l-5"></i> My Balance</a>
-                                <a class="dropdown-item" href="javascript:void(0)"><i class="ti-email m-r-5 m-l-5"></i> Inbox</a>
+                                <a class="dropdown-item" href="profile.php"><i class="ti-user m-r-5 m-l-5"></i> My Profile</a>
+
+                               
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="javascript:void(0)"><i class="ti-settings m-r-5 m-l-5"></i> Account Setting</a>
+                                <a class="dropdown-item" href="change_password.php"><i class="ti-settings m-r-5 m-l-5"></i> Change Password</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="javascript:void(0)"><i class="fa fa-power-off m-r-5 m-l-5"></i> Logout</a>
-                                <div class="dropdown-divider"></div>
-                                <div class="p-l-30 p-10"><a href="javascript:void(0)" class="btn btn-sm btn-success btn-rounded">View Profile</a></div>
+                    
+
+                                <a href="../admindashboard/logout.php" class="dropdown-item">
+                                <i class="fa fa-power-off"></i><span class="hide-menu"> Logout </span>
+                                </a>
+
+                                
                             </div>
                         </li>
                         <!-- ============================================================== -->
@@ -343,22 +314,8 @@ try {
                                     <i class="fas fa-clock text-white"></i>
                                 </div>
                                 <div class="stat-details">
-                                    <div class="stat-value text-white"><?php echo $total_previous_days_not_approved; ?></div>
-                                    <div class="stat-label">Previous Days Not Approved</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6 col-lg-4">
-                        <div class="stat-card">
-                            <div class="stat-content bg-info">
-                                <div class="stat-icon bg-info-light">
-                                    <i class="fas fa-calendar-day text-white"></i>
-                                </div>
-                                <div class="stat-details">
-                                    <div class="stat-value text-white"><?php echo $total_today_request_quantity; ?></div>
-                                    <div class="stat-label">Today's Requests</div>
+                                    <div class="stat-value text-white"><?php echo $total_assets_under_repair; ?></div>
+                                    <div class="stat-label">Total Assets Under Repair</div>
                                 </div>
                             </div>
                         </div>
@@ -368,11 +325,11 @@ try {
                         <div class="stat-card">
                             <div class="stat-content bg-success">
                                 <div class="stat-icon bg-success-light">
-                                    <i class="fas fa-calendar-alt text-white"></i>
+                                    <i class="fas fa-calendar-day text-white"></i>
                                 </div>
                                 <div class="stat-details">
-                                    <div class="stat-value text-white"><?php echo $total_this_month_request_quantity; ?></div>
-                                    <div class="stat-label">This Month's Requests</div>
+                                    <div class="stat-value text-white"><?php echo $total_completed_repair_assets; ?></div>
+                                    <div class="stat-label">Total Completed Repairs</div>
                                 </div>
                             </div>
                         </div>
@@ -380,33 +337,35 @@ try {
 
                     <div class="col-md-6 col-lg-4">
                         <div class="stat-card">
-                            <div class="stat-content bg-primary">
-                                <div class="stat-icon bg-primary-light">
-                                    <i class="fas fa-check-circle text-white"></i>
+                            <div class="stat-content bg-info">
+                                <div class="stat-icon bg-info-light">
+                                    <i class="fas fa-calendar-alt text-white"></i>
                                 </div>
                                 <div class="stat-details">
-                                    <div class="stat-value text-white"><?php echo $total_hod_approved; ?></div>
-                                    <div class="stat-label">HOD Approved</div>
+                                    <div class="stat-value text-white"><?php echo $total_replaced_assets; ?></div>
+                                    <div class="stat-label">Total Replaced Assets</div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-md-6 col-lg-4">
+               
+
+                    <div class="col-md-6 col-lg-6">
                         <div class="stat-card">
                             <div class="stat-content bg-warning">
                                 <div class="stat-icon bg-warning-light">
                                     <i class="fas fa-exclamation-circle text-white"></i>
                                 </div>
                                 <div class="stat-details">
-                                    <div class="stat-value text-white"><?php echo $total_hod_not_approved; ?></div>
-                                    <div class="stat-label">HOD Not Approved</div>
+                                    <div class="stat-value text-white"><?php echo $total_withdrawals; ?></div>
+                                    <div class="stat-label">Total Withdrawals</div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-md-6 col-lg-4">
+                    <div class="col-md-6 col-lg-6">
                         <div class="stat-card">
                             <div class="stat-content bg-purple" style="background-color: #6f42c1;">
                                 <div class="stat-icon bg-purple-light">
@@ -424,7 +383,7 @@ try {
                 <div class="row">
                     <div class="col-12">
                         <div class="chart-container">
-                            <h2 class="chart-title">Asset Requests Overview</h2>
+                            <h2 class="chart-title">Asset Report Overview</h2>
                             <canvas id="assetBarChart"></canvas>
                         </div>
                     </div>
@@ -448,15 +407,15 @@ try {
         var assetBarChart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: ['Today Request', 'This Month Request', 'HOD Approved', 'HOD Not Approved', 'Previous Days Not Approved'],
+                labels: ['Total Assets Under Repair', 'Total Completed Repairs', 'Total Replaced Assets', 'Total Withdrawals'],
                 datasets: [{
                     label: 'Requests',
                     data: [
-                        <?php echo $total_today_request_quantity; ?>,
-                        <?php echo $total_this_month_request_quantity; ?>,
-                        <?php echo $total_hod_approved; ?>,
-                        <?php echo $total_hod_not_approved; ?>,
-                        <?php echo $total_previous_days_not_approved; ?>
+                        <?php echo $total_assets_under_repair; ?>,
+                        <?php echo $total_completed_repair_assets; ?>,
+                        <?php echo $total_replaced_assets; ?>,
+                        <?php echo $total_withdrawals; ?>,
+                       
                     ],
                     backgroundColor: [
                         '#36b9cc',  // Info color
@@ -530,11 +489,10 @@ try {
                             beginAtZero: true,
                             precision: 0,
                             stepSize: Math.ceil(Math.max(
-                                <?php echo $total_today_request_quantity; ?>,
-                                <?php echo $total_this_month_request_quantity; ?>,
-                                <?php echo $total_hod_approved; ?>,
-                                <?php echo $total_hod_not_approved; ?>,
-                                <?php echo $total_previous_days_not_approved; ?>
+                                <?php echo $total_assets_under_repair; ?>,
+                                <?php echo $total_completed_repair_assets; ?>,
+                                <?php echo $total_replaced_assets; ?>,
+                                <?php echo $total_withdrawals; ?>,
                             ) / 5),
                             font: {
                                 size: 12,

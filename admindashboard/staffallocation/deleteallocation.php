@@ -13,18 +13,21 @@ try {
 
     $id = intval($_GET['id']); // Sanitize the input
 
-    // If confirmation is not yet received, show confirmation dialog
+    // If confirmation is not yet received, show confirmation form
     if (!isset($_GET['confirm'])) {
-        echo "
-        <script>
-            var confirmDelete = confirm('Are you sure you want to delete this staff allocation?');
-            if (confirmDelete) {
-                window.location.href = 'deleteallocation.php?id=" . $id . "&confirm=yes';
-            } else {
-                window.location.href = '../staffallocation.php';
-            }
-        </script>
-        ";
+        echo '<!DOCTYPE html><html><head><title>Confirm Delete</title></head><body>';
+        echo '<div style="display:flex;justify-content:center;align-items:center;height:100vh;">';
+        echo '<div style="background:#fff;padding:2rem 2.5rem;border-radius:1rem;box-shadow:0 4px 24px rgba(0,0,0,0.12);text-align:center;">';
+        echo '<h3>Are you sure you want to delete this staff allocation?</h3>';
+        echo '<form method="get" action="">';
+        echo '<input type="hidden" name="id" value="'.htmlspecialchars($id).'">';
+        echo '<button type="submit" name="confirm" value="yes" style="background:#d9534f;color:#fff;padding:0.5rem 1.5rem;border:none;border-radius:0.5rem;margin-right:1rem;">Yes, Delete</button>';
+        echo '<a href="../staffallocation.php" style="background:#5bc0de;color:#fff;padding:0.5rem 1.5rem;border-radius:0.5rem;text-decoration:none;">Cancel</a>';
+        echo '</form>';
+        echo '</div></div></body></html>';
+        exit();
+
+        // If confirmed, proceed to delete the record
     } elseif ($_GET['confirm'] === 'yes') {
         // Begin transaction
         $conn->beginTransaction();

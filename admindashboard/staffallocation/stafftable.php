@@ -346,7 +346,7 @@ try {
             button.disabled = true;
             button.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Processing...';
 
-            const response = await fetch('/inventory_sys/admindashboard/staffallocation/submit_repair.php', {
+            const response = await fetch('/admindashboard/staffallocation/submit_repair.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -388,7 +388,7 @@ try {
             const button = event.target.closest('button');
             button.disabled = true;
             button.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Processing...';
-            const response = await fetch('/inventory_sys/admindashboard/staffallocation/complete_repair.php', {
+            const response = await fetch('/admindashboard/staffallocation/complete_repair.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -421,7 +421,7 @@ try {
             const button = event.target.closest('button');
             button.disabled = true;
             button.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Processing...';
-            const response = await fetch('/inventory_sys/admindashboard/staffallocation/withdraw_asset.php', {
+            const response = await fetch('/admindashboard/staffallocation/withdraw_asset.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -456,7 +456,7 @@ try {
             const button = event.target.closest('button');
             button.disabled = true;
             button.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Processing...';
-            const response = await fetch('/inventory_sys/admindashboard/staffallocation/replace_asset.php', {
+            const response = await fetch('/admindashboard/staffallocation/replace_asset.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

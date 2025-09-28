@@ -1,6 +1,8 @@
 <?php  
 session_start(); // Start the session to manage user sessions
 
+require_once "../admindashboard/include/config.php"; // <-- Add this line to include DB connection
+
 // Set session timeout to 20 minutes
 $timeout_duration = 1200; // 20 minutes in seconds
 
@@ -19,29 +21,48 @@ if (!isset($_SESSION['username'])) {
     exit();
 }
 
-// Database connection
-require_once "../admindashboard/include/config.php";
+// Get the first name and last name of the logged-in admin
+try {
+    $pro_username = $_SESSION['username'];
+    $pro_query = "SELECT firstname, lastname FROM user_table WHERE username = :username";
+    $stmt = $conn->prepare($pro_query);
+    $stmt->bindParam(':username', $pro_username, PDO::PARAM_STR);
+    $stmt->execute();
+    $pro_row = $stmt->fetch(PDO::FETCH_ASSOC);
+    $pro_first_name = $pro_row['firstname'] ?? '';
+    $pro_last_name = $pro_row['lastname'] ?? '';
 
-// Fetch total "HOD Not Approved" requests
-$query = "SELECT COUNT(*) AS total_hod_not_approved FROM request_table WHERE hod_approved = 0";
-$stmt = $conn->prepare($query);
-$stmt->execute();
-$row = $stmt->fetch(PDO::FETCH_ASSOC);
-$total_hod_not_approved = $row['total_hod_not_approved'] ?? 0; // Default to 0 if no record
 
-// Fetch total "HOD Not Approved" borrow
-$query = "SELECT COUNT(*) AS total_hod_not_borrow FROM borrow_table WHERE hod_status = 0";
-$stmt = $conn->prepare($query);
-$stmt->execute();
-$row = $stmt->fetch(PDO::FETCH_ASSOC);
-$total_hod_not_borrow = $row['total_hod_not_borrow'] ?? 0; // Default to 0 if no record
+ // Fetch total "Total withdrawals" based on quantity
+    $query = "SELECT SUM(quantity) AS total_withdrawals FROM repair_asset WHERE withdrawn = 1";
+    $stmt = $conn->query($query);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    $total_withdrawals = $row['total_withdrawals'] ?? 0; // Default to 0 if no recordpproved = $row['total_hod_not_approved'] ?? 0; // Default to 0 if no record
 
-// Fetch total rejected requests by HOD
-$query = "SELECT COUNT(*) AS total_hod_rejected FROM request_table WHERE hod_approved = 2";
-$stmt = $conn->prepare($query);
-$stmt->execute();
-$row = $stmt->fetch(PDO::FETCH_ASSOC);
-$total_hod_rejected = $row['total_hod_rejected'] ?? 0; // Default to 0 if no record
+    // Fetch total "Total Replaced Assets" based on quantity
+    $query = "SELECT SUM(quantity) AS total_replaced_assets FROM repair_asset WHERE replaced = 1 ";
+    $stmt = $conn->query($query);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    $total_replaced_assets = $row['total_replaced_assets'] ?? 0; // Default to 0 if no record
+
+ // Fetch total "Total completed repair assets"
+    $query = "SELECT SUM(quantity) AS total_completed_repair_assets FROM repair_asset WHERE completed = 1";
+    $stmt = $conn->query($query);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    $total_completed_repair_assets = $row['total_completed_repair_assets'] ?? 0; // Default to 0 if no record
+
+      // Fetch total "Assets Under Repair" requests
+    $query = "SELECT SUM(quantity) AS total_assets_under_repair FROM repair_asset WHERE status = 'under repair'";
+    $stmt = $conn->query($query);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    $total_assets_under_repair = $row['total_assets_under_repair'] ?? 0; // Default to 0 if no record
+
+    
+    // Fetch total number of all assets
+    $query = "SELECT COUNT(*) AS total_assets FROM asset_table";
+    $stmt = $conn->query($query);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    $total_assets = $row['total_assets'] ?? 0; // Default to 0 if no record
 
 // Get the department and name of the logged-in HOD
 $hod_username = $_SESSION['username'];
@@ -52,102 +73,23 @@ $stmt->execute();
 $dept_row = $stmt->fetch(PDO::FETCH_ASSOC);
 $hod_department = $dept_row['department'];
 $hod_first_name = $dept_row['firstname'];
-$hod_last_name = $dept_row['lastname'];
+$hod_last_name = $dept_row['lastname']; 
 
-// Fetch total registered users from HOD's department
-$query = "SELECT COUNT(*) AS total_registered_users FROM user_table WHERE department = :department";
-$stmt = $conn->prepare($query);
-$stmt->bindParam(':department', $hod_department, PDO::PARAM_STR);
-$stmt->execute();
-$row = $stmt->fetch(PDO::FETCH_ASSOC);
-$total_registered_users = $row['total_registered_users'] ?? 0; // Default to 0 if no record
-
-// Fetch monthly HOD approved requests
-$current_month = date('m');
-$current_year = date('Y');
-$monthly_query = "SELECT COUNT(*) as monthly_approved FROM request_table 
-                 WHERE hod_approved = 1 
-                 AND MONTH(approval_date) = :month 
-                 AND YEAR(approval_date) = :year";
-$stmt = $conn->prepare($monthly_query);
-$stmt->bindParam(':month', $current_month, PDO::PARAM_STR);
-$stmt->bindParam(':year', $current_year, PDO::PARAM_STR);
-$stmt->execute();
-$monthly_row = $stmt->fetch(PDO::FETCH_ASSOC);
-$monthly_approved = $monthly_row['monthly_approved'] ?? 0;
-
-// Fetch yearly HOD approved requests
-$yearly_query = "SELECT COUNT(*) as yearly_approved FROM request_table 
-                WHERE hod_approved = 1 
-                AND YEAR(approval_date) = :year";
-$stmt = $conn->prepare($yearly_query);
-$stmt->bindParam(':year', $current_year, PDO::PARAM_STR);
-$stmt->execute();
-$yearly_row = $stmt->fetch(PDO::FETCH_ASSOC);
-$yearly_approved = $yearly_row['yearly_approved'] ?? 0;
-
-// Fetch combined request and borrow data by month
-$combined_query = "SELECT 
-    MONTH(COALESCE(r.request_date, b.borrow_date)) as month,
-    COUNT(DISTINCT r.id) as request_count,
-    COUNT(DISTINCT b.id) as borrow_count
-FROM 
-    (SELECT DISTINCT department FROM user_table WHERE username = :username) as dept
-LEFT JOIN request_table r ON r.department = dept.department
-LEFT JOIN borrow_table b ON b.department = dept.department
-WHERE 
-    (r.request_date IS NOT NULL AND YEAR(r.request_date) = YEAR(CURRENT_DATE))
-    OR (b.borrow_date IS NOT NULL AND YEAR(b.borrow_date) = YEAR(CURRENT_DATE))
-GROUP BY 
-    MONTH(COALESCE(r.request_date, b.borrow_date))
-ORDER BY 
-    month";
-
-$stmt = $conn->prepare($combined_query);
-$stmt->bindParam(':username', $hod_username, PDO::PARAM_STR);
-$stmt->execute();
-$combined_result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-$months = [];
-$request_counts = [];
-$borrow_counts = [];
-
-// Initialize arrays with 0 for all months
-for ($i = 1; $i <= 12; $i++) {
-    $months[] = date("F", mktime(0, 0, 0, $i, 1));
-    $request_counts[$i-1] = 0;
-    $borrow_counts[$i-1] = 0;
+    
+    } catch (PDOException $e) {
+     // Log error and set default values
+    error_log("Database error in prodashboard.php: " . $e->getMessage());
+    $total_withdrawals = 0;
+    $total_assets_under_repair = 0;
+    $total_assets = 0;
+    $total_replaced_assets = 0;
+    $total_completed_repair_assets = 0;
+    $pro_first_name = 'User';
+    $pro_last_name = '';
+    $hod_first_name ='';
+    $hod_last_name = '';
 }
 
-foreach ($combined_result as $row) {
-    $month_index = (int)$row['month'] - 1;
-    $request_counts[$month_index] = (int)$row['request_count'];
-    $borrow_counts[$month_index] = (int)$row['borrow_count'];
-}
-
-// Fetch asset counts by asset name for HOD's department
-$asset_query = "SELECT asset_name, quantity 
-                FROM request_table 
-                WHERE department = :department 
-                ORDER BY quantity DESC";
-$stmt = $conn->prepare($asset_query);
-$stmt->bindParam(':department', $hod_department, PDO::PARAM_STR);
-$stmt->execute();
-$asset_result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-$asset_names = [];
-$asset_quantities = [];
-foreach ($asset_result as $row) {
-    $asset_names[] = $row['asset_name'];
-    $asset_quantities[] = $row['quantity'];
-}
-
-// Convert PHP arrays to JSON for JavaScript use
-$months_json = json_encode($months);
-$request_counts_json = json_encode(array_values($request_counts));
-$borrow_counts_json = json_encode(array_values($borrow_counts));
-$asset_names_json = json_encode($asset_names);
-$asset_quantities_json = json_encode($asset_quantities);
 
 ?>
 
@@ -314,14 +256,24 @@ $asset_quantities_json = json_encode($asset_quantities);
                         </li>
                     </ul>
                     <ul class="navbar-nav float-right">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img src="../admindashboard/assets/images/users/1.jpg" alt="user" class="rounded-circle" width="31">
-                                <span class="online-indicator" style="color: green; font-size: 12px;">●</span>
-                                <span class="username" style="margin-left: 5px;"><?php echo htmlspecialchars($hod_first_name . ' ' . $hod_last_name); ?></span>
-                            </a>
+                      <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="../admindashboard/assets/images/users/1.jpg" alt="user" class="rounded-circle" width="31"> 
+                             <span class="online-indicator" style="color: green; font-size: 12px;">●</span>
+                            <?php echo htmlspecialchars($pro_first_name . ' ' . $pro_last_name); ?></a> 
                             <div class="dropdown-menu dropdown-menu-right user-dd animated">
-                                <a class="dropdown-item" href="logout.php"><i class="fa fa-power-off m-r-5 m-l-5"></i> Logout</a>
+                                <a class="dropdown-item" href="profile.php"><i class="ti-user m-r-5 m-l-5"></i> My Profile</a>
+
+                               
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="change_password.php"><i class="ti-settings m-r-5 m-l-5"></i> Change Password</a>
+                                <div class="dropdown-divider"></div>
+                    
+
+                                <a href="../admindashboard/logout.php" class="dropdown-item">
+                                <i class="fa fa-power-off"></i><span class="hide-menu"> Logout </span>
+                                </a>
+
+                                
                             </div>
                         </li>
                     </ul>
@@ -354,146 +306,93 @@ $asset_quantities_json = json_encode($asset_quantities);
                     </div>
                 </div>
 
-                <div class="row"><!-- Begin of row for navbar-->
-                    <!-- Column -->
-                    
+                 <div class="row">
                     <div class="col-md-6 col-lg-4">
+                        <div class="stat-card">
+                            <div class="stat-content bg-danger">
+                                <div class="stat-icon bg-danger-light">
+                                    <i class="fas fa-clock text-white"></i>
+                                </div>
+                                <div class="stat-details">
+                                    <div class="stat-value text-white"><?php echo $total_assets_under_repair; ?></div>
+                                    <div class="stat-label">Total Assets Under Repair</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-4">
+                        <div class="stat-card">
+                            <div class="stat-content bg-success">
+                                <div class="stat-icon bg-success-light">
+                                    <i class="fas fa-calendar-day text-white"></i>
+                                </div>
+                                <div class="stat-details">
+                                    <div class="stat-value text-white"><?php echo $total_completed_repair_assets; ?></div>
+                                    <div class="stat-label">Total Completed Repairs</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-4">
+                        <div class="stat-card">
+                            <div class="stat-content bg-info">
+                                <div class="stat-icon bg-info-light">
+                                    <i class="fas fa-calendar-alt text-white"></i>
+                                </div>
+                                <div class="stat-details">
+                                    <div class="stat-value text-white"><?php echo $total_replaced_assets; ?></div>
+                                    <div class="stat-label">Total Replaced Assets</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+               
+
+                    <div class="col-md-6 col-lg-6">
                         <div class="stat-card">
                             <div class="stat-content bg-warning">
                                 <div class="stat-icon bg-warning-light">
                                     <i class="fas fa-exclamation-circle text-white"></i>
                                 </div>
                                 <div class="stat-details">
-                                    <div class="stat-value text-white"><?php echo $total_hod_not_approved; ?></div>
-                                    <div class="stat-label">Pending Request</div>
+                                    <div class="stat-value text-white"><?php echo $total_withdrawals; ?></div>
+                                    <div class="stat-label">Total Withdrawals</div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Column -->
-                    <div class="col-md-6 col-lg-4">
+                    <div class="col-md-6 col-lg-6">
                         <div class="stat-card">
-                            <div class="stat-content bg-info">
-                                <div class="stat-icon bg-warning-light">
-                                    <i class="fas fa-exclamation-circle text-white"></i>
+                            <div class="stat-content bg-purple" style="background-color: #6f42c1;">
+                                <div class="stat-icon bg-purple-light">
+                                    <i class="fas fa-boxes text-white"></i>
                                 </div>
                                 <div class="stat-details">
-                                    <div class="stat-value text-white"><?php echo $total_hod_not_borrow; ?></div>
-                                    <div class="stat-label">Pending Borrow</div>
+                                    <div class="stat-value text-white"><?php echo $total_assets; ?></div>
+                                    <div class="stat-label">Total Assets</div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Column -->
-                    <div class="col-md-6 col-lg-4">
-                        <div class="stat-card">
-                            <div class="stat-content bg-danger">
-                                <div class="stat-icon bg-danger-light">
-                                    <i class="fas fa-times-circle text-white"></i>
-                                </div>
-                                <div class="stat-details">
-                                    <div class="stat-value text-white"><?php echo $total_hod_rejected; ?></div>
-                                    <div class="stat-label">Rejected Requests</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                      <!-- Column -->
-                      <div class="col-md-6 col-lg-4">
-                        <div class="stat-card">
-                            <div class="stat-content bg-success">
-                                <div class="stat-icon bg-warning-light">
-                                    <i class="fas fa-exclamation-circle text-white"></i>
-                                </div>
-                                <div class="stat-details">
-                                    <div class="stat-value text-white"><?php echo $total_registered_users; ?></div>
-                                    <div class="stat-label">Registered Users in Department</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Column -->
-                    <div class="col-md-6 col-lg-4">
-                        <div class="stat-card">
-                            <div class="stat-content bg-primary">
-                                <div class="stat-icon bg-success-light">
-                                    <i class="fas fa-check-circle text-white"></i>
-                                </div>
-                                <div class="stat-details">
-                                    <div class="stat-value text-white"><?php echo $monthly_approved; ?></div>
-                                    <div class="stat-label">Monthly Approved Requests</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Column --> 
-                    <div class="col-md-6 col-lg-4">
-                        <div class="stat-card">
-                            <div class="stat-content bg-success">
-                                <div class="stat-icon bg-success-light">
-                                    <i class="fas fa-check-circle text-white"></i>
-                                </div>
-                                <div class="stat-details">
-                                    <div class="stat-value text-white"><?php echo $yearly_approved; ?></div>
-                                    <div class="stat-label">Yearly Approved Requests</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                
-                </div><!-- end of Row for navbar-->
+                </div>
                 <!-- ============================================================== -->
 
                 <!-- ============================================================== -->
                 <!-- Bar Chart Section -->
                 <!-- ============================================================== -->
                 <div class="row">
-                    <div class="col-lg-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <h4 class="card-title">Asset Bar Chart</h4>
-                                <div class="chart-container shadow" style="position: relative; height:40vh; width:80vw">
-                                    <canvas id="assetBarChart"></canvas>
-                                </div>
-                            </div>
+                    <div class="col-12">
+                        <div class="chart-container">
+                            <h2 class="chart-title">Asset Report Overview</h2>
+                            <canvas id="assetBarChart"></canvas>
                         </div>
                     </div>
                 </div>
-                <!-- ============================================================== -->
-
-                  <!-- Combined Request and Borrow Chart -->
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <h4 class="card-title">Combined Request and Borrow Chart</h4>
-                                <div class="chart-container shadow" style="position: relative; height:40vh; width:80vw">
-                                    <canvas id="combinedChart"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- ============================================================== -->
-
-                <!-- Sales chart -->
-                <!-- ============================================================== -->
-              
-                <!-- ============================================================== -->
-                <!-- Sales chart -->
-                <!-- ============================================================== -->
-                <!-- ============================================================== -->
-                <!-- Recent comment and chats -->
-                <!-- ============================================================== -->
-              
-                <!-- ============================================================== -->
-                <!-- Recent comment and chats -->
-                <!-- ============================================================== -->
+            
             </div>
             <!-- ============================================================== -->
             <!-- End Container fluid  -->
@@ -545,87 +444,67 @@ $asset_quantities_json = json_encode($asset_quantities);
         var assetBarChart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: <?php echo $asset_names_json; ?>,
+                labels: ['Total Assets Under Repair', 'Total Completed Repairs', 'Total Replaced Assets', 'Total Withdrawals'],
                 datasets: [{
-                    label: 'Department Assets',
-                    data: <?php echo $asset_quantities_json; ?>,
+                    label: 'Requests',
+                    data: [
+                        <?php echo $total_assets_under_repair; ?>,
+                        <?php echo $total_completed_repair_assets; ?>,
+                        <?php echo $total_replaced_assets; ?>,
+                        <?php echo $total_withdrawals; ?>,
+                       
+                    ],
                     backgroundColor: [
-                        'rgba(78, 115, 223, 0.7)',
-                        'rgba(54, 185, 204, 0.7)',
-                        'rgba(246, 194, 62, 0.7)',
-                        'rgba(28, 200, 138, 0.7)',
-                        'rgba(231, 74, 59, 0.7)'
+                        '#36b9cc',  // Info color
+                        '#1cc88a',  // Success color
+                        '#4e73df',  // Primary color
+                        '#f6c23e',  // Warning color
+                        '#e74a3b'   // Danger color
                     ],
                     borderColor: [
-                        'rgba(78, 115, 223, 1)',
-                        'rgba(54, 185, 204, 1)',
-                        'rgba(246, 194, 62, 1)',
-                        'rgba(28, 200, 138, 1)',
-                        'rgba(231, 74, 59, 1)'
+                        '#2c9faf',
+                        '#169b6b',
+                        '#2e59d9',
+                        '#dda20a',
+                        '#be2617'
                     ],
-                    borderWidth: 2,
+                    borderWidth: 1,
                     borderRadius: 8,
-                    barThickness: 50,
-                    maxBarThickness: 80
+                    maxBarThickness: 50
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
+                layout: {
+                    padding: {
+                        top: 20,
+                        right: 20,
+                        bottom: 20,
+                        left: 20
+                    }
+                },
                 plugins: {
                     legend: {
-                        display: true,
-                        position: 'top',
-                        labels: {
-                            font: {
-                                size: 14,
-                                family: "'Arial', sans-serif"
-                            },
-                            padding: 20
-                        }
-                    },
-                    title: {
-                        display: true,
-                        text: 'Department Asset Distribution',
-                        font: {
-                            size: 20,
-                            family: "'Arial', sans-serif",
-                            weight: 'bold'
-                        },
-                        padding: {
-                            top: 10,
-                            bottom: 30
-                        }
+                        display: false
                     },
                     tooltip: {
-                        enabled: true,
-                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        backgroundColor: 'rgba(0,0,0,0.8)',
+                        padding: 12,
                         titleFont: {
                             size: 14
                         },
                         bodyFont: {
                             size: 13
                         },
-                        padding: 12,
-                        cornerRadius: 6,
-                        displayColors: true
+                        callbacks: {
+                            label: function(context) {
+                                return context.raw + ' Requests';
+                            }
+                        }
                     }
                 },
                 scales: {
-                    y: {
-                        beginAtZero: true,
-                        grid: {
-                            drawBorder: false,
-                            color: 'rgba(0, 0, 0, 0.1)'
-                        },
-                        ticks: {
-                            font: {
-                                size: 12,
-                                family: "'Arial', sans-serif"
-                            },
-                            padding: 10
-                        }
-                    },
                     x: {
                         grid: {
                             display: false
@@ -633,132 +512,35 @@ $asset_quantities_json = json_encode($asset_quantities);
                         ticks: {
                             font: {
                                 size: 12,
-                                family: "'Arial', sans-serif"
-                            },
-                            padding: 10
-                        }
-                    }
-                },
-                animation: {
-                    duration: 1500,
-                    easing: 'easeInOutQuart'
-                },
-                layout: {
-                    padding: {
-                        left: 20,
-                        right: 20,
-                        top: 0,
-                        bottom: 0
-                    }
-                }
-            }
-        });
-
-        var combinedCtx = document.getElementById('combinedChart').getContext('2d');
-        var combinedChart = new Chart(combinedCtx, {
-            type: 'line',
-            data: {
-                labels: <?php echo $months_json; ?>,
-                datasets: [
-                    {
-                        label: 'Requests',
-                        data: <?php echo $request_counts_json; ?>,
-                        borderColor: 'rgba(78, 115, 223, 1)',
-                        backgroundColor: 'rgba(78, 115, 223, 0.2)',
-                        borderWidth: 2,
-                        tension: 0.4
-                    },
-                    {
-                        label: 'Borrows',
-                        data: <?php echo $borrow_counts_json; ?>,
-                        borderColor: 'rgba(28, 200, 138, 1)',
-                        backgroundColor: 'rgba(28, 200, 138, 0.2)',
-                        borderWidth: 2,
-                        tension: 0.4
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: true,
-                        position: 'top',
-                        labels: {
-                            font: {
-                                size: 14,
-                                family: "'Arial', sans-serif"
-                            },
-                            padding: 20
+                                weight: '500'
+                            }
                         }
                     },
-                    title: {
-                        display: true,
-                        text: 'Monthly Requests and Borrows',
-                        font: {
-                            size: 20,
-                            family: "'Arial', sans-serif",
-                            weight: 'bold'
-                        },
-                        padding: {
-                            top: 10,
-                            bottom: 30
-                        }
-                    },
-                    tooltip: {
-                        enabled: true,
-                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                        titleFont: {
-                            size: 14
-                        },
-                        bodyFont: {
-                            size: 13
-                        },
-                        padding: 12,
-                        cornerRadius: 6,
-                        displayColors: true
-                    }
-                },
-                scales: {
                     y: {
                         beginAtZero: true,
                         grid: {
-                            drawBorder: false,
-                            color: 'rgba(0, 0, 0, 0.1)'
+                            borderDash: [2, 4],
+                            color: '#e0e0e0'
                         },
                         ticks: {
+                            beginAtZero: true,
+                            precision: 0,
+                            stepSize: Math.ceil(Math.max(
+                                <?php echo $total_assets_under_repair; ?>,
+                                <?php echo $total_completed_repair_assets; ?>,
+                                <?php echo $total_replaced_assets; ?>,
+                                <?php echo $total_withdrawals; ?>,
+                            ) / 5),
                             font: {
                                 size: 12,
-                                family: "'Arial', sans-serif"
-                            },
-                            padding: 10
-                        }
-                    },
-                    x: {
-                        grid: {
-                            display: false
-                        },
-                        ticks: {
-                            font: {
-                                size: 12,
-                                family: "'Arial', sans-serif"
-                            },
-                            padding: 10
+                                weight: '500'
+                            }
                         }
                     }
                 },
                 animation: {
-                    duration: 1500,
+                    duration: 1000,
                     easing: 'easeInOutQuart'
-                },
-                layout: {
-                    padding: {
-                        left: 20,
-                        right: 20,
-                        top: 0,
-                        bottom: 0
-                    }
                 }
             }
         });

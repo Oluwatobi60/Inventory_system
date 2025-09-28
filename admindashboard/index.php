@@ -343,39 +343,7 @@ try {
                         </li>
                      
                         <!-- ============================================================== -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" id="2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="font-24 mdi mdi-comment-processing"></i>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right mailbox animated bounceInDown" aria-labelledby="2">
-                                <ul class="list-style-none">
-                                    <li>
-                                        <div class="">
-                                             <!-- Message -->
-                                            <a href="javascript:void(0)" class="link border-top">
-                                                <div class="d-flex no-block align-items-center p-10">
-                                                    <span class="btn btn-success btn-circle"><i class="ti-calendar"></i></span>
-                                                    <div class="m-l-10">
-                                                        <h5 class="m-b-0">Event today</h5> 
-                                                        <span class="mail-desc">Just a reminder that event</span> 
-                                                    </div>
-                                                </div>
-                                            </a>
-                                            <!-- Message -->
-                                            <a href="javascript:void(0)" class="link border-top">
-                                                <div class="d-flex no-block align-items-center p-10">
-                                                    <span class="btn btn-info btn-circle"><i class="ti-settings"></i></span>
-                                                    <div class="m-l-10">
-                                                        <h5 class="m-b-0">Settings</h5> 
-                                                        <span class="mail-desc">You can customize this template</span> 
-                                                    </div>
-                                                </div>
-                                            </a>
-                                           
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
+                      
                    
 
                         <!-- User profile and search -->
@@ -386,16 +354,20 @@ try {
                                 <span class="online-indicator" style="color: green; font-size: 12px;">●</span>
                                 <span class="username" style="margin-left: 5px;"><?php echo htmlspecialchars($admin_first_name . ' ' . $admin_last_name); ?></span>
                             </a>
-                            <div class="dropdown-menu dropdown-menu-right user-dd animated">
-                                <a class="dropdown-item" href="javascript:void(0)"><i class="ti-user m-r-5 m-l-5"></i> My Profile</a>
-                                <a class="dropdown-item" href="javascript:void(0)"><i class="ti-wallet m-r-5 m-l-5"></i> My Balance</a>
-                                <a class="dropdown-item" href="javascript:void(0)"><i class="ti-email m-r-5 m-l-5"></i> Inbox</a>
+                             <div class="dropdown-menu dropdown-menu-right user-dd animated">
+                                <a class="dropdown-item" href="profile.php"><i class="ti-user m-r-5 m-l-5"></i> My Profile</a>
+
+                               
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="javascript:void(0)"><i class="ti-settings m-r-5 m-l-5"></i> Account Setting</a>
+                                <a class="dropdown-item" href="change_password.php"><i class="ti-settings m-r-5 m-l-5"></i> Change Password</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="logout.php"><i class="fa fa-power-off m-r-5 m-l-5"></i> Logout</a>
-                                <div class="dropdown-divider"></div>
-                                <div class="p-l-30 p-10"><a href="javascript:void(0)" class="btn btn-sm btn-success btn-rounded">View Profile</a></div>
+                    
+
+                                <a href="../admindashboard/logout.php" class="dropdown-item">
+                                <i class="fa fa-power-off"></i><span class="hide-menu"> Logout </span>
+                                </a>
+
+                                
                             </div>
                         </li>
                         <!-- ============================================================== -->

@@ -185,6 +185,7 @@ try {
     <link href="dist/css/style.min.css" rel="stylesheet">
     <!-- Google Fonts for modern look -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;900&display=swap" rel="stylesheet">
+   
     <style>
        .logo-icon img.light-logo {
             width: 60px !important;

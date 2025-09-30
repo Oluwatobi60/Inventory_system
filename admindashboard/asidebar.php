@@ -31,33 +31,7 @@
                     </a>
                 </li>
 
-               <!--  <li class="sidebar-item"> 
-                    <a class="sidebar-link has-arrow waves-effect" href="javascript:void(0)">
-                        <i class="mdi mdi-file-document text-danger"></i>
-                        <span class="menu-title">Request Module</span>
-                    </a>
-                    <ul class="collapse submenu">
-                        <li class="sidebar-item">
-                            <a href="requestasset.php" class="sidebar-link">
-                                <i class="mdi mdi-arrow-right-bold"></i>
-                                <span>Asset Request</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a href="borrowasset.php" class="sidebar-link">
-                                <i class="mdi mdi-arrow-right-bold"></i>
-                                <span>Borrow Asset</span>
-                            </a>
-                        </li>
-
-                         <li class="sidebar-item">
-                            <a href="borrowdept.php" class="sidebar-link">
-                                <i class="mdi mdi-arrow-right-bold"></i>
-                                <span>Borrow || Dept Store</span>
-                            </a>
-                         </li>
-                    </ul>
-                </li> -->
+              
 
                   <li class="sidebar-item">
                             <a href="assethistory.php" class="sidebar-link">
@@ -80,12 +54,7 @@
                     </a>
                 </li>
 
-                <!--  <li class="sidebar-item"> 
-                    <a class="sidebar-link waves-effect" href="damaged_assets.php">
-                        <i class="mdi mdi-alert-circle text-danger"></i>
-                        <span class="menu-title">Damaged Assets</span>
-                    </a>
-                </li> -->
+              
 
                   <li class="sidebar-item"> 
                     <a class="sidebar-link has-arrow waves-effect" href="javascript:void(0)">
@@ -120,6 +89,12 @@
                             <a href="department.php" class="sidebar-link">
                                 <i class="mdi mdi-domain"></i>
                                 <span>Add Department</span>
+                            </a>
+                        </li>
+                         <li class="sidebar-item">
+                            <a href="database_backup.php" class="sidebar-link">
+                                <i class="mdi mdi-database-outline"></i>
+                                <span>Database Backup</span>
                             </a>
                         </li>
                         <li class="sidebar-item">

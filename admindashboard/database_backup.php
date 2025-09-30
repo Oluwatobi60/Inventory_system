@@ -226,7 +226,7 @@ try {
     <?php endif; ?>
     <form method="post">
         <button type="submit" name="export_db" class="btn btn-primary">
-            <i class="mdi mdi-database-export"></i> Download Database Backup
+            <i class="mdi mdi-database-plus"></i> Download Database Backup
         </button>
     </form>
     <p class="mt-3 text-muted">Click the button above to export and download the current database as an SQL file.</p>

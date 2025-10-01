@@ -6320,3 +6320,22 @@ Parameters: offset=0, limit=7
 [2025-09-29 01:25:41] Pagination details
 [2025-09-30 13:56:33] Login successful for user 'Tobestic'
 [2025-09-30 14:56:54] Login successful for user 'tobestic'
+[2025-09-30 16:06:01] Login successful for user 'Tobestic'
+[2025-09-30 16:06:10] New category added successfully: AC
+[2025-09-30 16:07:52] Category deleted successfully (ID: 17)
+[2025-09-30 16:14:28] New category added successfully: AC
+[2025-09-30 16:14:43] New category added successfully: ICE
+[2025-09-30 16:15:19] Category deleted successfully (ID: 18)
+[2025-09-30 16:17:26] New category added successfully: AC
+[2025-09-30 16:19:23] Category deleted successfully (ID: 20)
+[2025-09-30 16:19:30] New category added successfully: AC
+[2025-09-30 16:19:39] Category deleted successfully (ID: 19)
+[2025-10-01 15:47:25] Login successful for user 'tobestic'
+[2025-10-01 15:47:33] Pagination details
+[2025-10-01 22:32:12] Login successful for user 'Tobestic'
+[2025-10-01 22:39:59] Pagination details
+[2025-10-01 22:40:15] Pagination details
+[2025-10-01 23:38:43] Login successful for user 'daraminds'
+[2025-10-01 23:55:37] Login successful for user 'tobestic'
+[2025-10-01 23:55:42] Pagination details
+[2025-10-01 23:56:05] Pagination details

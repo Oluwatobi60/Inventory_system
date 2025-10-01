@@ -4,7 +4,7 @@
     <div class="scroll-sidebar">
         <!-- Brand Logo and Name -->
         <div class="brand-container p-3 mb-4 text-center">
-            <h4 class="text-white mb-0">Asset Managem System</h4>
+            <h4 class="text-white mb-0 font-12">Asset Management System</h4>
         </div>
         
         <!-- Sidebar navigation-->
@@ -33,12 +33,37 @@
 
               
 
-                  <li class="sidebar-item">
+                  <!-- <li class="sidebar-item">
                             <a href="assethistory.php" class="sidebar-link">
                                 <i class="mdi mdi-history"></i>
                                 <span>Report Center</span>
                             </a>
-                    </li> 
+                    </li>  -->
+
+             
+
+                <li class="sidebar-item"> 
+                    <a class="sidebar-link has-arrow waves-effect" href="javascript:void(0)">
+                        <i class="mdi mdi-history text-info"></i>
+                        <span class="menu-title">Report Center</span>
+                    </a>
+                    <ul class="collapse submenu">
+                        <li class="sidebar-item">
+                            <a href="assethistory.php" class="sidebar-link">
+                                <i class="mdi mdi-alert-circle text-danger"></i>
+                                <span>Damaged Report</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="department_report.php" class="sidebar-link">
+                                <i class="mdi mdi-domain text-warning"></i>
+                                <span>Department/Floor Report</span>
+                            </a>
+                        </li>
+                         
+                    </ul>
+                </li>
+
 
                 <li class="sidebar-item"> 
                     <a class="sidebar-link waves-effect" href="maintenance.php">
@@ -191,8 +216,14 @@
     color: white !important;
 }
 
+.sidebar-item.active .sidebar-link i,
+.sidebar-item.active .sidebar-link .menu-title {
+    transform: none;
+    color: #fff !important;
+}
+
 /* Hover effects */
-.sidebar-link:hover .menu-icon,
+.sidebar-link:hover i,
 .sidebar-link:hover .menu-title {
     transform: translateX(5px);
     transition: transform 0.3s ease;

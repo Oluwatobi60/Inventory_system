@@ -16,18 +16,7 @@
                     </a>
                 </li>
               
-              <!--   <li class="sidebar-item"> 
-                    <a class="sidebar-link waves-effect waves-dark sidebar-link" href="requestasset.php" aria-expanded="false">
-                        <i class="mdi mdi-arrow-right-bold"></i><span class="hide-menu">Asset Request</span>
-                    </a>
-                </li> -->
-
-              <!--   <li class="sidebar-item">
-                            <a href="borrowasset.php" class="sidebar-link">
-                                <i class="mdi mdi-arrow-right-bold"></i>
-                                <span>Borrow Asset</span>
-                            </a>
-                </li> -->
+        
 
                   <li class="sidebar-item"> 
                     <a class="sidebar-link has-arrow waves-effect" href="javascript:void(0)">
@@ -59,10 +48,26 @@
                     </a>
                 </li>
 
-                <li class="sidebar-item"> 
-                    <a class="sidebar-link waves-effect waves-dark sidebar-link" href="assethistory.php" aria-expanded="false">
-                        <i class="mdi mdi-history"></i><span class="hide-menu">Report Center</span>
+                 <li class="sidebar-item"> 
+                    <a class="sidebar-link has-arrow waves-effect" href="javascript:void(0)">
+                        <i class="mdi mdi-history text-info"></i>
+                        <span class="menu-title">Report Center</span>
                     </a>
+                    <ul class="collapse submenu">
+                        <li class="sidebar-item">
+                            <a href="assethistory.php" class="sidebar-link">
+                                <i class="mdi mdi-alert-circle text-danger"></i>
+                                <span>Damaged Report</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="department_report.php" class="sidebar-link">
+                                <i class="mdi mdi-domain text-warning"></i>
+                                <span>Department/Floor Report</span>
+                            </a>
+                        </li>
+                         
+                    </ul>
                 </li> 
 
                 <li class="sidebar-item">

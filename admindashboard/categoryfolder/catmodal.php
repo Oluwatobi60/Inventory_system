@@ -14,20 +14,22 @@ if(isset($_POST['submit'])) {
         // Check if category already exists using prepared statement
         $check_sql = "SELECT COUNT(*) FROM category WHERE category = :category";
         $check_stmt = $conn->prepare($check_sql);
-        $check_stmt->bindParam(':category', $asset_cat);
+        $check_stmt->bindParam(':category', $asset_cat, PDO::PARAM_STR);
         $check_stmt->execute();
         
         if ($check_stmt->fetchColumn() > 0) {
-            echo "<script>alert('Category already exists');</script>";
+            echo "<script>alert('" . htmlspecialchars('Category already exists', ENT_QUOTES) . "');</script>";
         } else {
             // Insert new category using prepared statement
             $sql = "INSERT INTO category (category) VALUES (:category)";
             $stmt = $conn->prepare($sql);
-            $stmt->bindParam(':category', $asset_cat);
+            $stmt->bindParam(':category', $asset_cat, PDO::PARAM_STR);
             
             if($stmt->execute()){
                 logError("New category added successfully: " . $asset_cat);
-                echo "<script>alert('New Category Added successfully'); window.location.reload();</script>";
+                // Redirect to avoid resubmission on reload
+                echo "<script>alert('" . htmlspecialchars('New Category Added successfully', ENT_QUOTES) . "'); window.location.href=window.location.pathname;</script>";
+                exit();
             } else {
                 throw new PDOException("Failed to add category");
             }

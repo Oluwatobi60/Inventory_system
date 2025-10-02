@@ -118,7 +118,7 @@
                         </li>
                          <li class="sidebar-item">
                             <a href="database_backup.php" class="sidebar-link">
-                                <i class="mdi mdi-database"></i>
+                                <i class="mdi mdi-database-outline"></i>
                                 <span>Database Backup</span>
                             </a>
                         </li>

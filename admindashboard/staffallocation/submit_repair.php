@@ -132,6 +132,8 @@ try {
         sendJsonResponse(false, 'Missing or invalid asset_info', 400);
     }
 
+    $repair_qty = isset($data['quantity']) && is_numeric($data['quantity']) && $data['quantity'] > 0 ? (int)$data['quantity'] : 1;
+
     // Extract and validate asset info
     $asset_id = (int)$data['asset_id'];
     $asset_info = $data['asset_info'];
@@ -147,121 +149,91 @@ try {
     // Ensure database structure
     if (!ensureDatabaseStructure($conn)) {
         sendJsonResponse(false, 'Database structure is not valid', 500);
-    }    // Start transaction
+    }
+
+    // Start transaction
     if (!$conn->beginTransaction()) {
         logError("Failed to start transaction");
         throw new Exception("Failed to start database transaction");
     }
-      logError("Started database transaction");
+    logError("Started database transaction");
     try {
-        // Check if asset exists and its current status
-        logError("Checking asset status", [
-            'asset_id' => $asset_id,
-            'input' => $data
-        ]);
-        
-        $check_stmt = $conn->prepare("SELECT id, status FROM staff_table WHERE id = ?");
-        if (!$check_stmt) {
-            logError("Failed to prepare asset check query", [
-                'error' => implode(', ', $conn->errorInfo())
-            ]);
-            throw new Exception("Database error while checking asset status");
-        }
-
+        // Check if asset exists and its current status and quantity
+        $check_stmt = $conn->prepare("SELECT id, status, quantity FROM staff_table WHERE id = ?");
         if (!$check_stmt->execute([$asset_id])) {
-            logError("Failed to execute asset check query", [
-                'error' => implode(', ', $check_stmt->errorInfo()),
-                'params' => ['asset_id' => $asset_id]
-            ]);
             throw new Exception("Failed to check asset status");
         }
-        
         $asset_data = $check_stmt->fetch(PDO::FETCH_ASSOC);
         if (!$asset_data) {
-            logError("Asset not found", [
-                'asset_id' => $asset_id,
-                'sql' => $check_stmt->queryString
-            ]);
             throw new Exception("Asset not found");
         }
 
-        logError("Asset status check", [
-            'asset_id' => $asset_id,
-            'status' => $asset_data['status'] ?? 'not set',
-            'data' => $asset_data
-        ]);        if (isset($asset_data['status']) && $asset_data['status'] === 'Under Repair') {
-            throw new Exception("Asset is already marked for repair");
+        $current_qty = (int)$asset_data['quantity'];
+        if ($repair_qty > $current_qty) {
+            throw new Exception("Cannot mark more units for repair than available. Available: $current_qty, Requested: $repair_qty");
         }
 
-        // Update staff_table status
-        $update_stmt = $conn->prepare("UPDATE staff_table SET status = 'Under Repair' WHERE id = ?");
-        if (!$update_stmt->execute([$asset_id])) {
-            logError("Failed to update asset status", [
-                'error' => implode(', ', $update_stmt->errorInfo()),
-                'params' => ['asset_id' => $asset_id]
-            ]);
-            throw new Exception("Failed to update asset status");
+        // If all quantity is marked for repair, set status to 'Under Repair'
+        // Otherwise, keep status as is and only record repair_asset rows
+        $new_qty = $current_qty - $repair_qty;
+
+        // Update staff_table quantity and status if all units are under repair
+        if ($new_qty == 0) {
+            $update_stmt = $conn->prepare("UPDATE staff_table SET quantity = 0, status = 'Under Repair' WHERE id = ?");
+        } else {
+            $update_stmt = $conn->prepare("UPDATE staff_table SET quantity = :new_qty WHERE id = :id");
+            $update_stmt->bindParam(':new_qty', $new_qty, PDO::PARAM_INT);
+            $update_stmt->bindParam(':id', $asset_id, PDO::PARAM_INT);
+        }
+        if (!$update_stmt->execute($new_qty == 0 ? [$asset_id] : null)) {
+            throw new Exception("Failed to update asset quantity/status");
         }
 
         // Get user's full name
         $user_stmt = $conn->prepare("SELECT CONCAT(firstname, ' ', lastname) as full_name FROM user_table WHERE username = ?");
-        if (!$user_stmt->execute([$_SESSION['username']])) {
-            logError("Failed to fetch user details", [
-                'error' => implode(', ', $user_stmt->errorInfo()),
-                'username' => $_SESSION['username']
-            ]);
-            throw new Exception("Failed to get user details");
-        }
+        $user_stmt->execute([$_SESSION['username']]);
         $user_data = $user_stmt->fetch(PDO::FETCH_ASSOC);
-        $reporter_name = $user_data['full_name'] ?? $_SESSION['username']; // Fallback to username if full name not found
+        $reporter_name = $user_data['full_name'] ?? $_SESSION['username'];
 
-        // Insert repair record
+        // Insert repair record(s)
         $insert_sql = "INSERT INTO repair_asset (
             asset_id, reg_no, asset_name, department, reported_by,
-            description, category, quantity, status
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'Under Repair')";
-
+            description, category, quantity, status, floor
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'Under Repair', ?)";
         $insert_stmt = $conn->prepare($insert_sql);
-        if (!$insert_stmt) {
-            logError("Failed to prepare repair record insert", [
-                'error' => implode(', ', $conn->errorInfo())
-            ]);
-            throw new Exception("Database error while creating repair record");
-        }        $insert_params = [
+        $insert_params = [
             $asset_id,
             $asset_info['reg_no'],
             $asset_info['asset_name'],
             $asset_info['department'],
-            $reporter_name, // Using full name from user_table
+            $reporter_name,
             $asset_info['description'] ?? 'Marked for repair',
             $asset_info['category'] ?? 'General',
-            (int)($asset_info['quantity'] ?? 1)
+            $repair_qty,
+            isset($asset_info['floor']) && $asset_info['floor'] !== ''
+                ? $asset_info['floor']
+                : (
+                    ($floor_row = $conn->query("SELECT floor FROM staff_table WHERE id = $asset_id LIMIT 1")->fetch(PDO::FETCH_ASSOC))
+                        ? $floor_row['floor']
+                        : ''
+                )
         ];
-
         if (!$insert_stmt->execute($insert_params)) {
-            logError("Failed to insert repair record", [
-                'error' => implode(', ', $insert_stmt->errorInfo()),
-                'params' => $insert_params
-            ]);
             throw new Exception("Failed to create repair record");
         }
 
         // Commit transaction
         if (!$conn->commit()) {
-            logError("Failed to commit transaction", [
-                'error' => implode(', ', $conn->errorInfo())
-            ]);
             throw new Exception("Failed to save repair record");
         }
 
-        // Send success response
         sendJsonResponse(true, 'Asset has been marked for repair', 200, [
             'asset_id' => $asset_id,
-            'status' => 'Under Repair'
+            'status' => 'Under Repair',
+            'repair_quantity' => $repair_qty
         ]);
 
     } catch (Exception $e) {
-        // Rollback transaction
         if ($conn->inTransaction()) {
             $conn->rollBack();
         }

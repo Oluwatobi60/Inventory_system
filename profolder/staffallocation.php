@@ -21,27 +21,37 @@ if (!isset($_SESSION['username'])) {
     exit();
 }
 
-// Include configuration
+// Database connection
 require_once "../admindashboard/include/config.php";
 require_once "../include/utils.php";
 
+// Section: Fetch Admin User Details
 try {
-    $pro_username = $_SESSION['username'];
-    $pro_query = "SELECT firstname, lastname FROM user_table WHERE username = :username";
-    $stmt = $conn->prepare($pro_query);
-    $stmt->bindParam(':username', $pro_username, PDO::PARAM_STR);
-    $stmt->execute();
-    $pro_row = $stmt->fetch(PDO::FETCH_ASSOC);
-    $pro_first_name = $pro_row['firstname'] ?? '';
-    $pro_last_name = $pro_row['lastname'] ?? '';
-
-    } catch (PDOException $e) {
-    // Log error and set default values
-    error_log("Database error in prodashboard.php: " . $e->getMessage());
-    $pro_first_name = 'User';
-    $pro_last_name = '';
+    // Get the username from the session variable
+    $admin_username = $_SESSION['username'];
+    
+    // SQL query to get the admin's first and last name
+    $admin_query = "SELECT firstname, lastname FROM user_table WHERE username = ?";
+    
+    // Prepare the SQL statement to prevent SQL injection
+    $stmt = $conn->prepare($admin_query);
+    
+    // Execute the query with the username parameter
+    $stmt->execute([$admin_username]);
+    
+    // Fetch the result as an associative array
+    $admin_row = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    // Extract the first name and last name from the result
+    $admin_first_name = $admin_row['firstname'];
+    $admin_last_name = $admin_row['lastname'];
+} catch (PDOException $e) {
+    // Log any database errors that occur
+    logError("Failed to fetch admin details: " . $e->getMessage());
+    // Set default values if query fails
+    $admin_first_name = "Admin";
+    $admin_last_name = "User";
 }
-
 
 // Handle AJAX request for asset suggestions and details
 if (isset($_GET['q'])) {
@@ -118,8 +128,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit-request'])) {
                 throw new Exception("Missing required fields for asset #" . ($i + 1));
             }
 
-            // Check available quantity with FOR UPDATE lock
-            $sql = "SELECT quantity FROM asset_table WHERE asset_name = :asset FOR UPDATE";
+            // Fetch asset ID from asset_table
+            $sql = "SELECT id, quantity FROM asset_table WHERE asset_name = :asset FOR UPDATE";
             $stmt = $conn->prepare($sql);
             $stmt->bindParam(':asset', $assetName, PDO::PARAM_STR);
             $stmt->execute();
@@ -129,39 +139,64 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit-request'])) {
                 throw new Exception("Asset '$assetName' not found");
             }
 
+            $assetId = $result['id'];
             $availableQty = $result['quantity'];
             if ($availableQty < $qty) {
                 throw new Exception("Insufficient quantity for '$assetName'. Available: $availableQty, Requested: $qty");
             }
-            
-            // Insert request with timestamp
-            $sql = "INSERT INTO staff_table (reg_no, asset_name, description, quantity, category, department, floor, requested_by, request_date) 
-                    VALUES (:reg_no, :asset_name, :description, :quantity, :category, :department, :floor, :requested_by, :date)";
+
+            // Check if asset already allocated to this department and floor
+            $sql = "SELECT id, quantity FROM staff_table WHERE asset_id = :asset_id AND department = :department AND floor = :floor";
             $stmt = $conn->prepare($sql);
-            
-            // Convert date to datetime format
-            $datetime = date('Y-m-d H:i:s', strtotime($date));
-            
-            $stmt->bindParam(':reg_no', $regNo, PDO::PARAM_STR);
-            $stmt->bindParam(':asset_name', $assetName, PDO::PARAM_STR);
-            $stmt->bindParam(':description', $description, PDO::PARAM_STR);
-            $stmt->bindParam(':quantity', $qty, PDO::PARAM_INT);
-            $stmt->bindParam(':category', $category, PDO::PARAM_STR);
+            $stmt->bindParam(':asset_id', $assetId, PDO::PARAM_INT);
             $stmt->bindParam(':department', $department, PDO::PARAM_STR);
             $stmt->bindParam(':floor', $floor, PDO::PARAM_STR);
-            $stmt->bindParam(':requested_by', $requestedBy, PDO::PARAM_STR);
-            $stmt->bindParam(':date', $datetime, PDO::PARAM_STR);
-            
-            if (!$stmt->execute()) {
-                throw new Exception("Failed to insert request for $assetName");
+            $stmt->execute();
+            $existing = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($existing) {
+                // Update quantity in staff_table
+                $newQty = $existing['quantity'] + $qty;
+                $sql = "UPDATE staff_table SET quantity = :quantity, reg_no = :reg_no, description = :description, category = :category, requested_by = :requested_by, request_date = :date
+                        WHERE id = :id";
+                $stmt = $conn->prepare($sql);
+                $datetime = date('Y-m-d H:i:s', strtotime($date));
+                $stmt->bindParam(':quantity', $newQty, PDO::PARAM_INT);
+                $stmt->bindParam(':reg_no', $regNo, PDO::PARAM_STR);
+                $stmt->bindParam(':description', $description, PDO::PARAM_STR);
+                $stmt->bindParam(':category', $category, PDO::PARAM_STR);
+                $stmt->bindParam(':requested_by', $requestedBy, PDO::PARAM_STR);
+                $stmt->bindParam(':date', $datetime, PDO::PARAM_STR);
+                $stmt->bindParam(':id', $existing['id'], PDO::PARAM_INT);
+                if (!$stmt->execute()) {
+                    throw new Exception("Failed to update allocation for $assetName");
+                }
+            } else {
+                // Insert new allocation with asset_id
+                $sql = "INSERT INTO staff_table (asset_id, reg_no, asset_name, description, quantity, category, department, floor, requested_by, request_date) 
+                        VALUES (:asset_id, :reg_no, :asset_name, :description, :quantity, :category, :department, :floor, :requested_by, :date)";
+                $stmt = $conn->prepare($sql);
+                $datetime = date('Y-m-d H:i:s', strtotime($date));
+                $stmt->bindParam(':asset_id', $assetId, PDO::PARAM_INT);
+                $stmt->bindParam(':reg_no', $regNo, PDO::PARAM_STR);
+                $stmt->bindParam(':asset_name', $assetName, PDO::PARAM_STR);
+                $stmt->bindParam(':description', $description, PDO::PARAM_STR);
+                $stmt->bindParam(':quantity', $qty, PDO::PARAM_INT);
+                $stmt->bindParam(':category', $category, PDO::PARAM_STR);
+                $stmt->bindParam(':department', $department, PDO::PARAM_STR);
+                $stmt->bindParam(':floor', $floor, PDO::PARAM_STR);
+                $stmt->bindParam(':requested_by', $requestedBy, PDO::PARAM_STR);
+                $stmt->bindParam(':date', $datetime, PDO::PARAM_STR);
+                if (!$stmt->execute()) {
+                    throw new Exception("Failed to insert request for $assetName");
+                }
             }
 
             // Update asset quantity
-            $sql = "UPDATE asset_table SET quantity = quantity - :qty WHERE asset_name = :asset_name";
+            $sql = "UPDATE asset_table SET quantity = quantity - :qty WHERE id = :asset_id";
             $stmt = $conn->prepare($sql);
             $stmt->bindParam(':qty', $qty, PDO::PARAM_INT);
-            $stmt->bindParam(':asset_name', $assetName, PDO::PARAM_STR);
-            
+            $stmt->bindParam(':asset_id', $assetId, PDO::PARAM_INT);
             if (!$stmt->execute()) {
                 throw new Exception("Failed to update quantity for $assetName");
             }
@@ -172,7 +207,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit-request'])) {
         $_SESSION['success_message'] = 'All assets allocated successfully!';
         echo '<script>window.location.href = "staffallocation.php";</script>';
         exit;
-        
+
     } catch (Exception $e) {
         // Roll back the transaction on error
         if ($conn->inTransaction()) {
@@ -319,14 +354,13 @@ if (isset($_SESSION['success_message'])) {
                             <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
                             <!-- Dark Logo icon -->
                             <img src="../admindashboard/assets/images/isalu-logo.png" alt="homepage" class="light-logo" />
-
                         </b>
                         <!--End Logo icon -->
-                         <!-- Logo text -->
+                        <!-- Logo text -->
                         <span class="logo-text">
-                        
-                            
-                     
+                            <!--You can put here text as well // <i class="wi wi-sunset"></i> //-->
+                        </span>
+                    </a>
                     <a class="topbartoggler d-block d-md-none waves-effect waves-light" href="javascript:void(0)" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><i class="ti-more"></i></a>
                 </div>
                 <!-- ============================================================== -->
@@ -339,7 +373,6 @@ if (isset($_SESSION['success_message'])) {
                     <ul class="navbar-nav float-left mr-auto">
                         <li class="nav-item d-none d-md-block"><a class="nav-link sidebartoggler waves-effect waves-light" href="javascript:void(0)" data-sidebartype="mini-sidebar"><i class="mdi mdi-menu font-24"></i></a></li>
                         <!-- ============================================================== -->
-                    
                         <!-- Search -->
                         <!-- ============================================================== -->
                         <li class="nav-item search-box"> <a class="nav-link waves-effect waves-dark" href="javascript:void(0)"><i class="ti-search"></i></a>
@@ -358,23 +391,24 @@ if (isset($_SESSION['success_message'])) {
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="mdi mdi-bell font-24"></i>
                             </a>
-                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="#">Action</a>
                                 <a class="dropdown-item" href="#">Another action</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#">Something else here</a>
                             </div>
                         </li>
-                     
                         <!-- ============================================================== -->
-                      
-                   
-
+                     
                         <!-- User profile and search -->
                         <!-- ============================================================== -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="../admindashboard/assets/images/users/1.jpg" alt="user" class="rounded-circle" width="31"> <?php echo htmlspecialchars($pro_first_name . ' ' . $pro_last_name); ?></a> 
-                            <div class="dropdown-menu dropdown-menu-right user-dd animated">
+                       <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img src="../admindashboard/assets/images/users/1.jpg" alt="user" class="rounded-circle" width="31">
+                                <span class="online-indicator" style="color: green; font-size: 12px;">●</span>
+                                <span class="username" style="margin-left: 5px;"><?php echo htmlspecialchars($admin_first_name . ' ' . $admin_last_name); ?></span>
+                            </a>
+                             <div class="dropdown-menu dropdown-menu-right user-dd animated">
                                 <a class="dropdown-item" href="profile.php"><i class="ti-user m-r-5 m-l-5"></i> My Profile</a>
 
                                
@@ -396,7 +430,7 @@ if (isset($_SESSION['success_message'])) {
                     </ul>
                 </div>
             </nav>
-        </header> 
+        </header>
         <!-- ============================================================== -->
         <!-- End Topbar header -->
       
@@ -607,7 +641,10 @@ if (isset($_SESSION['success_message'])) {
     <!-- ============================================================== -->
     <!-- All Jquery -->
     <!-- ============================================================== -->
-    <script src="../admindashboard/assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="assets/libs/jquery/dist/jquery.min.js"></script>
+    <!-- Add jQuery UI for autocomplete support -->
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
     <!-- Bootstrap tether Core JavaScript -->
     <script src="../admindashboard/assets/libs/popper.js/dist/umd/popper.min.js"></script>
     <script src="../admindashboard/assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -718,7 +755,181 @@ if (isset($_SESSION['success_message'])) {
             }
         });
     });
+
+    function promptRepairCount(assetId, maxQty, assetInfo) {
+        let count = prompt("Enter number of units to mark as 'Need Repair' (max: " + maxQty + "):", "1");
+        if (count === null) return; // Cancelled
+        count = parseInt(count, 10);
+        if (isNaN(count) || count < 1 || count > maxQty) {
+            alert("Please enter a valid number between 1 and " + maxQty);
+            return;
+        }
+        // Pass the button element to markForRepair
+        const button = event.target.closest('button');
+        markForRepair(assetId, assetInfo, count, button);
+    }
+
+    // Update markForRepair to accept button as argument
+    async function markForRepair(assetId, assetInfo, count = 1, button = null) {
+        if (!button) button = document.activeElement;
+        try {
+            button.disabled = true;
+            button.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Processing...';
+
+            // Use relative path for AJAX
+            const response = await fetch('staffallocation/submit_repair.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    asset_id: assetId,
+                    asset_info: assetInfo,
+                    quantity: count
+                })
+            });
+
+            let data;
+            try {
+                data = await response.json();
+            } catch (e) {
+                // If response is not valid JSON, show error and restore button
+                button.disabled = false;
+                button.innerHTML = '<i class="fa fa-wrench"></i> Need Repair';
+                alert('Server error: Invalid response format.');
+                return;
+            }
+
+            if (data.success) {
+                const disabledBtn = document.createElement('button');
+                disabledBtn.className = 'btn btn-secondary btn-sm';
+                disabledBtn.disabled = true;
+                disabledBtn.innerHTML = '<i class="fa fa-wrench"></i> Under Repair';
+                button.parentNode.replaceChild(disabledBtn, button);
+                alert('Asset has been marked for repair');
+            } else {
+                button.disabled = false;
+                button.innerHTML = '<i class="fa fa-wrench"></i> Need Repair';
+                alert(data.message || 'Failed to mark asset for repair');
+            }
+        } catch (error) {
+            if (button) {
+                button.disabled = false;
+                button.innerHTML = '<i class="fa fa-wrench"></i> Need Repair';
+            }
+            alert('An error occurred while marking the asset for repair');
+        }
+    }
+
+    // Update markRepairCompleted to accept button as argument and use relative path
+    async function markRepairCompleted(assetId, button = null) {
+        if (!button) button = document.activeElement;
+        try {
+            button.disabled = true;
+            button.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Processing...';
+
+            // Use relative path for AJAX
+            const response = await fetch('staffallocation/complete_repair.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ asset_id: assetId })
+            });
+
+            let data;
+            try {
+                data = await response.json();
+            } catch (e) {
+                button.disabled = false;
+                button.innerHTML = '<i class="fa fa-check"></i> Repair Completed';
+                alert('Server error: Invalid response format.');
+                return;
+            }
+
+            if (data.success) {
+                button.innerHTML = '<i class="fa fa-check"></i> Repair Completed';
+                button.className = 'btn btn-success btn-sm';
+                button.disabled = true;
+                alert('Repair marked as completed');
+            } else {
+                button.disabled = false;
+                button.innerHTML = '<i class="fa fa-check"></i> Repair Completed';
+                alert(data.message || 'Failed to mark repair as completed');
+            }
+        } catch (error) {
+            button.disabled = false;
+            button.innerHTML = '<i class="fa fa-check"></i> Repair Completed';
+            alert('An error occurred while marking the repair as completed');
+        }
+    }
+
+    // Withdraw asset function
+    async function withdrawAsset(assetId, button = null) {
+        if (!button) button = document.activeElement;
+        try {
+            // Prompt for quantity to withdraw
+            let qty = prompt('Enter quantity to withdraw:', '1');
+            if (qty === null) return; // Cancelled
+            qty = parseInt(qty, 10);
+            if (isNaN(qty) || qty < 1) {
+                alert('Please enter a valid quantity.');
+                return;
+            }
+            // Prompt for reason
+            let reason = prompt('Enter reason for withdrawal:', '');
+            if (reason === null || reason.trim() === '') {
+                alert('Withdrawal reason is required.');
+                return;
+            }
+            // Optionally, prompt for withdrawn_by (could use session user)
+            let withdrawn_by = 'admin'; // Replace with actual user if available
+
+            button.disabled = true;
+            button.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Processing...';
+            // Use relative path for fetch
+            const response = await fetch('staffallocation/withdraw_asset.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ asset_id: assetId, quantity: qty, withdrawn_by, reason })
+            });
+            let data;
+            try {
+                data = await response.json();
+            } catch (e) {
+                button.disabled = false;
+                button.innerHTML = '<i class="fa fa-ban"></i> Withdrawn';
+                alert('Server error: Invalid response format.');
+                return;
+            }
+            if (data.success) {
+                button.innerHTML = '<i class="fa fa-ban"></i> Withdrawn';
+                button.className = 'btn btn-danger btn-sm';
+                button.disabled = true;
+                alert('Asset has been withdrawn');
+                location.reload();
+            } else {
+                button.disabled = false;
+                button.innerHTML = '<i class="fa fa-ban"></i> Withdrawn';
+                alert(data.message || 'Failed to withdraw asset');
+            }
+        } catch (error) {
+            console.error('Error withdrawing asset:', error);
+            if (button) {
+                button.disabled = false;
+                button.innerHTML = '<i class="fa fa-ban"></i> Withdrawn';
+            }
+            alert('An error occurred while withdrawing the asset');
+        }
+    }
     </script>
+
+    
 </body>
 
 </html>

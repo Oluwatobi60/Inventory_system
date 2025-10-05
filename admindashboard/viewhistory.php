@@ -48,12 +48,12 @@ if (!isset($_SESSION['username'])) {
     <!-- ============================================================== -->
     <!-- Preloader - style you can find in spinners.css -->
     <!-- ============================================================== -->
-    <div class="preloader">
+   <!--  <div class="preloader">
         <div class="lds-ripple">
             <div class="lds-pos"></div>
             <div class="lds-pos"></div>
         </div>
-    </div>
+    </div> -->
     <!-- ============================================================== -->
     <!-- Main wrapper - style you can find in pages.scss -->
     <!-- ============================================================== -->
@@ -232,7 +232,7 @@ if (!isset($_SESSION['username'])) {
                         }
                         $id = (int)$_GET['id'];
                         
-                        // Prepare and execute the query
+                        // Prepare and execute the query to fetch repair asset details
                         $sql = "SELECT * FROM repair_asset WHERE id = :id";
                         $stmt = $conn->prepare($sql);
                         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
@@ -242,6 +242,18 @@ if (!isset($_SESSION['username'])) {
                         if (!$row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                             throw new Exception('Request not found');
                         }
+
+                        // Fetch commplete asset details from completed_asset table
+                        $sql = "SELECT * FROM completed_asset WHERE id = :id";
+                        $stmt = $conn->prepare($sql);
+                        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+                        $stmt->execute();
+                        $completed_row = $stmt->fetch(PDO::FETCH_ASSOC);
+                        if ($completed_row) {
+                            // Merge completed asset details into $row for display
+                            $row = array_merge($row, $completed_row);
+                        }
+
                     } catch (Exception $e) {
                         echo "<div class='alert alert-danger'>" . htmlspecialchars($e->getMessage()) . "</div>";
                         echo "<div class='col-md-8'><a href='assethistory.php' class='btn btn-primary'><i class='fa fa-backward'></i> Back</a></div>";
@@ -253,120 +265,86 @@ if (!isset($_SESSION['username'])) {
                 <div class="shadow p-4 mt-5 bg-white rounded">
                     <div class="row bg-light rounded">
                         <?php
-                        // Determine context for highlighting
-                        $context_label = '';
-                        $context_date = '';
-                        if ($row['status'] === 'Under Repair') {
-                            $context_label = 'Report Date:';
-                            $context_date = $row['report_date'];
-                        } elseif (!empty($row['completed']) && $row['completed'] == 1) {
-                            $context_label = 'Completed Date:';
-                            $context_date = $row['completed_date'];
-                        } elseif (!empty($row['replaced']) && $row['replaced'] == 1) {
-                            $context_label = 'Replaced Date:';
-                            $context_date = $row['replaced_date'];
+                        // Fetch all history types for this asset using id for each table
+                        $id = isset($row['id']) ? $row['id'] : 0;
+                        if ($id > 0) {
+                            // Completed Repairs
+                            $stmt_completed = $conn->prepare("SELECT * FROM completed_asset WHERE id = :id ORDER BY completed_date DESC");
+                            $stmt_completed->bindParam(':id', $id, PDO::PARAM_INT);
+                            $stmt_completed->execute();
+                            $completed_repairs = $stmt_completed->fetchAll(PDO::FETCH_ASSOC);
+
+                            // Withdrawn Assets
+                            $stmt_withdrawn = $conn->prepare("SELECT * FROM withdrawn_asset WHERE id = :id ORDER BY withdrawn_date DESC");
+                            $stmt_withdrawn->bindParam(':id', $id, PDO::PARAM_INT);
+                            $stmt_withdrawn->execute();
+                            $withdrawn_assets = $stmt_withdrawn->fetchAll(PDO::FETCH_ASSOC);
+
+                            // Replaced Assets
+                            $stmt_replaced = $conn->prepare("SELECT * FROM asset_replacement_log WHERE id = :id ORDER BY replaced_at DESC");
+                            $stmt_replaced->bindParam(':id', $id, PDO::PARAM_INT);
+                            $stmt_replaced->execute();
+                            $replaced_assets = $stmt_replaced->fetchAll(PDO::FETCH_ASSOC);
+
+                            // Damaged Assets (Under Repair)
+                            $stmt_damaged = $conn->prepare("SELECT * FROM repair_asset WHERE id = :id AND status = 'Under Repair' ORDER BY report_date DESC");
+                            $stmt_damaged->bindParam(':id', $id, PDO::PARAM_INT);
+                            $stmt_damaged->execute();
+                            $damaged_assets = $stmt_damaged->fetchAll(PDO::FETCH_ASSOC);
                         }
                         ?>
-                        <div class="col-md-8 m-auto">
-                            <div class="form-group mb-4">
-                                <label class="form-label font-weight-bold text-primary" for="reg_no">Registration No:</label>
-                                <div class="input-group">
-                                    <input type="text" id="reg_no" class="form-control border-info shadow-sm" value="<?php echo $row['reg_no']; ?>" disabled>
-                                </div>
-                            </div>
+                        <!-- Completed Repairs -->
+                        <div class="col-md-12 mb-4">
+                            <h5 class="text-success">Completed Repairs</h5>
+                            <?php if (!empty($completed_repairs)): ?>
+                                <ul class="list-group">
+                                <?php foreach ($completed_repairs as $item): ?>
+                                    <li class="list-group-item">Completed on <?php echo htmlspecialchars($item['completed_date']); ?> | Qty: <?php echo htmlspecialchars($item['quantity']); ?> | By: <?php echo htmlspecialchars($item['reported_by']); ?></li>
+                                <?php endforeach; ?>
+                                </ul>
+                            <?php else: ?>
+                                <div class="text-muted">No completed repairs found.</div>
+                            <?php endif; ?>
                         </div>
-                        <div class="col-md-8 m-auto">
-                            <div class="form-group mb-4">
-                                <label class="form-label font-weight-bold text-primary" for="asset_name">Asset Name:</label>
-                                <div class="input-group">
-                                    <input type="text" id="asset_name" class="form-control border-info shadow-sm" value="<?php echo $row['asset_name']; ?>" disabled>
-                                </div>
-                            </div>
+                        <!-- Withdrawn Assets -->
+                        <div class="col-md-12 mb-4">
+                            <h5 class="text-warning">Withdrawn Assets</h5>
+                            <?php if (!empty($withdrawn_assets)): ?>
+                                <ul class="list-group">
+                                <?php foreach ($withdrawn_assets as $item): ?>
+                                    <li class="list-group-item">Withdrawn on <?php echo htmlspecialchars($item['withdrawn_date']); ?> | Qty: <?php echo htmlspecialchars($item['qty']); ?> | By: <?php echo htmlspecialchars($item['withdrawn_by']); ?></li>
+                                <?php endforeach; ?>
+                                </ul>
+                            <?php else: ?>
+                                <div class="text-muted">No withdrawn assets found.</div>
+                            <?php endif; ?>
                         </div>
-                        <div class="col-md-8 m-auto">
-                            <div class="form-group mb-4">
-                                <label class="form-label font-weight-bold text-primary" for="desc">Description:</label>
-                                <div class="input-group">
-                                    <textarea id="desc" rows="3" class="form-control border-info shadow-sm" disabled><?php echo $row['description']; ?></textarea>
-                                </div>
-                            </div>
+                        <!-- Replaced Assets -->
+                        <div class="col-md-12 mb-4">
+                            <h5 class="text-info">Replaced Assets</h5>
+                            <?php if (!empty($replaced_assets)): ?>
+                                <ul class="list-group">
+                                <?php foreach ($replaced_assets as $item): ?>
+                                    <li class="list-group-item">Replaced on <?php echo htmlspecialchars($item['replaced_at']); ?> | Qty: <?php echo htmlspecialchars($item['replaced_quantity']); ?></li>
+                                <?php endforeach; ?>
+                                </ul>
+                            <?php else: ?>
+                                <div class="text-muted">No replaced assets found.</div>
+                            <?php endif; ?>
                         </div>
-                        <div class="col-md-8 m-auto">
-                            <div class="form-group mb-4">
-                                <label class="form-label font-weight-bold text-primary" for="qty">Quantity:</label>
-                                <div class="input-group">
-                                    <input type="number" id="qty" class="form-control border-info shadow-sm" value="<?php echo $row['quantity']; ?>" disabled>
-                                </div>
-                            </div>
+                        <!-- Damaged Assets -->
+                        <div class="col-md-12 mb-4">
+                            <h5 class="text-danger">Damaged Assets (Under Repair)</h5>
+                            <?php if (!empty($damaged_assets)): ?>
+                                <ul class="list-group">
+                                <?php foreach ($damaged_assets as $item): ?>
+                                    <li class="list-group-item">Reported on <?php echo htmlspecialchars($item['report_date']); ?> | Qty: <?php echo htmlspecialchars($item['quantity']); ?> | Status: <?php echo htmlspecialchars($item['status']); ?></li>
+                                <?php endforeach; ?>
+                                </ul>
+                            <?php else: ?>
+                                <div class="text-muted">No damaged assets found.</div>
+                            <?php endif; ?>
                         </div>
-                        <div class="col-md-8 m-auto">
-                            <div class="form-group mb-4">
-                                <label class="form-label font-weight-bold text-primary" for="category">Category:</label>
-                                <div class="input-group">
-                                    <input type="text" id="category" class="form-control border-info shadow-sm" value="<?php echo $row['category']; ?>" disabled>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-8 m-auto">
-                            <div class="form-group mb-4">
-                                <label class="form-label font-weight-bold text-primary" for="department">Department:</label>
-                                <div class="input-group">
-                                    <input type="text" id="department" class="form-control border-info shadow-sm" value="<?php echo $row['department']; ?>" disabled>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-8 m-auto">
-                            <div class="form-group mb-4">
-                                <label class="form-label font-weight-bold text-primary" for="reported_by">Reported by:</label>
-                                <div class="input-group">
-                                    <input type="text" id="reported_by" class="form-control border-info shadow-sm" value="<?php echo $row['reported_by']; ?>" disabled>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Contextual Date Field -->
-                        <?php if ($context_label && $context_date): ?>
-                        <div class="col-md-8 m-auto">
-                            <div class="form-group mb-4">
-                                <label class="form-label font-weight-bold text-success" for="context_date"><?php echo $context_label; ?></label>
-                                <div class="input-group">
-                                    <input type="text" id="context_date" class="form-control border-success shadow-sm" value="<?php echo $context_date; ?>" disabled>
-                                </div>
-                            </div>
-                        </div>
-                        <?php endif; ?>
-                        <!-- Always show all date fields for completeness -->
-                      <!--   <div class="col-md-8 m-auto">
-                            <div class="form-group mb-4">
-                                <label class="form-label font-weight-bold text-primary" for="report_date">Reported Date:</label>
-                                <div class="input-group">
-                                    <input type="text" id="report_date" class="form-control border-info shadow-sm" value="<?php echo $row['report_date']; ?>" disabled>
-                                </div>
-                            </div>
-                        </div> -->
-                       <!--  <div class="col-md-8 m-auto">
-                            <div class="form-group mb-4">
-                                <label class="form-label font-weight-bold text-primary" for="completed_date">Completed Date:</label>
-                                <div class="input-group">
-                                    <input type="text" id="completed_date" class="form-control border-info shadow-sm" value="<?php echo $row['completed_date']; ?>" disabled>
-                                </div>
-                            </div>
-                        </div> -->
-                        <div class="col-md-8 m-auto">
-                            <div class="form-group mb-4">
-                                <label class="form-label font-weight-bold text-primary" for="withdrawn_date">Withdrawn Date:</label>
-                                <div class="input-group">
-                                    <input type="text" id="withdrawn_date" class="form-control border-info shadow-sm" value="<?php echo $row['withdrawn_date']; ?>" disabled>
-                                </div>
-                            </div>
-                        </div>
-                   <!--      <div class="col-md-8 m-auto">
-                            <div class="form-group mb-4">
-                                <label class="form-label font-weight-bold text-primary" for="replaced_date">Replaced Date:</label>
-                                <div class="input-group">
-                                    <input type="text" id="replaced_date" class="form-control border-info shadow-sm" value="<?php echo $row['replaced_date']; ?>" disabled>
-                                </div>
-                            </div>
-                        </div> -->
                         <div class="col-md-8 text-center mb-3">
                             <a href="assethistory.php"><button class="btn btn-primary"><i class='fa fa-backward'></i> Back</button></a>
                         </div>

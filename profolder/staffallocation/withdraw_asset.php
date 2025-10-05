@@ -1,6 +1,6 @@
 <?php
 // Include the database configuration file for DB connection
-require_once dirname(__FILE__) . "/../include/config.php";
+require_once dirname(__FILE__) . "/../../include/config.php";
 
 // Set the response content type to JSON
 header('Content-Type: application/json');

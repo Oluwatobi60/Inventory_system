@@ -6339,3 +6339,885 @@ Parameters: offset=0, limit=7
 [2025-10-01 23:55:37] Login successful for user 'tobestic'
 [2025-10-01 23:55:42] Pagination details
 [2025-10-01 23:56:05] Pagination details
+[2025-10-02 00:00:56] Pagination details
+[2025-10-02 00:01:13] Pagination details
+[2025-10-02 00:01:30] Pagination details
+[2025-10-02 00:02:18] Pagination details
+[2025-10-02 00:09:44] Pagination details
+[2025-10-02 00:14:46] Pagination details
+[2025-10-02 00:18:05] Pagination details
+[2025-10-02 00:18:24] Pagination details
+[2025-10-02 00:18:51] Pagination details
+[2025-10-02 00:20:59] Pagination details
+[2025-10-02 00:23:50] Pagination details
+[2025-10-02 00:23:58] Processing repair request
+[2025-10-02 00:23:58] Started database transaction
+[2025-10-02 00:24:19] Pagination details
+[2025-10-02 00:25:04] Pagination details
+[2025-10-02 00:25:48] Pagination details
+[2025-10-02 00:28:31] Pagination details
+[2025-10-02 00:28:55] Pagination details
+[2025-10-02 00:29:38] Pagination details
+[2025-10-02 00:29:45] Processing repair request
+[2025-10-02 00:29:45] Started database transaction
+[2025-10-02 00:29:49] Pagination details
+[2025-10-02 00:31:01] Pagination details
+[2025-10-02 00:35:26] Pagination details
+[2025-10-02 00:36:04] Pagination details
+[2025-10-02 00:36:17] Pagination details
+[2025-10-02 00:36:38] Pagination details
+[2025-10-02 00:42:03] Pagination details
+[2025-10-02 00:42:08] Processing repair request
+[2025-10-02 00:42:08] Started database transaction
+[2025-10-02 00:42:11] Pagination details
+[2025-10-02 00:42:20] Pagination details
+[2025-10-02 00:42:36] Processing repair request
+[2025-10-02 00:42:36] Started database transaction
+[2025-10-02 00:42:40] Pagination details
+[2025-10-02 00:42:46] Pagination details
+[2025-10-02 00:42:59] Pagination details
+[2025-10-02 00:43:10] Processing repair request
+[2025-10-02 00:43:10] Started database transaction
+[2025-10-02 00:43:14] Pagination details
+[2025-10-02 00:43:34] Pagination details
+[2025-10-02 00:43:41] Pagination details
+[2025-10-02 00:43:54] Pagination details
+[2025-10-02 00:44:07] Pagination details
+[2025-10-02 00:44:14] Pagination details
+[2025-10-02 01:14:39] Login successful for user 'Tobestic'
+[2025-10-02 01:14:45] Pagination details
+[2025-10-02 01:14:54] Pagination details
+[2025-10-02 01:16:15] Pagination details
+[2025-10-02 01:16:22] Processing repair request
+[2025-10-02 01:16:22] Started database transaction
+[2025-10-02 01:16:26] Pagination details
+[2025-10-02 01:16:32] Pagination details
+[2025-10-02 01:17:27] Pagination details
+[2025-10-02 01:17:37] Pagination details
+[2025-10-02 01:46:59] Login successful for user 'tobestic'
+[2025-10-02 01:48:02] Pagination details
+[2025-10-02 01:48:22] Pagination details
+[2025-10-02 09:57:54] Login failed: Password mismatch for user 'Tobestic'.
+[2025-10-02 09:58:02] Login successful for user 'Tobestic'
+[2025-10-02 09:59:28] Pagination details
+[2025-10-02 10:20:53] Pagination details
+[2025-10-02 10:21:06] Processing repair request
+[2025-10-02 10:21:06] Started database transaction
+[2025-10-02 10:21:10] Pagination details
+[2025-10-02 10:25:15] Pagination details
+[2025-10-02 10:26:04] Pagination details
+[2025-10-02 10:28:15] Pagination details
+[2025-10-02 10:28:26] Pagination details
+[2025-10-02 10:28:39] Processing repair request
+[2025-10-02 10:28:40] Started database transaction
+[2025-10-02 10:28:43] Pagination details
+[2025-10-02 10:31:10] Pagination details
+[2025-10-02 10:33:27] Pagination details
+[2025-10-02 10:34:34] Pagination details
+[2025-10-02 11:03:48] Login successful for user 'tobestic'
+[2025-10-02 11:06:12] Pagination details
+[2025-10-02 11:14:47] Pagination details
+[2025-10-02 11:17:54] Pagination details
+[2025-10-02 12:44:07] Login successful for user 'tobestic'
+[2025-10-02 12:44:19] Pagination details
+[2025-10-02 12:44:54] Pagination details
+[2025-10-02 12:44:59] Pagination details
+[2025-10-02 12:46:06] Pagination details
+[2025-10-02 12:46:12] Pagination details
+[2025-10-02 12:53:56] Pagination details
+[2025-10-02 12:54:55] Pagination details
+[2025-10-02 13:03:30] Pagination details
+[2025-10-02 13:04:06] Pagination details
+[2025-10-02 13:04:16] Processing repair request
+[2025-10-02 13:04:16] Started database transaction
+[2025-10-02 13:04:19] Pagination details
+[2025-10-02 13:08:47] Pagination details
+[2025-10-02 13:13:05] Pagination details
+[2025-10-02 13:13:24] Pagination details
+[2025-10-02 13:14:02] Pagination details
+[2025-10-02 13:14:07] Processing repair request
+[2025-10-02 13:14:07] Started database transaction
+[2025-10-02 13:14:17] Pagination details
+[2025-10-02 13:14:57] Pagination details
+[2025-10-02 13:31:54] Pagination details
+[2025-10-02 13:41:12] Pagination details
+[2025-10-02 13:42:06] Pagination details
+[2025-10-02 13:45:29] Pagination details
+[2025-10-02 13:45:54] Pagination details
+[2025-10-02 13:46:02] Processing repair request
+[2025-10-02 13:46:02] Started database transaction
+[2025-10-02 13:46:05] Pagination details
+[2025-10-02 13:46:28] Pagination details
+[2025-10-02 13:46:52] Pagination details
+[2025-10-02 13:50:21] Pagination details
+[2025-10-02 13:50:31] Pagination details
+[2025-10-02 13:50:37] Pagination details
+[2025-10-02 13:54:00] Pagination details
+[2025-10-02 13:54:18] Pagination details
+[2025-10-02 13:54:50] Pagination details
+[2025-10-02 13:55:40] Pagination details
+[2025-10-02 13:55:48] Processing repair request
+[2025-10-02 13:55:48] Started database transaction
+[2025-10-02 13:55:51] Pagination details
+[2025-10-02 13:56:43] Pagination details
+[2025-10-02 14:04:44] Pagination details
+[2025-10-02 14:07:31] Pagination details
+[2025-10-02 14:10:16] Pagination details
+[2025-10-02 14:10:31] Pagination details
+[2025-10-02 14:10:34] Pagination details
+[2025-10-02 14:11:37] Pagination details
+[2025-10-02 14:11:46] Pagination details
+[2025-10-02 14:11:48] Pagination details
+[2025-10-02 14:13:25] Pagination details
+[2025-10-02 14:13:41] Pagination details
+[2025-10-02 14:19:46] Pagination details
+[2025-10-02 14:20:39] Pagination details
+[2025-10-02 14:23:21] Pagination details
+[2025-10-02 14:25:29] Pagination details
+[2025-10-02 14:26:50] Pagination details
+[2025-10-02 14:27:01] Pagination details
+[2025-10-02 14:27:13] Pagination details
+[2025-10-02 14:27:56] Pagination details
+[2025-10-02 14:28:00] Pagination details
+[2025-10-02 14:29:53] Pagination details
+[2025-10-02 14:43:49] Pagination details
+[2025-10-02 14:44:03] Pagination details
+[2025-10-02 14:44:24] Pagination details
+[2025-10-02 14:44:48] Pagination details
+[2025-10-02 14:44:54] Processing repair request
+[2025-10-02 14:44:54] Started database transaction
+[2025-10-02 14:44:58] Pagination details
+[2025-10-02 14:45:05] Pagination details
+[2025-10-02 14:45:30] Processing repair request
+[2025-10-02 14:45:30] Started database transaction
+[2025-10-02 14:45:55] Pagination details
+[2025-10-02 14:46:20] Pagination details
+[2025-10-02 14:47:29] Pagination details
+[2025-10-02 14:50:31] Error in delete allocation: Allocation not found
+[2025-10-02 14:50:33] Pagination details
+[2025-10-02 14:50:52] Pagination details
+[2025-10-02 14:52:38] Pagination details
+[2025-10-02 14:53:02] Pagination details
+[2025-10-02 14:53:18] Pagination details
+[2025-10-02 14:56:34] Processing repair request
+[2025-10-02 14:56:34] Started database transaction
+[2025-10-02 14:56:37] Pagination details
+[2025-10-02 14:57:03] Pagination details
+[2025-10-02 15:16:44] Pagination details
+[2025-10-02 15:16:59] Pagination details
+[2025-10-02 16:17:51] Login successful for user 'Tobestic'
+[2025-10-02 16:18:02] Pagination details
+[2025-10-02 16:18:09] Pagination details
+[2025-10-02 16:26:21] Pagination details
+[2025-10-02 16:26:47] Pagination details
+[2025-10-02 16:30:08] Processing repair request
+[2025-10-02 16:30:08] Started database transaction
+[2025-10-02 16:30:12] Pagination details
+[2025-10-02 16:31:06] Pagination details
+[2025-10-02 16:33:58] Processing repair request
+[2025-10-02 16:33:58] Started database transaction
+[2025-10-02 16:34:04] Pagination details
+[2025-10-02 16:34:24] Pagination details
+[2025-10-02 16:37:41] Pagination details
+[2025-10-02 16:37:55] Pagination details
+[2025-10-02 16:48:48] Pagination details
+[2025-10-02 16:50:22] Pagination details
+[2025-10-02 16:53:46] Pagination details
+[2025-10-02 16:54:01] Pagination details
+[2025-10-02 16:54:09] Pagination details
+[2025-10-02 16:55:05] Pagination details
+[2025-10-02 16:55:44] Processing repair request
+[2025-10-02 16:55:44] Started database transaction
+[2025-10-02 16:55:48] Pagination details
+[2025-10-02 16:56:11] Pagination details
+[2025-10-02 16:56:51] Pagination details
+[2025-10-02 16:56:57] Processing repair request
+[2025-10-02 16:56:57] Started database transaction
+[2025-10-02 16:57:01] Pagination details
+[2025-10-02 16:57:29] Pagination details
+[2025-10-02 16:58:29] Pagination details
+[2025-10-02 16:58:32] Pagination details
+[2025-10-02 17:18:30] Pagination details
+[2025-10-02 17:18:43] Pagination details
+[2025-10-02 17:19:45] Pagination details
+[2025-10-02 17:20:02] Pagination details
+[2025-10-02 17:20:14] Processing repair request
+[2025-10-02 17:20:14] Started database transaction
+[2025-10-02 17:20:17] Pagination details
+[2025-10-02 17:20:37] Pagination details
+[2025-10-02 17:20:53] Processing repair request
+[2025-10-02 17:20:54] Started database transaction
+[2025-10-02 17:21:07] Pagination details
+[2025-10-02 17:21:19] Pagination details
+[2025-10-02 17:50:45] Login successful for user 'tobestic'
+[2025-10-02 17:50:49] Pagination details
+[2025-10-02 17:50:58] Pagination details
+[2025-10-02 17:51:31] Pagination details
+[2025-10-02 17:52:28] Pagination details
+[2025-10-02 18:34:13] Processing repair request
+[2025-10-02 18:34:13] Started database transaction
+[2025-10-02 18:34:33] Login successful for user 'Tobestic'
+[2025-10-02 18:34:40] Pagination details
+[2025-10-02 18:35:11] Pagination details
+[2025-10-02 18:35:53] Pagination details
+[2025-10-02 18:36:42] Pagination details
+[2025-10-02 18:36:49] Pagination details
+[2025-10-02 18:37:52] Pagination details
+[2025-10-02 18:40:43] Pagination details
+[2025-10-02 18:41:21] Pagination details
+[2025-10-02 18:44:12] Pagination details
+[2025-10-02 18:45:57] Pagination details
+[2025-10-02 18:46:16] Pagination details
+[2025-10-02 18:46:25] Processing repair request
+[2025-10-02 18:46:25] Started database transaction
+[2025-10-02 18:46:28] Pagination details
+[2025-10-02 18:46:35] Pagination details
+[2025-10-02 18:47:21] Pagination details
+[2025-10-02 18:47:30] Processing repair request
+[2025-10-02 18:47:30] Started database transaction
+[2025-10-02 18:47:34] Pagination details
+[2025-10-02 18:47:46] Pagination details
+[2025-10-02 18:47:57] Pagination details
+[2025-10-02 18:48:02] Pagination details
+[2025-10-02 18:50:36] Pagination details
+[2025-10-02 18:50:45] Pagination details
+[2025-10-02 18:50:49] Pagination details
+[2025-10-02 18:57:12] Pagination details
+[2025-10-02 23:46:16] Login successful for user 'Tobestic'
+[2025-10-02 23:49:47] Pagination details
+[2025-10-02 23:49:51] Pagination details
+[2025-10-02 23:52:42] Pagination details
+[2025-10-02 23:52:51] Pagination details
+[2025-10-02 23:53:12] Pagination details
+[2025-10-02 23:55:28] Processing repair request
+[2025-10-02 23:55:28] Started database transaction
+[2025-10-02 23:55:31] Pagination details
+[2025-10-03 00:06:24] Pagination details
+[2025-10-03 00:08:07] Pagination details
+[2025-10-03 00:10:16] Pagination details
+[2025-10-03 00:11:21] Pagination details
+[2025-10-03 00:11:30] Pagination details
+[2025-10-03 00:17:00] Processing repair request
+[2025-10-03 00:17:00] Started database transaction
+[2025-10-03 00:17:04] Pagination details
+[2025-10-03 00:17:16] Pagination details
+[2025-10-03 00:19:17] Pagination details
+[2025-10-03 00:19:25] Processing repair request
+[2025-10-03 00:19:25] Started database transaction
+[2025-10-03 00:19:29] Pagination details
+[2025-10-03 00:19:35] Pagination details
+[2025-10-03 00:22:57] Pagination details
+[2025-10-03 00:25:04] Pagination details
+[2025-10-03 00:25:16] Processing repair request
+[2025-10-03 00:25:16] Started database transaction
+[2025-10-03 00:25:19] Pagination details
+[2025-10-03 00:25:28] Pagination details
+[2025-10-03 00:26:48] Pagination details
+[2025-10-03 00:26:53] Processing repair request
+[2025-10-03 00:26:53] Started database transaction
+[2025-10-03 00:26:58] Pagination details
+[2025-10-03 00:27:09] Pagination details
+[2025-10-03 00:29:19] Processing repair request
+[2025-10-03 00:29:19] Started database transaction
+[2025-10-03 00:29:22] Pagination details
+[2025-10-03 00:33:08] Pagination details
+[2025-10-03 00:34:06] Pagination details
+[2025-10-03 16:57:23] Login failed: Password mismatch for user 'Tobestic'.
+[2025-10-03 16:57:38] Login successful for user 'tobestic'
+[2025-10-03 16:57:46] Pagination details
+[2025-10-03 17:12:08] Pagination details
+[2025-10-03 17:12:18] Pagination details
+[2025-10-03 17:13:23] Pagination details
+[2025-10-03 17:51:20] Login successful for user 'Tobestic'
+[2025-10-03 17:51:26] Pagination details
+[2025-10-03 17:51:36] Processing repair request
+[2025-10-03 17:51:36] Started database transaction
+[2025-10-03 17:52:28] Pagination details
+[2025-10-03 17:52:38] Pagination details
+[2025-10-03 17:53:16] Pagination details
+[2025-10-03 17:54:27] Pagination details
+[2025-10-03 17:54:34] Processing repair request
+[2025-10-03 17:54:34] Started database transaction
+[2025-10-03 17:54:38] Pagination details
+[2025-10-03 17:54:50] Pagination details
+[2025-10-03 17:55:02] Pagination details
+[2025-10-03 17:55:12] Pagination details
+[2025-10-03 18:14:22] Pagination details
+[2025-10-03 18:19:30] Pagination details
+[2025-10-03 18:19:39] Processing repair request
+[2025-10-03 18:19:39] Started database transaction
+[2025-10-03 18:19:42] Pagination details
+[2025-10-03 18:19:53] Pagination details
+[2025-10-03 18:20:01] Pagination details
+[2025-10-03 18:20:08] Pagination details
+[2025-10-03 18:25:08] Processing repair request
+[2025-10-03 18:25:08] Started database transaction
+[2025-10-03 18:25:11] Pagination details
+[2025-10-03 18:25:49] Pagination details
+[2025-10-03 18:26:00] Pagination details
+[2025-10-03 18:26:09] Pagination details
+[2025-10-03 18:26:16] Processing repair request
+[2025-10-03 18:26:16] Started database transaction
+[2025-10-03 18:27:01] Pagination details
+[2025-10-03 18:27:13] Pagination details
+[2025-10-03 18:29:40] Pagination details
+[2025-10-03 18:29:58] Pagination details
+[2025-10-03 18:30:43] Pagination details
+[2025-10-03 18:30:47] Pagination details
+[2025-10-03 18:33:37] Pagination details
+[2025-10-03 18:33:45] Pagination details
+[2025-10-03 18:34:04] Pagination details
+[2025-10-03 18:34:23] Pagination details
+[2025-10-03 18:34:33] Processing repair request
+[2025-10-03 18:34:34] Started database transaction
+[2025-10-03 18:34:38] Pagination details
+[2025-10-03 18:34:53] Pagination details
+[2025-10-03 18:38:39] Pagination details
+[2025-10-03 18:39:24] Pagination details
+[2025-10-03 18:39:33] Pagination details
+[2025-10-03 22:32:53] Login successful for user 'tobestic'
+[2025-10-03 22:33:04] Pagination details
+[2025-10-03 23:01:00] Login successful for user 'tobestic'
+[2025-10-03 23:01:05] Pagination details
+[2025-10-03 23:02:12] Pagination details
+[2025-10-03 23:02:24] Processing repair request
+[2025-10-03 23:02:24] Started database transaction
+[2025-10-03 23:02:27] Pagination details
+[2025-10-03 23:04:10] Pagination details
+[2025-10-03 23:04:35] Pagination details
+[2025-10-03 23:04:38] Pagination details
+[2025-10-03 23:05:27] Pagination details
+[2025-10-03 23:16:20] Pagination details
+[2025-10-03 23:16:30] Pagination details
+[2025-10-03 23:16:44] Pagination details
+[2025-10-03 23:16:56] Pagination details
+[2025-10-03 23:16:58] Pagination details
+[2025-10-03 23:17:03] Pagination details
+[2025-10-03 23:33:20] Pagination details
+[2025-10-03 23:33:33] Pagination details
+[2025-10-03 23:33:38] Pagination details
+[2025-10-03 23:33:55] Pagination details
+[2025-10-03 23:33:59] Pagination details
+[2025-10-03 23:43:20] Pagination details
+[2025-10-03 23:43:30] Pagination details
+[2025-10-03 23:43:46] Pagination details
+[2025-10-03 23:43:56] Processing repair request
+[2025-10-03 23:43:56] Started database transaction
+[2025-10-03 23:43:58] Pagination details
+[2025-10-03 23:44:08] Pagination details
+[2025-10-03 23:44:49] Pagination details
+[2025-10-03 23:44:53] Pagination details
+[2025-10-03 23:51:02] Pagination details
+[2025-10-03 23:57:44] Pagination details
+[2025-10-03 23:59:49] Pagination details
+[2025-10-04 00:00:00] Pagination details
+[2025-10-04 00:00:53] Pagination details
+[2025-10-04 00:01:06] Processing repair request
+[2025-10-04 00:01:06] Started database transaction
+[2025-10-04 00:01:10] Pagination details
+[2025-10-04 00:01:18] Pagination details
+[2025-10-04 00:02:07] Processing repair request
+[2025-10-04 00:02:07] Started database transaction
+[2025-10-04 00:02:10] Pagination details
+[2025-10-04 00:02:34] Pagination details
+[2025-10-04 00:10:53] Pagination details
+[2025-10-04 00:13:59] Pagination details
+[2025-10-04 00:14:02] Pagination details
+[2025-10-04 00:18:28] Pagination details
+[2025-10-04 00:18:42] Pagination details
+[2025-10-04 00:18:50] Processing repair request
+[2025-10-04 00:18:50] Started database transaction
+[2025-10-04 00:18:54] Pagination details
+[2025-10-04 00:19:05] Pagination details
+[2025-10-04 00:26:22] Pagination details
+[2025-10-04 00:26:34] Pagination details
+[2025-10-04 00:26:56] Pagination details
+[2025-10-04 00:27:04] Processing repair request
+[2025-10-04 00:27:04] Started database transaction
+[2025-10-04 00:27:07] Pagination details
+[2025-10-04 00:27:20] Pagination details
+[2025-10-04 00:27:59] Pagination details
+[2025-10-04 00:28:16] Pagination details
+[2025-10-04 00:28:22] Processing repair request
+[2025-10-04 00:28:22] Started database transaction
+[2025-10-04 00:28:26] Pagination details
+[2025-10-04 00:28:32] Pagination details
+[2025-10-04 00:31:44] Pagination details
+[2025-10-04 00:31:54] Pagination details
+[2025-10-04 00:32:03] Pagination details
+[2025-10-04 00:32:18] Pagination details
+[2025-10-04 00:33:34] Pagination details
+[2025-10-04 00:33:43] Pagination details
+[2025-10-04 00:33:58] Pagination details
+[2025-10-04 00:34:08] Processing repair request
+[2025-10-04 00:34:08] Started database transaction
+[2025-10-04 00:34:12] Pagination details
+[2025-10-04 00:34:21] Pagination details
+[2025-10-04 00:34:25] Pagination details
+[2025-10-04 00:35:03] Pagination details
+[2025-10-04 00:35:33] Pagination details
+[2025-10-04 00:36:50] Pagination details
+[2025-10-04 00:43:30] Pagination details
+[2025-10-04 00:43:36] Pagination details
+[2025-10-04 00:43:39] Pagination details
+[2025-10-04 00:44:31] Pagination details
+[2025-10-04 00:46:48] Pagination details
+[2025-10-04 00:48:24] Pagination details
+[2025-10-04 00:50:01] Pagination details
+[2025-10-04 00:53:44] Pagination details
+[2025-10-04 00:57:07] Pagination details
+[2025-10-04 01:01:50] Pagination details
+[2025-10-04 01:06:42] Pagination details
+[2025-10-04 01:06:52] Pagination details
+[2025-10-04 01:09:46] Pagination details
+[2025-10-04 01:10:13] Pagination details
+[2025-10-04 01:11:17] Pagination details
+[2025-10-04 01:11:21] Pagination details
+[2025-10-04 01:12:03] Pagination details
+[2025-10-04 01:13:38] Pagination details
+[2025-10-04 01:14:59] Pagination details
+[2025-10-04 01:15:09] Pagination details
+[2025-10-04 01:15:26] Pagination details
+[2025-10-04 01:18:18] Pagination details
+[2025-10-04 01:18:33] Pagination details
+[2025-10-04 01:18:39] Pagination details
+[2025-10-04 01:18:49] Pagination details
+[2025-10-04 01:21:25] Pagination details
+[2025-10-04 01:21:31] Pagination details
+[2025-10-04 01:21:38] Pagination details
+[2025-10-04 01:21:46] Pagination details
+[2025-10-04 01:22:18] Pagination details
+[2025-10-04 01:22:35] Pagination details
+[2025-10-04 01:23:02] Pagination details
+[2025-10-04 01:23:13] Processing repair request
+[2025-10-04 01:23:13] Started database transaction
+[2025-10-04 01:23:17] Pagination details
+[2025-10-04 01:24:03] Pagination details
+[2025-10-04 01:24:27] Pagination details
+[2025-10-04 01:25:41] Pagination details
+[2025-10-04 01:26:31] Pagination details
+[2025-10-04 01:26:35] Pagination details
+[2025-10-04 11:08:15] Login successful for user 'tobestic'
+[2025-10-04 11:23:00] Pagination details
+[2025-10-04 11:27:29] Pagination details
+[2025-10-04 11:31:08] Processing repair request
+[2025-10-04 11:31:08] Started database transaction
+[2025-10-04 11:31:11] Pagination details
+[2025-10-04 11:31:38] Pagination details
+[2025-10-04 11:38:17] Pagination details
+[2025-10-04 11:38:53] Pagination details
+[2025-10-04 11:39:29] Pagination details
+[2025-10-04 11:40:41] Pagination details
+[2025-10-04 11:40:55] Pagination details
+[2025-10-04 11:41:15] Processing repair request
+[2025-10-04 11:41:15] Started database transaction
+[2025-10-04 11:41:21] Pagination details
+[2025-10-04 11:41:44] Pagination details
+[2025-10-04 11:42:21] Processing repair request
+[2025-10-04 11:42:21] Started database transaction
+[2025-10-04 11:42:25] Pagination details
+[2025-10-04 11:42:50] Pagination details
+[2025-10-04 11:44:51] Pagination details
+[2025-10-04 11:48:05] Processing repair request
+[2025-10-04 11:48:05] Started database transaction
+[2025-10-04 11:48:08] Pagination details
+[2025-10-04 11:48:18] Pagination details
+[2025-10-04 11:48:21] Pagination details
+[2025-10-04 11:50:04] Pagination details
+[2025-10-04 11:50:14] Pagination details
+[2025-10-04 11:50:19] Pagination details
+[2025-10-04 11:57:40] Pagination details
+[2025-10-04 11:57:52] Pagination details
+[2025-10-04 11:58:08] Pagination details
+[2025-10-04 11:58:15] Processing repair request
+[2025-10-04 11:58:15] Started database transaction
+[2025-10-04 11:58:19] Pagination details
+[2025-10-04 11:58:27] Pagination details
+[2025-10-04 11:58:34] Processing repair request
+[2025-10-04 11:58:34] Started database transaction
+[2025-10-04 11:58:38] Pagination details
+[2025-10-04 11:58:48] Pagination details
+[2025-10-04 12:00:30] Pagination details
+[2025-10-04 12:01:51] Pagination details
+[2025-10-04 12:02:47] Pagination details
+[2025-10-04 12:45:02] Login successful for user 'tobestic'
+[2025-10-04 12:45:08] Pagination details
+[2025-10-04 12:45:44] Pagination details
+[2025-10-04 12:50:05] Pagination details
+[2025-10-04 12:56:37] Pagination details
+[2025-10-04 13:01:49] Pagination details
+[2025-10-04 13:02:03] Pagination details
+[2025-10-04 13:08:34] Pagination details
+[2025-10-04 13:13:16] Pagination details
+[2025-10-04 13:13:21] Processing repair request
+[2025-10-04 13:13:21] Started database transaction
+[2025-10-04 13:13:25] Pagination details
+[2025-10-04 13:13:31] Pagination details
+[2025-10-04 13:13:36] Processing repair request
+[2025-10-04 13:13:36] Started database transaction
+[2025-10-04 13:13:38] Pagination details
+[2025-10-04 13:13:46] Pagination details
+[2025-10-04 13:13:50] Pagination details
+[2025-10-04 13:13:58] Pagination details
+[2025-10-04 13:14:16] Pagination details
+[2025-10-04 13:15:53] Pagination details
+[2025-10-04 13:16:06] Processing repair request
+[2025-10-04 13:16:06] Started database transaction
+[2025-10-04 13:16:10] Pagination details
+[2025-10-04 13:16:27] Pagination details
+[2025-10-04 13:17:20] Pagination details
+[2025-10-04 13:17:24] Pagination details
+[2025-10-04 13:17:34] Pagination details
+[2025-10-04 13:19:52] Pagination details
+[2025-10-04 13:20:05] Pagination details
+[2025-10-04 13:21:18] Pagination details
+[2025-10-04 13:24:28] Pagination details
+[2025-10-04 13:24:54] Processing repair request
+[2025-10-04 13:24:54] Started database transaction
+[2025-10-04 13:24:57] Pagination details
+[2025-10-04 13:25:09] Pagination details
+[2025-10-04 13:25:19] Pagination details
+[2025-10-04 13:28:56] Pagination details
+[2025-10-04 13:31:32] Pagination details
+[2025-10-04 13:32:15] Pagination details
+[2025-10-04 13:32:22] Processing repair request
+[2025-10-04 13:32:22] Started database transaction
+[2025-10-04 13:32:25] Pagination details
+[2025-10-04 13:32:40] Pagination details
+[2025-10-04 13:33:55] Pagination details
+[2025-10-04 13:34:11] Pagination details
+[2025-10-04 13:35:14] Pagination details
+[2025-10-04 13:38:21] Pagination details
+[2025-10-04 13:38:30] Pagination details
+[2025-10-04 13:38:48] Pagination details
+[2025-10-04 13:38:55] Processing repair request
+[2025-10-04 13:38:55] Started database transaction
+[2025-10-04 13:38:59] Pagination details
+[2025-10-04 13:39:15] Pagination details
+[2025-10-04 13:39:18] Pagination details
+[2025-10-04 13:39:43] Pagination details
+[2025-10-04 13:40:30] Pagination details
+[2025-10-04 13:40:49] Processing repair request
+[2025-10-04 13:40:49] Started database transaction
+[2025-10-04 13:40:53] Pagination details
+[2025-10-04 13:41:01] Pagination details
+[2025-10-04 13:41:06] Pagination details
+[2025-10-04 13:41:14] Pagination details
+[2025-10-04 13:41:27] Pagination details
+[2025-10-04 13:41:58] Pagination details
+[2025-10-04 13:42:26] Pagination details
+[2025-10-04 13:42:42] Processing repair request
+[2025-10-04 13:42:42] Started database transaction
+[2025-10-04 13:42:45] Pagination details
+[2025-10-04 13:42:59] Pagination details
+[2025-10-04 13:43:02] Pagination details
+[2025-10-04 13:43:34] Pagination details
+[2025-10-04 13:47:19] Pagination details
+[2025-10-04 13:53:04] Pagination details
+[2025-10-04 13:57:46] Pagination details
+[2025-10-04 21:07:10] Login successful for user 'tobestic'
+[2025-10-04 21:07:17] Pagination details
+[2025-10-04 21:07:23] Processing repair request
+[2025-10-04 21:07:23] Started database transaction
+[2025-10-04 21:07:28] Pagination details
+[2025-10-04 21:07:39] Pagination details
+[2025-10-04 21:07:46] Processing repair request
+[2025-10-04 21:07:47] Started database transaction
+[2025-10-04 21:07:49] Pagination details
+[2025-10-04 21:07:57] Pagination details
+[2025-10-04 21:10:16] Pagination details
+[2025-10-04 21:10:19] Pagination details
+[2025-10-04 21:11:56] Pagination details
+[2025-10-04 21:16:47] Pagination details
+[2025-10-04 21:17:31] Pagination details
+[2025-10-04 21:19:03] Pagination details
+[2025-10-04 21:19:10] Processing repair request
+[2025-10-04 21:19:10] Started database transaction
+[2025-10-04 21:19:14] Pagination details
+[2025-10-04 21:19:29] Pagination details
+[2025-10-04 21:19:33] Pagination details
+[2025-10-04 21:20:45] Pagination details
+[2025-10-04 21:24:15] Pagination details
+[2025-10-04 21:24:22] Processing repair request
+[2025-10-04 21:24:22] Started database transaction
+[2025-10-04 21:24:38] Pagination details
+[2025-10-04 21:24:45] Pagination details
+[2025-10-04 21:25:17] Pagination details
+[2025-10-04 21:25:41] Processing repair request
+[2025-10-04 21:25:41] Started database transaction
+[2025-10-04 21:25:46] Pagination details
+[2025-10-04 21:25:54] Pagination details
+[2025-10-04 21:31:51] Pagination details
+[2025-10-04 21:32:04] Pagination details
+[2025-10-04 21:32:12] Pagination details
+[2025-10-04 21:32:38] Asset updated successfully (ID: 24)
+[2025-10-04 21:32:51] Pagination details
+[2025-10-04 21:33:06] Pagination details
+[2025-10-04 21:33:31] Processing repair request
+[2025-10-04 21:33:31] Started database transaction
+[2025-10-04 21:33:36] Pagination details
+[2025-10-04 21:33:48] Pagination details
+[2025-10-04 21:34:07] Pagination details
+[2025-10-04 21:34:37] Processing repair request
+[2025-10-04 21:34:37] Started database transaction
+[2025-10-04 21:38:18] Pagination details
+[2025-10-04 21:38:26] Processing repair request
+[2025-10-04 21:38:26] Started database transaction
+[2025-10-04 21:38:29] Pagination details
+[2025-10-04 21:38:40] Pagination details
+[2025-10-04 21:38:53] Pagination details
+[2025-10-04 21:41:33] Pagination details
+[2025-10-04 21:41:42] Processing repair request
+[2025-10-04 21:41:42] Started database transaction
+[2025-10-04 21:41:45] Pagination details
+[2025-10-04 21:41:52] Pagination details
+[2025-10-04 21:43:33] Pagination details
+[2025-10-04 21:43:41] Pagination details
+[2025-10-04 21:53:27] Pagination details
+[2025-10-04 21:53:36] Processing repair request
+[2025-10-04 21:53:36] Started database transaction
+[2025-10-04 21:53:39] Pagination details
+[2025-10-04 21:54:10] Pagination details
+[2025-10-04 21:55:22] Pagination details
+[2025-10-04 21:57:42] Pagination details
+[2025-10-04 21:57:58] Pagination details
+[2025-10-04 21:58:44] Processing repair request
+[2025-10-04 21:58:44] Started database transaction
+[2025-10-04 21:58:49] Pagination details
+[2025-10-04 22:02:13] Pagination details
+[2025-10-04 22:04:51] Pagination details
+[2025-10-04 22:06:09] Pagination details
+[2025-10-04 22:10:38] Pagination details
+[2025-10-04 22:25:54] Pagination details
+[2025-10-04 22:26:09] Pagination details
+[2025-10-04 22:29:53] Pagination details
+[2025-10-04 22:43:38] Pagination details
+[2025-10-04 22:48:34] Pagination details
+[2025-10-04 22:48:44] Processing repair request
+[2025-10-04 22:48:44] Started database transaction
+[2025-10-04 22:48:47] Pagination details
+[2025-10-04 22:49:05] Pagination details
+[2025-10-04 22:49:26] Pagination details
+[2025-10-04 22:49:38] Pagination details
+[2025-10-04 22:49:42] Pagination details
+[2025-10-04 22:49:58] Pagination details
+[2025-10-04 22:50:33] Pagination details
+[2025-10-04 22:51:11] Pagination details
+[2025-10-04 22:51:56] Pagination details
+[2025-10-04 22:52:20] Pagination details
+[2025-10-04 22:52:29] Pagination details
+[2025-10-04 22:53:15] Processing repair request
+[2025-10-04 22:53:15] Started database transaction
+[2025-10-04 22:53:18] Pagination details
+[2025-10-04 22:53:26] Pagination details
+[2025-10-04 22:55:21] Pagination details
+[2025-10-04 22:56:52] Pagination details
+[2025-10-04 23:02:42] Pagination details
+[2025-10-04 23:06:27] Pagination details
+[2025-10-04 23:07:32] Pagination details
+[2025-10-04 23:07:46] Pagination details
+[2025-10-04 23:07:54] Pagination details
+[2025-10-04 23:08:02] Pagination details
+[2025-10-04 23:10:12] Pagination details
+[2025-10-04 23:10:26] Pagination details
+[2025-10-04 23:10:33] Processing repair request
+[2025-10-04 23:10:33] Started database transaction
+[2025-10-04 23:10:36] Pagination details
+[2025-10-04 23:10:44] Pagination details
+[2025-10-04 23:11:21] Pagination details
+[2025-10-04 23:12:03] Asset updated successfully (ID: 30)
+[2025-10-04 23:12:21] Pagination details
+[2025-10-04 23:12:36] Pagination details
+[2025-10-04 23:12:46] Processing repair request
+[2025-10-04 23:12:46] Started database transaction
+[2025-10-04 23:12:49] Pagination details
+[2025-10-04 23:12:58] Pagination details
+[2025-10-04 23:14:30] Pagination details
+[2025-10-04 23:24:55] Pagination details
+[2025-10-04 23:25:06] Processing repair request
+[2025-10-04 23:25:06] Started database transaction
+[2025-10-04 23:25:09] Pagination details
+[2025-10-04 23:25:15] Pagination details
+[2025-10-04 23:25:20] Processing repair request
+[2025-10-04 23:25:20] Started database transaction
+[2025-10-04 23:25:23] Pagination details
+[2025-10-04 23:25:29] Pagination details
+[2025-10-04 23:25:57] Pagination details
+[2025-10-04 23:27:56] Pagination details
+[2025-10-04 23:28:16] Processing repair request
+[2025-10-04 23:28:16] Started database transaction
+[2025-10-04 23:28:18] Pagination details
+[2025-10-04 23:28:25] Pagination details
+[2025-10-04 23:28:30] Pagination details
+[2025-10-04 23:33:41] Pagination details
+[2025-10-04 23:35:35] Processing repair request
+[2025-10-04 23:35:35] Started database transaction
+[2025-10-04 23:35:38] Pagination details
+[2025-10-04 23:35:56] Pagination details
+[2025-10-04 23:36:07] Pagination details
+[2025-10-04 23:39:08] Pagination details
+[2025-10-04 23:39:14] Processing repair request
+[2025-10-04 23:39:14] Started database transaction
+[2025-10-04 23:39:16] Pagination details
+[2025-10-04 23:39:23] Pagination details
+[2025-10-04 23:39:28] Processing repair request
+[2025-10-04 23:39:28] Started database transaction
+[2025-10-04 23:39:31] Pagination details
+[2025-10-04 23:39:38] Pagination details
+[2025-10-04 23:39:45] Pagination details
+[2025-10-04 23:39:54] Processing repair request
+[2025-10-04 23:39:54] Started database transaction
+[2025-10-04 23:39:57] Pagination details
+[2025-10-04 23:40:38] Pagination details
+[2025-10-04 23:41:27] Pagination details
+[2025-10-04 23:47:25] Pagination details
+[2025-10-04 23:52:30] Pagination details
+[2025-10-04 23:52:40] Processing repair request
+[2025-10-04 23:52:40] Started database transaction
+[2025-10-04 23:52:44] Pagination details
+[2025-10-04 23:53:02] Pagination details
+[2025-10-04 23:53:08] Pagination details
+[2025-10-04 23:54:47] Processing repair request
+[2025-10-04 23:54:47] Started database transaction
+[2025-10-04 23:54:50] Pagination details
+[2025-10-04 23:55:01] Pagination details
+[2025-10-04 23:55:09] Pagination details
+[2025-10-04 23:55:19] Processing repair request
+[2025-10-04 23:55:19] Started database transaction
+[2025-10-04 23:55:23] Pagination details
+[2025-10-04 23:55:33] Pagination details
+[2025-10-04 23:55:41] Pagination details
+[2025-10-04 23:59:19] Pagination details
+[2025-10-04 23:59:30] Pagination details
+[2025-10-05 00:00:51] Pagination details
+[2025-10-05 00:04:14] Pagination details
+[2025-10-05 00:06:16] Pagination details
+[2025-10-05 00:07:24] Processing repair request
+[2025-10-05 00:07:24] Started database transaction
+[2025-10-05 00:07:27] Pagination details
+[2025-10-05 00:07:34] Pagination details
+[2025-10-05 00:07:39] Processing repair request
+[2025-10-05 00:07:39] Started database transaction
+[2025-10-05 00:07:42] Pagination details
+[2025-10-05 00:07:54] Pagination details
+[2025-10-05 00:08:02] Pagination details
+[2025-10-05 09:52:21] Login successful for user 'tobestic'
+[2025-10-05 09:52:29] Pagination details
+[2025-10-05 09:54:08] Pagination details
+[2025-10-05 09:54:37] Processing repair request
+[2025-10-05 09:54:37] Started database transaction
+[2025-10-05 09:54:40] Pagination details
+[2025-10-05 09:54:47] Pagination details
+[2025-10-05 09:55:00] Processing repair request
+[2025-10-05 09:55:00] Started database transaction
+[2025-10-05 09:55:02] Pagination details
+[2025-10-05 09:55:09] Pagination details
+[2025-10-05 09:55:16] Pagination details
+[2025-10-05 09:55:30] Processing repair request
+[2025-10-05 09:55:30] Started database transaction
+[2025-10-05 09:55:34] Pagination details
+[2025-10-05 09:55:42] Pagination details
+[2025-10-05 09:55:46] Pagination details
+[2025-10-05 09:55:50] Pagination details
+[2025-10-05 09:57:46] Processing repair request
+[2025-10-05 09:57:46] Started database transaction
+[2025-10-05 09:57:49] Pagination details
+[2025-10-05 09:57:56] Pagination details
+[2025-10-05 09:58:02] Pagination details
+[2025-10-05 09:58:08] Pagination details
+[2025-10-05 09:58:58] Pagination details
+[2025-10-05 10:20:38] Pagination details
+[2025-10-05 10:20:47] Processing repair request
+[2025-10-05 10:20:47] Started database transaction
+[2025-10-05 10:20:51] Pagination details
+[2025-10-05 10:20:58] Pagination details
+[2025-10-05 10:21:56] Pagination details
+[2025-10-05 10:22:35] Pagination details
+[2025-10-05 10:35:20] Pagination details
+[2025-10-05 10:36:17] Pagination details
+[2025-10-05 10:36:23] Processing repair request
+[2025-10-05 10:36:23] Started database transaction
+[2025-10-05 10:36:23] PHP Error: [2] Undefined array key "floor" in C:\xampp\htdocs\inventory_sys\admindashboard\staffallocation\submit_repair.php on line 213
+[2025-10-05 10:36:23] Application error
+[2025-10-05 10:39:19] Pagination details
+[2025-10-05 10:39:23] Processing repair request
+[2025-10-05 10:39:23] Started database transaction
+[2025-10-05 10:39:27] Pagination details
+[2025-10-05 10:40:40] Pagination details
+[2025-10-05 10:40:44] Processing repair request
+[2025-10-05 10:40:44] Started database transaction
+[2025-10-05 10:40:47] Pagination details
+[2025-10-05 14:43:41] Login successful for user 'tobestic'
+[2025-10-05 14:43:52] Pagination details
+[2025-10-05 14:46:47] Pagination details
+[2025-10-05 14:48:14] Pagination details
+[2025-10-05 14:48:48] Processing repair request
+[2025-10-05 14:48:48] Started database transaction
+[2025-10-05 14:48:52] Pagination details
+[2025-10-05 14:51:08] Pagination details
+[2025-10-05 14:51:33] Processing repair request
+[2025-10-05 14:51:33] Started database transaction
+[2025-10-05 14:51:35] Pagination details
+[2025-10-05 14:52:55] Pagination details
+[2025-10-05 14:53:15] Processing repair request
+[2025-10-05 14:53:15] Started database transaction
+[2025-10-05 14:53:19] Pagination details
+[2025-10-05 14:58:24] Pagination details
+[2025-10-05 14:58:51] Pagination details
+[2025-10-05 14:58:56] Processing repair request
+[2025-10-05 14:58:56] Started database transaction
+[2025-10-05 14:59:00] Pagination details
+[2025-10-05 14:59:06] Pagination details
+[2025-10-05 15:57:23] Login successful for user 'tobestic'
+[2025-10-05 15:57:35] Pagination details
+[2025-10-05 15:58:14] Processing repair request
+[2025-10-05 15:58:15] Started database transaction
+[2025-10-05 15:58:34] Pagination details
+[2025-10-05 15:58:43] Pagination details
+[2025-10-05 15:59:19] Pagination details
+[2025-10-05 16:01:41] Processing repair request
+[2025-10-05 16:01:41] Started database transaction
+[2025-10-05 16:01:45] Pagination details
+[2025-10-05 16:01:52] Pagination details
+[2025-10-05 16:02:11] Pagination details
+[2025-10-05 16:03:17] Processing repair request
+[2025-10-05 16:03:17] Started database transaction
+[2025-10-05 16:03:21] Pagination details
+[2025-10-05 16:03:29] Pagination details
+[2025-10-05 16:03:34] Pagination details
+[2025-10-05 16:03:55] Processing repair request
+[2025-10-05 16:03:55] Started database transaction
+[2025-10-05 16:04:00] Pagination details
+[2025-10-05 16:04:08] Pagination details
+[2025-10-05 16:04:12] Pagination details
+[2025-10-05 16:04:18] Pagination details
+[2025-10-05 16:04:22] Processing repair request
+[2025-10-05 16:04:22] Started database transaction
+[2025-10-05 16:04:26] Pagination details
+[2025-10-05 16:04:35] Pagination details
+[2025-10-05 18:10:38] Login successful for user 'tobestic'
+[2025-10-05 18:10:48] Pagination details
+[2025-10-05 18:12:08] Pagination details
+[2025-10-05 18:13:55] Login successful for user 'daraminds'
+[2025-10-05 18:14:08] Pagination details
+[2025-10-05 18:22:25] Pagination details
+[2025-10-05 18:24:19] Pagination details
+[2025-10-05 18:25:19] Pagination details
+[2025-10-05 18:25:53] Pagination details
+[2025-10-05 18:34:34] Pagination details
+[2025-10-05 18:34:58] Pagination details
+[2025-10-05 18:45:11] Pagination details
+[2025-10-05 18:45:16] Processing repair request
+[2025-10-05 18:45:16] Started database transaction
+[2025-10-05 18:45:19] Pagination details
+[2025-10-05 18:46:14] Pagination details
+[2025-10-05 18:46:51] Pagination details
+[2025-10-05 18:46:59] Pagination details
+[2025-10-05 18:47:04] Processing repair request
+[2025-10-05 18:47:04] Started database transaction
+[2025-10-05 18:47:07] Pagination details
+[2025-10-05 18:47:19] Pagination details
+[2025-10-05 18:47:32] Pagination details
+[2025-10-05 18:47:44] Pagination details
+[2025-10-05 18:48:12] Pagination details
+[2025-10-05 18:48:18] Pagination details

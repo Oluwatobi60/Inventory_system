@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__) . "/../include/config.php";
+require_once dirname(__FILE__) . "/../../include/config.php";
 header('Content-Type: application/json');
 
 // Only allow POST requests

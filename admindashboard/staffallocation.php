@@ -128,8 +128,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit-request'])) {
                 throw new Exception("Missing required fields for asset #" . ($i + 1));
             }
 
-            // Check available quantity with FOR UPDATE lock
-            $sql = "SELECT quantity FROM asset_table WHERE asset_name = :asset FOR UPDATE";
+            // Fetch asset ID from asset_table
+            $sql = "SELECT id, quantity FROM asset_table WHERE asset_name = :asset FOR UPDATE";
             $stmt = $conn->prepare($sql);
             $stmt->bindParam(':asset', $assetName, PDO::PARAM_STR);
             $stmt->execute();
@@ -139,39 +139,64 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit-request'])) {
                 throw new Exception("Asset '$assetName' not found");
             }
 
+            $assetId = $result['id'];
             $availableQty = $result['quantity'];
             if ($availableQty < $qty) {
                 throw new Exception("Insufficient quantity for '$assetName'. Available: $availableQty, Requested: $qty");
             }
-            
-            // Insert request with timestamp
-            $sql = "INSERT INTO staff_table (reg_no, asset_name, description, quantity, category, department, floor, requested_by, request_date) 
-                    VALUES (:reg_no, :asset_name, :description, :quantity, :category, :department, :floor, :requested_by, :date)";
+
+            // Check if asset already allocated to this department and floor
+            $sql = "SELECT id, quantity FROM staff_table WHERE asset_id = :asset_id AND department = :department AND floor = :floor";
             $stmt = $conn->prepare($sql);
-            
-            // Convert date to datetime format
-            $datetime = date('Y-m-d H:i:s', strtotime($date));
-            
-            $stmt->bindParam(':reg_no', $regNo, PDO::PARAM_STR);
-            $stmt->bindParam(':asset_name', $assetName, PDO::PARAM_STR);
-            $stmt->bindParam(':description', $description, PDO::PARAM_STR);
-            $stmt->bindParam(':quantity', $qty, PDO::PARAM_INT);
-            $stmt->bindParam(':category', $category, PDO::PARAM_STR);
+            $stmt->bindParam(':asset_id', $assetId, PDO::PARAM_INT);
             $stmt->bindParam(':department', $department, PDO::PARAM_STR);
             $stmt->bindParam(':floor', $floor, PDO::PARAM_STR);
-            $stmt->bindParam(':requested_by', $requestedBy, PDO::PARAM_STR);
-            $stmt->bindParam(':date', $datetime, PDO::PARAM_STR);
-            
-            if (!$stmt->execute()) {
-                throw new Exception("Failed to insert request for $assetName");
+            $stmt->execute();
+            $existing = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($existing) {
+                // Update quantity in staff_table
+                $newQty = $existing['quantity'] + $qty;
+                $sql = "UPDATE staff_table SET quantity = :quantity, reg_no = :reg_no, description = :description, category = :category, requested_by = :requested_by, request_date = :date
+                        WHERE id = :id";
+                $stmt = $conn->prepare($sql);
+                $datetime = date('Y-m-d H:i:s', strtotime($date));
+                $stmt->bindParam(':quantity', $newQty, PDO::PARAM_INT);
+                $stmt->bindParam(':reg_no', $regNo, PDO::PARAM_STR);
+                $stmt->bindParam(':description', $description, PDO::PARAM_STR);
+                $stmt->bindParam(':category', $category, PDO::PARAM_STR);
+                $stmt->bindParam(':requested_by', $requestedBy, PDO::PARAM_STR);
+                $stmt->bindParam(':date', $datetime, PDO::PARAM_STR);
+                $stmt->bindParam(':id', $existing['id'], PDO::PARAM_INT);
+                if (!$stmt->execute()) {
+                    throw new Exception("Failed to update allocation for $assetName");
+                }
+            } else {
+                // Insert new allocation with asset_id
+                $sql = "INSERT INTO staff_table (asset_id, reg_no, asset_name, description, quantity, category, department, floor, requested_by, request_date) 
+                        VALUES (:asset_id, :reg_no, :asset_name, :description, :quantity, :category, :department, :floor, :requested_by, :date)";
+                $stmt = $conn->prepare($sql);
+                $datetime = date('Y-m-d H:i:s', strtotime($date));
+                $stmt->bindParam(':asset_id', $assetId, PDO::PARAM_INT);
+                $stmt->bindParam(':reg_no', $regNo, PDO::PARAM_STR);
+                $stmt->bindParam(':asset_name', $assetName, PDO::PARAM_STR);
+                $stmt->bindParam(':description', $description, PDO::PARAM_STR);
+                $stmt->bindParam(':quantity', $qty, PDO::PARAM_INT);
+                $stmt->bindParam(':category', $category, PDO::PARAM_STR);
+                $stmt->bindParam(':department', $department, PDO::PARAM_STR);
+                $stmt->bindParam(':floor', $floor, PDO::PARAM_STR);
+                $stmt->bindParam(':requested_by', $requestedBy, PDO::PARAM_STR);
+                $stmt->bindParam(':date', $datetime, PDO::PARAM_STR);
+                if (!$stmt->execute()) {
+                    throw new Exception("Failed to insert request for $assetName");
+                }
             }
 
             // Update asset quantity
-            $sql = "UPDATE asset_table SET quantity = quantity - :qty WHERE asset_name = :asset_name";
+            $sql = "UPDATE asset_table SET quantity = quantity - :qty WHERE id = :asset_id";
             $stmt = $conn->prepare($sql);
             $stmt->bindParam(':qty', $qty, PDO::PARAM_INT);
-            $stmt->bindParam(':asset_name', $assetName, PDO::PARAM_STR);
-            
+            $stmt->bindParam(':asset_id', $assetId, PDO::PARAM_INT);
             if (!$stmt->execute()) {
                 throw new Exception("Failed to update quantity for $assetName");
             }
@@ -182,7 +207,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit-request'])) {
         $_SESSION['success_message'] = 'All assets allocated successfully!';
         echo '<script>window.location.href = "staffallocation.php";</script>';
         exit;
-        
+
     } catch (Exception $e) {
         // Roll back the transaction on error
         if ($conn->inTransaction()) {
@@ -617,6 +642,9 @@ if (isset($_SESSION['success_message'])) {
     <!-- All Jquery -->
     <!-- ============================================================== -->
     <script src="assets/libs/jquery/dist/jquery.min.js"></script>
+    <!-- Add jQuery UI for autocomplete support -->
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
     <!-- Bootstrap tether Core JavaScript -->
     <script src="assets/libs/popper.js/dist/umd/popper.min.js"></script>
     <script src="assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -727,7 +755,181 @@ if (isset($_SESSION['success_message'])) {
             }
         });
     });
+
+    function promptRepairCount(assetId, maxQty, assetInfo) {
+        let count = prompt("Enter number of units to mark as 'Need Repair' (max: " + maxQty + "):", "1");
+        if (count === null) return; // Cancelled
+        count = parseInt(count, 10);
+        if (isNaN(count) || count < 1 || count > maxQty) {
+            alert("Please enter a valid number between 1 and " + maxQty);
+            return;
+        }
+        // Pass the button element to markForRepair
+        const button = event.target.closest('button');
+        markForRepair(assetId, assetInfo, count, button);
+    }
+
+    // Update markForRepair to accept button as argument
+    async function markForRepair(assetId, assetInfo, count = 1, button = null) {
+        if (!button) button = document.activeElement;
+        try {
+            button.disabled = true;
+            button.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Processing...';
+
+            // Use relative path for AJAX
+            const response = await fetch('staffallocation/submit_repair.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    asset_id: assetId,
+                    asset_info: assetInfo,
+                    quantity: count
+                })
+            });
+
+            let data;
+            try {
+                data = await response.json();
+            } catch (e) {
+                // If response is not valid JSON, show error and restore button
+                button.disabled = false;
+                button.innerHTML = '<i class="fa fa-wrench"></i> Need Repair';
+                alert('Server error: Invalid response format.');
+                return;
+            }
+
+            if (data.success) {
+                const disabledBtn = document.createElement('button');
+                disabledBtn.className = 'btn btn-secondary btn-sm';
+                disabledBtn.disabled = true;
+                disabledBtn.innerHTML = '<i class="fa fa-wrench"></i> Under Repair';
+                button.parentNode.replaceChild(disabledBtn, button);
+                alert('Asset has been marked for repair');
+            } else {
+                button.disabled = false;
+                button.innerHTML = '<i class="fa fa-wrench"></i> Need Repair';
+                alert(data.message || 'Failed to mark asset for repair');
+            }
+        } catch (error) {
+            if (button) {
+                button.disabled = false;
+                button.innerHTML = '<i class="fa fa-wrench"></i> Need Repair';
+            }
+            alert('An error occurred while marking the asset for repair');
+        }
+    }
+
+    // Update markRepairCompleted to accept button as argument and use relative path
+    async function markRepairCompleted(assetId, button = null) {
+        if (!button) button = document.activeElement;
+        try {
+            button.disabled = true;
+            button.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Processing...';
+
+            // Use relative path for AJAX
+            const response = await fetch('staffallocation/complete_repair.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ asset_id: assetId })
+            });
+
+            let data;
+            try {
+                data = await response.json();
+            } catch (e) {
+                button.disabled = false;
+                button.innerHTML = '<i class="fa fa-check"></i> Repair Completed';
+                alert('Server error: Invalid response format.');
+                return;
+            }
+
+            if (data.success) {
+                button.innerHTML = '<i class="fa fa-check"></i> Repair Completed';
+                button.className = 'btn btn-success btn-sm';
+                button.disabled = true;
+                alert('Repair marked as completed');
+            } else {
+                button.disabled = false;
+                button.innerHTML = '<i class="fa fa-check"></i> Repair Completed';
+                alert(data.message || 'Failed to mark repair as completed');
+            }
+        } catch (error) {
+            button.disabled = false;
+            button.innerHTML = '<i class="fa fa-check"></i> Repair Completed';
+            alert('An error occurred while marking the repair as completed');
+        }
+    }
+
+    // Withdraw asset function
+    async function withdrawAsset(assetId, button = null) {
+        if (!button) button = document.activeElement;
+        try {
+            // Prompt for quantity to withdraw
+            let qty = prompt('Enter quantity to withdraw:', '1');
+            if (qty === null) return; // Cancelled
+            qty = parseInt(qty, 10);
+            if (isNaN(qty) || qty < 1) {
+                alert('Please enter a valid quantity.');
+                return;
+            }
+            // Prompt for reason
+            let reason = prompt('Enter reason for withdrawal:', '');
+            if (reason === null || reason.trim() === '') {
+                alert('Withdrawal reason is required.');
+                return;
+            }
+            // Optionally, prompt for withdrawn_by (could use session user)
+            let withdrawn_by = 'admin'; // Replace with actual user if available
+
+            button.disabled = true;
+            button.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Processing...';
+            // Use relative path for fetch
+            const response = await fetch('staffallocation/withdraw_asset.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ asset_id: assetId, quantity: qty, withdrawn_by, reason })
+            });
+            let data;
+            try {
+                data = await response.json();
+            } catch (e) {
+                button.disabled = false;
+                button.innerHTML = '<i class="fa fa-ban"></i> Withdrawn';
+                alert('Server error: Invalid response format.');
+                return;
+            }
+            if (data.success) {
+                button.innerHTML = '<i class="fa fa-ban"></i> Withdrawn';
+                button.className = 'btn btn-danger btn-sm';
+                button.disabled = true;
+                alert('Asset has been withdrawn');
+                location.reload();
+            } else {
+                button.disabled = false;
+                button.innerHTML = '<i class="fa fa-ban"></i> Withdrawn';
+                alert(data.message || 'Failed to withdraw asset');
+            }
+        } catch (error) {
+            console.error('Error withdrawing asset:', error);
+            if (button) {
+                button.disabled = false;
+                button.innerHTML = '<i class="fa fa-ban"></i> Withdrawn';
+            }
+            alert('An error occurred while withdrawing the asset');
+        }
+    }
     </script>
+
+    
 </body>
 
 </html>

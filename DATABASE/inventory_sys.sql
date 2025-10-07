@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 27, 2025 at 05:10 PM
+-- Generation Time: Oct 05, 2025 at 07:06 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -20,6 +20,33 @@ SET time_zone = "+00:00";
 --
 -- Database: `inventory_sys`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `asset_replacement_log`
+--
+
+CREATE TABLE `asset_replacement_log` (
+  `id` int(11) NOT NULL,
+  `asset_id` int(11) NOT NULL,
+  `replaced_quantity` int(11) NOT NULL,
+  `replaced_at` datetime DEFAULT current_timestamp(),
+  `replaced` int(11) NOT NULL,
+  `reg_no` varchar(30) NOT NULL,
+  `asset_name` varchar(40) NOT NULL,
+  `department` varchar(30) NOT NULL,
+  `floor` varchar(30) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `asset_replacement_log`
+--
+
+INSERT INTO `asset_replacement_log` (`id`, `asset_id`, `replaced_quantity`, `replaced_at`, `replaced`, `reg_no`, `asset_name`, `department`, `floor`) VALUES
+(22, 72, 2, '2025-10-05 15:03:33', 1, 'ISL761', 'HP Laserjet Black Printer', 'Nursing1', 'First Floor'),
+(23, 71, 2, '2025-10-05 15:04:12', 1, 'ISL227', 'MAC BOOK', 'Nursing1', 'First Floor'),
+(24, 72, 2, '2025-10-05 17:48:17', 1, 'ISL761', 'HP Laserjet Black Printer', 'Nursing1', 'First Floor');
 
 -- --------------------------------------------------------
 
@@ -42,9 +69,10 @@ CREATE TABLE `asset_table` (
 --
 
 INSERT INTO `asset_table` (`id`, `reg_no`, `asset_name`, `description`, `quantity`, `category`, `dateofpurchase`) VALUES
-(23, 'ISL158', 'HP 840 G3', 'All are bought with good condition', '48', 'Laptops', '2025-09-09'),
+(23, 'ISL158', 'HP 840 G3', 'All are bought with good condition', '3', 'Laptops', '2025-09-09'),
 (24, 'ISL913', 'HP 820 G3', 'Everything is in good condition', '4', 'Laptops', '2025-09-11'),
-(25, 'ISL707', 'HP Laserjet Black Printer', 'Good', '1', 'Printers', '2025-09-16');
+(29, 'ISL227', 'MAC BOOK', 'dfsdfsdfss', '7', 'Laptops', '2025-10-04'),
+(30, 'ISL761', 'HP Laserjet Black Printer', 'ddcdd', '9', 'Printers', '2025-10-04');
 
 -- --------------------------------------------------------
 
@@ -88,7 +116,37 @@ CREATE TABLE `category` (
 INSERT INTO `category` (`id`, `category`) VALUES
 (5, 'Laptops'),
 (13, 'Printers'),
-(16, 'Desktops');
+(16, 'Desktops'),
+(21, 'AC');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `completed_asset`
+--
+
+CREATE TABLE `completed_asset` (
+  `id` int(11) NOT NULL,
+  `asset_id` int(11) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `status` varchar(30) NOT NULL,
+  `floor` varchar(30) NOT NULL,
+  `completed` int(11) NOT NULL,
+  `completed_date` varchar(30) NOT NULL,
+  `reg_no` varchar(20) NOT NULL,
+  `asset_name` varchar(30) NOT NULL,
+  `department` varchar(30) NOT NULL,
+  `reported_by` varchar(30) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `completed_asset`
+--
+
+INSERT INTO `completed_asset` (`id`, `asset_id`, `quantity`, `status`, `floor`, `completed`, `completed_date`, `reg_no`, `asset_name`, `department`, `reported_by`) VALUES
+(43, 71, 1, 'Repair Completed', 'First Floor', 1, '2025-10-05 13:59:03', 'ISL227', 'MAC BOOK', 'Nursing1', 'Tobestic'),
+(44, 73, 1, 'Repair Completed', 'Admin building', 1, '2025-10-05 15:04:30', 'ISL913', 'HP 820 G3', 'Facility', 'Tobestic'),
+(45, 73, 1, 'Repair Completed', 'Admin building', 1, '2025-10-05 17:46:55', 'ISL913', 'HP 820 G3', 'Facility', 'Tobestic');
 
 -- --------------------------------------------------------
 
@@ -160,10 +218,8 @@ CREATE TABLE `maintenance_table` (
 --
 
 INSERT INTO `maintenance_table` (`id`, `reg_no`, `asset_name`, `description`, `category`, `department`, `last_service`, `next_service`) VALUES
-(17, 'ISL158', 'HP 840 G3', 'All are bought with good condition', 'Laptops', '3RD FLOOR NURSING STATION', '2025-09-09', '2025-12-08'),
 (18, 'ISL707', 'HP Laserjet Black Printer', 'Good', 'Printers', 'Nursing1', '2025-09-16', '2025-11-15'),
-(19, 'ISL707', 'HP Laserjet Black Printer', 'Good', 'Printers', 'Nursing2', '2025-09-16', '2025-11-15'),
-(20, 'ISL707', 'HP Laserjet Black Printer', 'Good', 'Printers', 'Nursing3', '2025-09-16', '2025-11-15');
+(19, 'ISL707', 'HP Laserjet Black Printer', 'Good', 'Printers', 'Nursing2', '2025-09-16', '2025-11-15');
 
 -- --------------------------------------------------------
 
@@ -183,10 +239,12 @@ CREATE TABLE `repair_asset` (
   `quantity` int(11) DEFAULT 1,
   `report_date` datetime DEFAULT current_timestamp(),
   `status` varchar(50) DEFAULT 'Under Repair',
+  `floor` varchar(30) NOT NULL,
   `completed_date` varchar(40) NOT NULL,
   `completed` int(11) NOT NULL,
   `withdrawn_date` varchar(30) NOT NULL,
   `withdrawn` int(11) NOT NULL,
+  `withdrawn_reason` text NOT NULL,
   `replaced_date` varchar(30) NOT NULL,
   `replaced` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -195,14 +253,14 @@ CREATE TABLE `repair_asset` (
 -- Dumping data for table `repair_asset`
 --
 
-INSERT INTO `repair_asset` (`id`, `asset_id`, `reg_no`, `asset_name`, `department`, `reported_by`, `description`, `category`, `quantity`, `report_date`, `status`, `completed_date`, `completed`, `withdrawn_date`, `withdrawn`, `replaced_date`, `replaced`) VALUES
-(41, 43, 'ISL158', 'HP 840 G3', 'Nursing5', 'Odeyemi Oluwatobi', 'Marked for repair', 'General', 1, '2025-09-17 09:53:47', NULL, '2025-09-17 09:58:30', 1, '', 0, '', 0),
-(42, 43, 'ISL158', 'HP 840 G3', 'Nursing5', 'Odeyemi Oluwatobi', 'Marked for repair', 'General', 1, '2025-09-17 10:01:25', NULL, '', 0, '2025-09-17 10:01:31', 1, '2025-09-17 10:04:11', 1),
-(43, 43, 'ISL158', 'HP 840 G3', 'Nursing5', 'Odeyemi Oluwatobi', 'Marked for repair', 'General', 1, '2025-09-17 10:05:36', NULL, '', 0, '2025-09-18 22:43:59', 1, '2025-09-18 22:44:23', 1),
-(44, 44, 'ISL707', 'HP Laserjet Black Printer', 'Nursing3', 'Odeyemi Oluwatobi', 'Marked for repair', 'General', 1, '2025-09-18 22:45:42', NULL, '2025-09-18 22:46:04', 1, '', 0, '', 0),
-(45, 44, 'ISL707', 'HP Laserjet Black Printer', 'Nursing3', 'Daramola Damola', 'Marked for repair', 'General', 1, '2025-09-18 22:53:11', 'Under Repair', '', 0, '', 0, '', 0),
-(46, 43, 'ISL158', 'HP 840 G3', 'Nursing5', 'Odeyemi Oluwatobi', 'Marked for repair', 'General', 1, '2025-09-22 21:19:44', NULL, '2025-09-23 10:21:54', 1, '', 0, '', 0),
-(47, 43, 'ISL158', 'HP 840 G3', 'Nursing5', 'Daramola Damola', 'Marked for repair', 'General', 1, '2025-09-23 10:22:02', 'Under Repair', '', 0, '', 0, '', 0);
+INSERT INTO `repair_asset` (`id`, `asset_id`, `reg_no`, `asset_name`, `department`, `reported_by`, `description`, `category`, `quantity`, `report_date`, `status`, `floor`, `completed_date`, `completed`, `withdrawn_date`, `withdrawn`, `withdrawn_reason`, `replaced_date`, `replaced`) VALUES
+(153, 72, 'ISL761', 'HP Laserjet Black Printer', 'Nursing1', 'Odeyemi Oluwatobi', 'Marked for repair', 'General', 1, '2025-10-05 14:58:15', NULL, 'First Floor', '', 0, '2025-10-05 14:58:42', 1, 'rde', '2025-10-05 14:59:08', 1),
+(154, 71, 'ISL227', 'MAC BOOK', 'Nursing1', 'Odeyemi Oluwatobi', 'Marked for repair', 'General', 1, '2025-10-05 15:01:41', NULL, 'First Floor', '', 0, '2025-10-05 15:01:51', 1, 'as', '2025-10-05 15:01:56', 1),
+(155, 72, 'ISL761', 'HP Laserjet Black Printer', 'Nursing1', 'Odeyemi Oluwatobi', 'Marked for repair', 'General', 2, '2025-10-05 15:03:17', NULL, 'First Floor', '', 0, '2025-10-05 15:03:27', 1, 'df', '2025-10-05 15:03:33', 1),
+(156, 71, 'ISL227', 'MAC BOOK', 'Nursing1', 'Odeyemi Oluwatobi', 'Marked for repair', 'General', 2, '2025-10-05 15:03:55', NULL, 'First Floor', '', 0, '2025-10-05 15:04:07', 1, 'dfg', '2025-10-05 15:04:12', 1),
+(157, 73, 'ISL913', 'HP 820 G3', 'Facility', 'Tobestic', 'Marked for repair', 'General', 0, '2025-10-05 15:04:22', NULL, 'Admin building', '2025-10-05 15:04:30', 1, '', 0, '', '', 0),
+(158, 73, 'ISL913', 'HP 820 G3', 'Facility', 'Tobestic', 'Marked for repair', 'General', 0, '2025-10-05 17:45:16', NULL, 'Admin building', '2025-10-05 17:46:55', 1, '', 0, '', '', 0),
+(159, 72, 'ISL761', 'HP Laserjet Black Printer', 'Nursing1', 'Daramola Damola', 'Marked for repair', 'General', 2, '2025-10-05 17:47:04', NULL, 'First Floor', '', 0, '2025-10-05 17:47:43', 1, 'wer', '2025-10-05 17:48:17', 1);
 
 -- --------------------------------------------------------
 
@@ -243,7 +301,6 @@ CREATE TABLE `role` (
 
 INSERT INTO `role` (`id`, `user_role`) VALUES
 (1, 'admin'),
-(2, 'user'),
 (3, 'hod'),
 (7, 'procurement');
 
@@ -255,6 +312,7 @@ INSERT INTO `role` (`id`, `user_role`) VALUES
 
 CREATE TABLE `staff_table` (
   `id` int(11) NOT NULL,
+  `asset_id` int(11) NOT NULL,
   `reg_no` varchar(100) NOT NULL,
   `asset_name` varchar(100) NOT NULL,
   `description` varchar(200) NOT NULL,
@@ -264,9 +322,6 @@ CREATE TABLE `staff_table` (
   `floor` varchar(100) NOT NULL,
   `requested_by` varchar(100) NOT NULL,
   `request_date` varchar(100) NOT NULL,
-  `hod_approved` int(11) NOT NULL,
-  `pro_approved` int(11) NOT NULL,
-  `approval_date` varchar(100) NOT NULL,
   `status` varchar(50) DEFAULT NULL,
   `withdrawn` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -275,9 +330,10 @@ CREATE TABLE `staff_table` (
 -- Dumping data for table `staff_table`
 --
 
-INSERT INTO `staff_table` (`id`, `reg_no`, `asset_name`, `description`, `quantity`, `category`, `department`, `floor`, `requested_by`, `request_date`, `hod_approved`, `pro_approved`, `approval_date`, `status`, `withdrawn`) VALUES
-(43, 'ISL158', 'HP 840 G3', 'All are bought with good condition', '1', 'Laptops', 'Nursing5', 'Fifth Floor', 'Tobestic', '2025-09-17 09:51:00', 0, 0, '', 'Under Repair', 0),
-(44, 'ISL707', 'HP Laserjet Black Printer', 'Good', '1', 'Printers', 'Nursing3', 'Third Floor', 'Tobestic', '2025-09-18 22:44:00', 0, 0, '', 'Under Repair', 0);
+INSERT INTO `staff_table` (`id`, `asset_id`, `reg_no`, `asset_name`, `description`, `quantity`, `category`, `department`, `floor`, `requested_by`, `request_date`, `status`, `withdrawn`) VALUES
+(71, 29, 'ISL227', 'MAC BOOK', 'dfsdfsdfss', '7', 'Laptops', 'Nursing1', 'First Floor', 'Tobestic', '2025-10-04 22:10:00', NULL, 0),
+(72, 30, 'ISL761', 'HP Laserjet Black Printer', 'ddcdd', '9', 'Printers', 'Nursing1', 'First Floor', 'Tobestic', '2025-10-04 22:12:00', NULL, 0),
+(73, 24, 'ISL913', 'HP 820 G3', 'Everything is in good condition', '4', 'Laptops', 'Facility', 'Admin building', 'Tobestic', '2025-10-05 08:52:00', NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -309,9 +365,46 @@ INSERT INTO `user_table` (`id`, `firstname`, `lastname`, `username`, `email`, `p
 (17, 'Ola', 'Facility', 'facility', 'fas@gmail.com', '$2y$10$SbeccdeGSAcNkGoiFfINdOGL4Q4S/g08js3hYlMicWAVAkVMtfGUS', 'procurement', '08154883267', 'Facility'),
 (18, 'Tim', 'user', 'user', 'user@gmail.com', '$2y$10$/ia23/q1H5qsIR8gO7gsLODObp6LKPQK3hieEzHwN2Kr8i4TkDef.', 'hod', '08154883278', 'Facility');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `withdrawn_asset`
+--
+
+CREATE TABLE `withdrawn_asset` (
+  `id` int(11) NOT NULL,
+  `asset_id` int(11) NOT NULL,
+  `reg_no` varchar(30) NOT NULL,
+  `asset_name` varchar(40) NOT NULL,
+  `department` varchar(40) NOT NULL,
+  `floor` varchar(30) NOT NULL,
+  `withdrawn_date` varchar(40) NOT NULL,
+  `withdrawn_by` varchar(40) NOT NULL,
+  `withdrawn_reason` text NOT NULL,
+  `qty` int(11) NOT NULL,
+  `status` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `withdrawn_asset`
+--
+
+INSERT INTO `withdrawn_asset` (`id`, `asset_id`, `reg_no`, `asset_name`, `department`, `floor`, `withdrawn_date`, `withdrawn_by`, `withdrawn_reason`, `qty`, `status`) VALUES
+(70, 72, 'ISL761', 'HP Laserjet Black Printer', 'Nursing1', 'First Floor', '2025-10-05 14:58:42', 'admin', 'rde', 1, 1),
+(71, 71, 'ISL227', 'MAC BOOK', 'Nursing1', 'First Floor', '2025-10-05 15:01:51', 'admin', 'as', 1, 1),
+(72, 72, 'ISL761', 'HP Laserjet Black Printer', 'Nursing1', 'First Floor', '2025-10-05 15:03:28', 'admin', 'df', 1, 0),
+(73, 71, 'ISL227', 'MAC BOOK', 'Nursing1', 'First Floor', '2025-10-05 15:04:07', 'admin', 'dfg', 1, 0),
+(74, 72, 'ISL761', 'HP Laserjet Black Printer', 'Nursing1', 'First Floor', '2025-10-05 17:47:43', 'admin', 'wer', 1, 0);
+
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `asset_replacement_log`
+--
+ALTER TABLE `asset_replacement_log`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `asset_table`
@@ -329,6 +422,12 @@ ALTER TABLE `borrow_table`
 -- Indexes for table `category`
 --
 ALTER TABLE `category`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `completed_asset`
+--
+ALTER TABLE `completed_asset`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -384,14 +483,26 @@ ALTER TABLE `user_table`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `withdrawn_asset`
+--
+ALTER TABLE `withdrawn_asset`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `asset_replacement_log`
+--
+ALTER TABLE `asset_replacement_log`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `asset_table`
 --
 ALTER TABLE `asset_table`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `borrow_table`
@@ -403,7 +514,13 @@ ALTER TABLE `borrow_table`
 -- AUTO_INCREMENT for table `category`
 --
 ALTER TABLE `category`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+
+--
+-- AUTO_INCREMENT for table `completed_asset`
+--
+ALTER TABLE `completed_asset`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- AUTO_INCREMENT for table `department_borrow_table`
@@ -427,7 +544,7 @@ ALTER TABLE `maintenance_table`
 -- AUTO_INCREMENT for table `repair_asset`
 --
 ALTER TABLE `repair_asset`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=160;
 
 --
 -- AUTO_INCREMENT for table `request_table`
@@ -445,13 +562,19 @@ ALTER TABLE `role`
 -- AUTO_INCREMENT for table `staff_table`
 --
 ALTER TABLE `staff_table`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
 
 --
 -- AUTO_INCREMENT for table `user_table`
 --
 ALTER TABLE `user_table`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
+-- AUTO_INCREMENT for table `withdrawn_asset`
+--
+ALTER TABLE `withdrawn_asset`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=75;
 
 --
 -- Constraints for dumped tables

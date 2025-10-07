@@ -333,7 +333,7 @@ try {
                 </div>
 
                 <!-- Date Filter Form and Export Buttons -->
-              <div class="row mb-4">
+             <!--  <div class="row mb-4">
                     <div class="col-md-12">
                         <div class="card shadow-sm">
                             <div class="card-header bg-light">
@@ -349,11 +349,11 @@ try {
                                                     <span class="input-group-text"><i class="far fa-calendar"></i></span>
                                                 </div>
                                                 <input type="date" class="form-control" id="start_date" name="start_date" 
-                                                    value="<?php echo isset($_GET['start_date']) ? $_GET['start_date'] : ''; ?>">
+                                                    value="<?php //echo isset($_GET['start_date']) ? $_GET['start_date'] : ''; ?>">
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-4">
+                                    </div> -->
+                                    <!-- <div class="col-md-4">
                                         <div class="form-group mb-md-0">
                                             <label for="end_date" class="text-muted font-weight-bold">End Date</label>
                                             <div class="input-group">
@@ -361,11 +361,11 @@ try {
                                                     <span class="input-group-text"><i class="far fa-calendar"></i></span>
                                                 </div>
                                                 <input type="date" class="form-control" id="end_date" name="end_date" 
-                                                    value="<?php echo isset($_GET['end_date']) ? $_GET['end_date'] : ''; ?>">
+                                                    value="<?php //echo isset($_GET['end_date']) ? $_GET['end_date'] : ''; ?>">
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-4">
+                                    </div> -->
+                                    <!-- <div class="col-md-4">
                                         <div class="form-group mb-0 d-flex">
                                             <button type="submit" class="btn btn-primary btn-lg mr-2 px-4">
                                                 <i class="fas fa-filter mr-2"></i>Apply Filter
@@ -379,7 +379,7 @@ try {
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <!-- Sales Cards  -->
                 
                 <!-- ============================================================== -->

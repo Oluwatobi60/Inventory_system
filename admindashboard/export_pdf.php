@@ -78,46 +78,70 @@ foreach($headers as $key => $header) {
 $pdf->SetTextColor(0);
 
 // Fetch data from database
-$query = "SELECT r.*, a.asset_name, a.description, a.category 
-          FROM request_table r 
-          LEFT JOIN asset_table a ON r.reg_no = a.reg_no 
-          WHERE (r.hod_approved = 1 OR r.pro_approved = 1)";
-$params = [];
-
-if (isset($_GET['start_date']) && !empty($_GET['start_date'])) {
-    $query .= " AND DATE(r.request_date) >= :req_start_date";
-    $params[':req_start_date'] = $_GET['start_date'];
+// Helper to render a section
+function renderSection($pdf, $title, $headers, $rows, $width, &$yPos) {
+    $pdf->SetFont('helvetica', 'B', 12);
+    $pdf->SetXY(5, $yPos);
+    $pdf->Cell(array_sum($width), 10, $title, 0, 1, 'L');
+    $yPos += 10;
+    $pdf->SetFont('helvetica', '', 10);
+    // Header row
+    $pdf->SetFillColor(52, 73, 94);
+    $pdf->SetTextColor(255);
+    $xPos = 5;
+    foreach($headers as $key => $header) {
+        $pdf->SetXY($xPos, $yPos);
+        $pdf->Cell($width[$key], 12, $header, 1, 0, 'C', true);
+        $xPos += $width[$key];
+    }
+    $yPos += 12;
+    $pdf->SetTextColor(0);
+    // Data rows
+    foreach ($rows as $row) {
+        $xPos = 5;
+        foreach ($headers as $key) {
+            $pdf->SetXY($xPos, $yPos);
+            $pdf->Cell($width[$key], 12, isset($row[$key]) ? $row[$key] : '', 1, 0, 'C', false);
+            $xPos += $width[$key];
+        }
+        $yPos += 12;
+    }
+    $yPos += 5;
 }
-
-if (isset($_GET['end_date']) && !empty($_GET['end_date'])) {
-    $query .= " AND DATE(r.request_date) <= :req_end_date";
-    $params[':req_end_date'] = $_GET['end_date'];
-}
-
-$query .= " ORDER BY r.request_date DESC";
-$stmt = $conn->prepare($query);
-$stmt->execute($params);
 
 $yPos = 17;
-while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
-    $xPos = 5;
-    $maxHeight = 12; // Minimum row height
-    
-    // Calculate maximum height needed for this row
-    $rowData = array(
-        $data['reg_no'],
-        $data['asset_name'],
-        $data['description'],
-        $data['category'],
-        $data['quantity'],
-        $data['requested_by'],
-        $data['department'],
-        $data['request_date'],
-        $data['pro_approved'] == 1 ? 'Approved' : 'Not Approved',
-        $data['hod_approved'] == 1 ? 'Approved' : 'Not Approved'
-    );
 
-    // First pass: calculate maximum height needed
+// 1. Completed Asset
+$headers1 = ['id','asset_id','quantity','completed_date','reg_no','asset_name','department','reported_by'];
+$width1 = array(10,15,15,30,20,30,30,30);
+$stmt1 = $conn->prepare("SELECT id, asset_id, quantity, completed_date, reg_no, asset_name, department, reported_by FROM completed_asset WHERE completed = 1 ORDER BY id DESC");
+$stmt1->execute();
+$rows1 = $stmt1->fetchAll(PDO::FETCH_ASSOC);
+renderSection($pdf, 'Completed Asset', $headers1, $rows1, $width1, $yPos);
+
+// 2. Withdrawn Asset
+$headers2 = ['id','asset_id','qty','withdrawn_date','reg_no','asset_name','department','withdrawn_by'];
+$width2 = array(10,15,15,30,20,30,30,30);
+$stmt2 = $conn->prepare("SELECT id, asset_id, qty, withdrawn_date, reg_no, asset_name, department, withdrawn_by FROM withdrawn_asset WHERE status = 1 OR status = 0 ORDER BY id DESC");
+$stmt2->execute();
+$rows2 = $stmt2->fetchAll(PDO::FETCH_ASSOC);
+renderSection($pdf, 'Withdrawn Asset', $headers2, $rows2, $width2, $yPos);
+
+// 3. Asset Replacement Log
+$headers3 = ['id','asset_id','replaced_quantity','replaced_at','reg_no','asset_name','department'];
+$width3 = array(10,15,20,30,20,30,30);
+$stmt3 = $conn->prepare("SELECT id, asset_id, replaced_quantity, replaced_at, reg_no, asset_name, department FROM asset_replacement_log WHERE replaced = 1 ORDER BY id DESC");
+$stmt3->execute();
+$rows3 = $stmt3->fetchAll(PDO::FETCH_ASSOC);
+renderSection($pdf, 'Asset Replacement Log', $headers3, $rows3, $width3, $yPos);
+
+// 4. Repair Asset
+$headers4 = ['id','asset_id','quantity','report_date','reg_no','asset_name','department','reported_by','status'];
+$width4 = array(10,15,15,30,20,30,30,30,20);
+$stmt4 = $conn->prepare("SELECT id, asset_id, quantity, report_date, reg_no, asset_name, department, reported_by, status FROM repair_asset WHERE status = 'Under Repair' ORDER BY id DESC");
+$stmt4->execute();
+$rows4 = $stmt4->fetchAll(PDO::FETCH_ASSOC);
+renderSection($pdf, 'Repair Asset', $headers4, $rows4, $width4, $yPos);
     foreach($rowData as $key => $value) {
         // Add extra padding to height calculation
         $cellHeight = $pdf->getStringHeight($width[$key], $value) + 2;

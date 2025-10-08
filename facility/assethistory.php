@@ -285,7 +285,7 @@ try {
 
                       <!-- Export Buttons -->
                       <div class="row mb-4 mt-3">
-                    <div class="col-md-12">
+                    <!-- <div class="col-md-12">
                         <div class="card">
                             <div class="card-body">
                                 <div class="d-flex justify-content-between align-items-center">
@@ -317,7 +317,7 @@ try {
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
 
                 <!-- Date Filter Form and Export Buttons -->

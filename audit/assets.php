@@ -229,7 +229,7 @@ try {
             <!-- ============================================================== -->
             <div class="container-fluid">
                 <!-- Export Options Card -->
-                <div class="row mb-4 mt-3">
+              <!--   <div class="row mb-4 mt-3">
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-body">
@@ -263,7 +263,7 @@ try {
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
 
                 <!-- Date Filter Form -->
                 <div class="row mb-4">

@@ -5,7 +5,7 @@
         <nav class="sidebar-nav">
             <ul id="sidebarnav" class="p-t-30">
                 <li class="sidebar-item"> 
-                    <a class="sidebar-link waves-effect waves-dark sidebar-link" href="prodashboard.php" aria-expanded="false">
+                    <a class="sidebar-link waves-effect waves-dark sidebar-link" href="facilitydashboard.php" aria-expanded="false">
                         <i class="mdi mdi-view-dashboard text-info"></i><span class="hide-menu">Dashboard</span>
                     </a>
                 </li>

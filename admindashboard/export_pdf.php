@@ -100,9 +100,11 @@ function renderSection($pdf, $title, $headers, $rows, $width, &$yPos) {
     foreach ($rows as $row) {
         $xPos = 5;
         foreach ($headers as $key) {
+            $value = isset($row[$key]) ? $row[$key] : '';
+            $cellWidth = isset($width[$key]) ? $width[$key] : 20;
             $pdf->SetXY($xPos, $yPos);
-            $pdf->Cell($width[$key], 12, isset($row[$key]) ? $row[$key] : '', 1, 0, 'C', false);
-            $xPos += $width[$key];
+            $pdf->Cell($cellWidth, 12, $value, 1, 0, 'C', false);
+            $xPos += $cellWidth;
         }
         $yPos += 12;
     }
@@ -142,40 +144,7 @@ $stmt4 = $conn->prepare("SELECT id, asset_id, quantity, report_date, reg_no, ass
 $stmt4->execute();
 $rows4 = $stmt4->fetchAll(PDO::FETCH_ASSOC);
 renderSection($pdf, 'Repair Asset', $headers4, $rows4, $width4, $yPos);
-    foreach($rowData as $key => $value) {
-        // Add extra padding to height calculation
-        $cellHeight = $pdf->getStringHeight($width[$key], $value) + 2;
-        $maxHeight = max($maxHeight, $cellHeight);
-    }
-
-    // Second pass: print cells with calculated height
-    foreach($rowData as $key => $value) {
-        $pdf->SetXY($xPos, $yPos);
-        // Use MultiCell for text that might need to wrap
-        $pdf->MultiCell($width[$key], $maxHeight, $value, 1, 'C', false, 0);
-        $xPos += $width[$key];
-    }
-    
-    $yPos += $maxHeight;
-
-    // Add a new page if we're near the bottom
-    if ($yPos > ($pdf->getPageHeight() - 15)) {
-        $pdf->AddPage();
-        $yPos = 5;
-        
-        // Reprint headers on new page
-        $xPos = 5;
-        $pdf->SetFillColor(52, 73, 94);
-        $pdf->SetTextColor(255);
-        foreach($headers as $key => $header) {
-            $pdf->SetXY($xPos, $yPos);
-            $pdf->Cell($width[$key], 12, $header, 1, 0, 'C', true);
-            $xPos += $width[$key];
-        }
-        $pdf->SetTextColor(0);
-        $yPos = 17;
-    }
-}
+// ...existing code...
 
 // Output PDF
 $pdf->Output('asset_history.pdf', 'D');

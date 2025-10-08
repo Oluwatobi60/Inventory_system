@@ -86,14 +86,14 @@ if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY']) >
     // If the session has been inactive for too long, destroy it
     session_unset();
     session_destroy();
-    header("Location: ../userfolder/index.php"); // Redirect to login page
+    header("Location: ../index.php"); // Redirect to login page
     exit();
 }
 $_SESSION['LAST_ACTIVITY'] = time(); // Update last activity timestamp
 
 // Check if the user is logged in
 if (!isset($_SESSION['username'])) {
-    header("Location: ../userfolder/index.php"); // Redirect to login page if not logged in
+    header("Location: ../index.php"); // Redirect to login page if not logged in
     exit();
 }
 
@@ -311,14 +311,14 @@ try {
                                             <i class="fas fa-file-excel mr-2"></i>
                                             <span>Export to Excel</span>
                                         </a>
-                                        <a href="export_pdf.php<?php 
-                            echo (isset($_GET['start_date']) || isset($_GET['end_date'])) 
-                                ? '?start_date=' . $_GET['start_date'] . '&end_date=' . $_GET['end_date'] 
-                                : ''; 
+                                       <!--  <a href="export_pdf.php<?php 
+                           // echo (isset($_GET['start_date']) || isset($_GET['end_date'])) 
+                              /*   ? '?start_date=' . $_GET['start_date'] . '&end_date=' . $_GET['end_date']  */
+                              /*   : '';  */
                         ?>" class="btn btn-danger btn-rounded shadow-sm">
                                             <i class="fas fa-file-pdf mr-2"></i>
                                             <span>Export to PDF</span>
-                                        </a>
+                                        </a> -->
                                     </div>
                                 </div>
                                 <div class="mt-3">

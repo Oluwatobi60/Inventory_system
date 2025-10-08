@@ -8,14 +8,14 @@ if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY']) >
     // If the session has been inactive for too long, destroy it
     session_unset();
     session_destroy();
-    header("Location: ../userfolder/index.php"); // Redirect to login page
+    header("Location: ../index.php"); // Redirect to login page
     exit();
 }
 $_SESSION['LAST_ACTIVITY'] = time(); // Update last activity timestamp
 
 // Check if the user is logged in
 if (!isset($_SESSION['username'])) {
-    header("Location: ../userfolder/index.php"); // Redirect to login page if not logged in
+    header("Location: ../index.php"); // Redirect to login page if not logged in
     exit();
 }
 ?>
@@ -41,19 +41,19 @@ if (!isset($_SESSION['username'])) {
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+<![endif]-->
 </head>
 
 <body>
     <!-- ============================================================== -->
     <!-- Preloader - style you can find in spinners.css -->
     <!-- ============================================================== -->
-  <!--  <div class="preloader">
+   <!--  <div class="preloader">
         <div class="lds-ripple">
             <div class="lds-pos"></div>
             <div class="lds-pos"></div>
         </div>
-    </div>  -->
+    </div> -->
     <!-- ============================================================== -->
     <!-- Main wrapper - style you can find in pages.scss -->
     <!-- ============================================================== -->
@@ -74,12 +74,14 @@ if (!isset($_SESSION['username'])) {
                         <b class="logo-icon p-l-10">
                             <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
                             <!-- Dark Logo icon -->
-                            <img src="../admindashboard/assets/images/logo.png" alt="homepage" class="light-logo" width="100px"/>
+                            <img src="../admindashboard/assets/images/logo.png" alt="homepage" class="light-logo" width="100px"/>                           
                         </b>
                         <!--End Logo icon -->
-                        <!-- Logo text -->
+                         <!-- Logo text -->
+                      
                         
-                    </a>
+                            
+                     
                     <a class="topbartoggler d-block d-md-none waves-effect waves-light" href="javascript:void(0)" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><i class="ti-more"></i></a>
                 </div>
                 <!-- ============================================================== -->
@@ -92,6 +94,7 @@ if (!isset($_SESSION['username'])) {
                     <ul class="navbar-nav float-left mr-auto">
                         <li class="nav-item d-none d-md-block"><a class="nav-link sidebartoggler waves-effect waves-light" href="javascript:void(0)" data-sidebartype="mini-sidebar"><i class="mdi mdi-menu font-24"></i></a></li>
                         <!-- ============================================================== -->
+                    
                         <!-- Search -->
                         <!-- ============================================================== -->
                         <li class="nav-item search-box"> <a class="nav-link waves-effect waves-dark" href="javascript:void(0)"><i class="ti-search"></i></a>
@@ -110,13 +113,14 @@ if (!isset($_SESSION['username'])) {
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="mdi mdi-bell font-24"></i>
                             </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="#">Action</a>
                                 <a class="dropdown-item" href="#">Another action</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#">Something else here</a>
                             </div>
                         </li>
+                     
                         <!-- ============================================================== -->
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" id="2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="font-24 mdi mdi-comment-processing"></i>
@@ -125,13 +129,13 @@ if (!isset($_SESSION['username'])) {
                                 <ul class="list-style-none">
                                     <li>
                                         <div class="">
-                                            <!-- Message -->
+                                             <!-- Message -->
                                             <a href="javascript:void(0)" class="link border-top">
                                                 <div class="d-flex no-block align-items-center p-10">
                                                     <span class="btn btn-success btn-circle"><i class="ti-calendar"></i></span>
                                                     <div class="m-l-10">
-                                                        <h5 class="m-b-0">Event today</h5>
-                                                        <span class="mail-desc">Just a reminder that event</span>
+                                                        <h5 class="m-b-0">Event today</h5> 
+                                                        <span class="mail-desc">Just a reminder that event</span> 
                                                     </div>
                                                 </div>
                                             </a>
@@ -140,25 +144,23 @@ if (!isset($_SESSION['username'])) {
                                                 <div class="d-flex no-block align-items-center p-10">
                                                     <span class="btn btn-info btn-circle"><i class="ti-settings"></i></span>
                                                     <div class="m-l-10">
-                                                        <h5 class="m-b-0">Settings</h5>
-                                                        <span class="mail-desc">You can customize this template</span>
+                                                        <h5 class="m-b-0">Settings</h5> 
+                                                        <span class="mail-desc">You can customize this template</span> 
                                                     </div>
                                                 </div>
                                             </a>
+                                           
                                         </div>
                                     </li>
                                 </ul>
                             </div>
                         </li>
-                        <!-- ============================================================== -->
+                   
+
                         <!-- User profile and search -->
                         <!-- ============================================================== -->
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img src="assets/images/users/1.jpg" alt="user" class="rounded-circle" width="31">
-                                <span class="ml-2"><?php echo htmlspecialchars($_SESSION['username']); ?></span>
-                                <span class="ml-1" style="display: inline-block; width: 10px; height: 10px; background-color: green; border-radius: 50%;"></span>
-                            </a>
+                            <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="assets/images/users/1.jpg" alt="user" class="rounded-circle" width="31"></a>
                             <div class="dropdown-menu dropdown-menu-right user-dd animated">
                                 <a class="dropdown-item" href="javascript:void(0)"><i class="ti-user m-r-5 m-l-5"></i> My Profile</a>
                                 <a class="dropdown-item" href="javascript:void(0)"><i class="ti-wallet m-r-5 m-l-5"></i> My Balance</a>
@@ -166,7 +168,9 @@ if (!isset($_SESSION['username'])) {
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="javascript:void(0)"><i class="ti-settings m-r-5 m-l-5"></i> Account Setting</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="logout.php"><i class="fa fa-power-off m-r-5 m-l-5"></i> Logout</a>
+                                <a class="dropdown-item" href="javascript:void(0)"><i class="fa fa-power-off m-r-5 m-l-5"></i> Logout</a>
+                                <div class="dropdown-divider"></div>
+                                <div class="p-l-30 p-10"><a href="javascript:void(0)" class="btn btn-sm btn-success btn-rounded">View Profile</a></div>
                             </div>
                         </li>
                         <!-- ============================================================== -->
@@ -195,8 +199,16 @@ if (!isset($_SESSION['username'])) {
             <!-- ============================================================== -->
              <div class="page-breadcrumb">
                 <div class="row">
-                    <div class="col-12 d-flex no-block align-items-center mt-3">
-                        <h4 class="page-title">Borrow Asset</h4>
+                    <div class="col-12 d-flex no-block align-items-center">
+                        <h4 class="page-title">User Information</h4>
+                        <div class="ml-auto text-right">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">Library</li>
+                                </ol>
+                            </nav>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -214,14 +226,14 @@ if (!isset($_SESSION['username'])) {
 
                 <!-- MODAL SECTION-->
                 <?php 
-                    require "borrow/borrowmodal.php";
+                    require "usermodal.php";
                 ?>
                    <!--END OF MODAL SECTION-->
                 <!-- ============================================================== -->
                  
 
                 <!-- START OF ASSET LIST TABLE -->
-                <?php require "borrow/borrowassettable.php";  ?>
+                <?php require "usertable.php";  ?>
 
                 <!-- END OF ASSET LIST TABLE -->
                  
@@ -279,7 +291,6 @@ if (!isset($_SESSION['username'])) {
     <script src="../admindashboard/assets/libs/flot/jquery.flot.js"></script>
     <script src="../admindashboard/assets/libs/flot/jquery.flot.pie.js"></script>
     <script src="../admindashboard/assets/libs/flot/jquery.flot.time.js"></script>
-    <script src="../admindashboard/assets/libs/flot/jquery.flot.stack.js"></script>
     <script src="../admindashboard/assets/libs/flot/jquery.flot.crosshair.js"></script>
     <script src="../admindashboard/assets/libs/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
     <script src="../admindashboard/dist/js/pages/chart/chart-page-init.js"></script>

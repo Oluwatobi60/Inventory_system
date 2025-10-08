@@ -395,7 +395,7 @@ try {
             button.disabled = true;
             button.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Processing...';
 
-            const response = await fetch('inventory_sys/profolder/staffallocation/submit_repair.php', {
+            const response = await fetch('inventory_sys/facility/staffallocation/submit_repair.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

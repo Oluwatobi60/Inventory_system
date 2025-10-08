@@ -10,14 +10,14 @@ if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY']) >
     // If the session has been inactive for too long, destroy it
     session_unset();
     session_destroy();
-    header("Location: ../userfolder/index.php"); // Redirect to login page
+    header("Location: ../index.php"); // Redirect to login page
     exit();
 }
 $_SESSION['LAST_ACTIVITY'] = time(); // Update last activity timestamp
 
 // Check if the user is logged in
 if (!isset($_SESSION['username'])) {
-    header("Location: ../userfolder/index.php"); // Redirect to login page if not logged in
+    header("Location: ../index.php"); // Redirect to login page if not logged in
     exit();
 }
 
@@ -105,7 +105,7 @@ $hod_last_name = $dept_row['lastname'];
     <meta name="author" content="">
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="assets/images/isalu-logo.png">
-    <title>User||Dashboard</title>
+    <title>Audit || Dashboard</title>
     <!-- Custom CSS -->
     <link href="../admindashboard/assets/libs/flot/css/float-chart.css" rel="stylesheet">
     <!-- Custom CSS -->

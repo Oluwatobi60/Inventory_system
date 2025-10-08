@@ -91,13 +91,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         // Redirect user based on their role
                         switch ($role) {
                             case 'hod':
-                                header("Location: hodfolder/hoddashboard.php");
+                                header("Location: audit/auditdashboard.php");
                                 break;
                             case 'user':
                                 header("Location: userfolder/dashboard.php");
                                 break;
                             case 'procurement':
-                                header("Location: profolder/prodashboard.php");
+                                header("Location: facility/facilitydashboard.php");
                                 break;
                             case 'admin':
                                 header("Location: admindashboard/index.php");

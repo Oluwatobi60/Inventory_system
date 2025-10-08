@@ -15,7 +15,7 @@ $_SESSION['LAST_ACTIVITY'] = time(); // Update last activity timestamp
 
 // Check if the user is logged in
 if (!isset($_SESSION['username'])) {
-    header("Location: ../userfolder/index.php"); // Redirect to login page if not logged in
+    header("Location: ../index.php"); // Redirect to login page if not logged in
     exit();
 }
 

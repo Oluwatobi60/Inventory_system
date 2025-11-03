@@ -7281,3 +7281,28 @@ Parameters: offset=0, limit=7
 [2025-10-08 19:27:58] Pagination details
 [2025-10-08 19:28:13] Pagination details
 [2025-10-08 19:46:03] Pagination details
+[2025-10-08 22:49:42] Login failed: No matching user found for 'test@test.com'.
+[2025-10-08 22:50:11] Login failed: No matching user found for 'test@test.com'.
+[2025-11-03 13:41:54] Pagination details
+[2025-11-03 13:42:01] Processing repair request
+[2025-11-03 13:42:01] Started database transaction
+[2025-11-03 13:42:12] Pagination details
+[2025-11-03 13:42:35] Pagination details
+[2025-11-03 13:44:10] Pagination details
+[2025-11-03 13:44:29] Processing repair request
+[2025-11-03 13:44:29] Started database transaction
+[2025-11-03 13:44:38] Pagination details
+[2025-11-03 13:44:44] Pagination details
+[2025-11-03 13:44:56] Processing repair request
+[2025-11-03 13:44:56] Started database transaction
+[2025-11-03 13:44:59] Pagination details
+[2025-11-03 13:45:19] Pagination details
+[2025-11-03 13:45:24] Processing repair request
+[2025-11-03 13:45:24] Started database transaction
+[2025-11-03 13:45:28] Pagination details
+[2025-11-03 13:45:35] Pagination details
+[2025-11-03 13:45:41] Pagination details
+[2025-11-03 13:45:52] Processing repair request
+[2025-11-03 13:45:52] Started database transaction
+[2025-11-03 13:45:56] Pagination details
+[2025-11-03 13:46:03] Pagination details

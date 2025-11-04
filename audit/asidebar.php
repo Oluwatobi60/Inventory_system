@@ -32,6 +32,12 @@
                             </a>
                  </li>
 
+                  <li class="sidebar-item">
+                            <a href="department_report.php" class="sidebar-link">
+                                <i class="mdi mdi-domain"></i><span class="hide-menu"> Departmental Report </span>
+                            </a>
+                </li>
+
                 <li class="sidebar-item">
                     <a class="sidebar-link waves-effect" href="maintenance.php">
                         <i class="mdi mdi-settings text-primary"></i>
@@ -40,11 +46,14 @@
                 </li>
 
 
-                <li class="sidebar-item">
+                
+            
+
+                <!-- <li class="sidebar-item">
                             <a href="../admindashboard/logout.php" class="sidebar-link">
                                 <i class="mdi mdi-logout"></i><span class="hide-menu"> Logout </span>
                             </a>
-                </li>
+                </li> -->
 
                
             </ul>

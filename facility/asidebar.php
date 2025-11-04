@@ -10,30 +10,21 @@
                     </a>
                 </li>
 
-                <li class="sidebar-item"> 
+             <!--    <li class="sidebar-item"> 
                     <a class="sidebar-link waves-effect waves-dark sidebar-link" href="assets.php" aria-expanded="false">
                         <i class="mdi mdi-database text-success"></i><span class="hide-menu">Asset</span>
                     </a>
-                </li>
+                </li> -->
               
-        
-
-                  <li class="sidebar-item"> 
-                    <a class="sidebar-link has-arrow waves-effect" href="javascript:void(0)">
-                        <i class="mdi mdi-account-key text-info"></i>
-                        <span class="menu-title">Staffs Module</span>
-                    </a>
-                    <ul class="collapse submenu">
+    
                         <li class="sidebar-item">
                             <a href="staffallocation.php" class="sidebar-link">
-                                <i class="mdi mdi-database text-success"></i>
+                                <i class="mdi mdi-account-key text-success"></i>
                                 <span>Allocated Assets</span>
                             </a>
                         </li>
                       
-                     
-                    </ul>
-                </li>
+               
 
                 <li class="sidebar-item"> 
                     <a class="sidebar-link waves-effect waves-dark sidebar-link" href="maintenance.php" aria-expanded="false">
@@ -48,18 +39,13 @@
                     </a>
                 </li>
 
-                 <li class="sidebar-item"> 
-                    <a class="sidebar-link has-arrow waves-effect" href="javascript:void(0)">
-                        <i class="mdi mdi-history text-info"></i>
-                        <span class="menu-title">Report Center</span>
-                    </a>
-                    <ul class="collapse submenu">
                         <li class="sidebar-item">
                             <a href="assethistory.php" class="sidebar-link">
                                 <i class="mdi mdi-alert-circle text-danger"></i>
                                 <span>Damaged Report</span>
                             </a>
                         </li>
+
                         <li class="sidebar-item">
                             <a href="department_report.php" class="sidebar-link">
                                 <i class="mdi mdi-domain text-warning"></i>
@@ -67,8 +53,6 @@
                             </a>
                         </li>
                          
-                    </ul>
-                </li> 
 
                 <li class="sidebar-item">
                     <a href="../admindashboard/logout.php" class="sidebar-link">

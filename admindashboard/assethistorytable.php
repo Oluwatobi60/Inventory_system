@@ -1,17 +1,17 @@
 <?php
 require "include/config.php";
 
-function render_pagination($page, $total_pages, $extra_params = '') {
+function render_pagination($page, $total_pages, $page_param = 'page', $extra_params = '') {
     if ($total_pages > 1) {
         echo '<div class="d-flex justify-content-center mt-4"><ul class="pagination">';
         if ($page > 1) {
-            echo '<li class="page-item"><a class="page-link" href="?page=' . ($page-1) . $extra_params . '">Previous</a></li>';
+            echo '<li class="page-item"><a class="page-link" href="?' . $page_param . '=' . ($page-1) . $extra_params . '">Previous</a></li>';
         }
         for ($i = 1; $i <= $total_pages; $i++) {
-            echo '<li class="page-item ' . (($i == $page) ? 'active' : '') . '"><a class="page-link" href="?page=' . $i . $extra_params . '">' . $i . '</a></li>';
+            echo '<li class="page-item ' . (($i == $page) ? 'active' : '') . '"><a class="page-link" href="?' . $page_param . '=' . $i . $extra_params . '">' . $i . '</a></li>';
         }
         if ($page < $total_pages) {
-            echo '<li class="page-item"><a class="page-link" href="?page=' . ($page+1) . $extra_params . '">Next</a></li>';
+            echo '<li class="page-item"><a class="page-link" href="?' . $page_param . '=' . ($page+1) . $extra_params . '">Next</a></li>';
         }
         echo '</ul></div>';
     }
@@ -29,7 +29,7 @@ if (isset($_GET['end_date']) && !empty($_GET['end_date'])) {
 try {
     // Withdrawn Assets
     // Get current page for withdrawn assets, default to 1
-    $page4 = isset($_GET['page4']) ? (int)$_GET['page4'] : 1;
+    $page4 = isset($_GET['page4']) ? max(1, (int)$_GET['page4']) : 1;
     // Calculate offset for pagination
     $offset4 = ($page4 - 1) * 7;
     // Build WHERE clause to filter withdrawn assets
@@ -58,8 +58,10 @@ try {
     // Calculate total pages for pagination
     $total_pages4 = ceil($total4 / 7);
     // Prepare SQL to fetch withdrawn assets for current page
-    $sql4 = "SELECT * FROM withdrawn_asset $where4 ORDER BY id DESC LIMIT 7 OFFSET $offset4";
+    $sql4 = "SELECT * FROM withdrawn_asset $where4 ORDER BY id DESC LIMIT 7 OFFSET :offset4";
     $stmt4 = $conn->prepare($sql4);
+    // Bind offset parameter
+    $stmt4->bindValue(':offset4', $offset4, PDO::PARAM_INT);
     // Bind date parameters if present
     if (isset($_GET['start_date']) && !empty($_GET['start_date'])) {
         $stmt4->bindValue(':start_date4', $_GET['start_date']);
@@ -73,7 +75,7 @@ try {
     $withdrawn_assets = $stmt4->fetchAll(PDO::FETCH_ASSOC);
 
     // Damaged Assets (Under Repair)
-    $page1 = isset($_GET['page1']) ? (int)$_GET['page1'] : 1;
+    $page1 = isset($_GET['page1']) ? max(1, (int)$_GET['page1']) : 1;
     $offset1 = ($page1 - 1) * 7;
     $where1 = "WHERE status = 'Under Repair'";
     if (isset($_GET['start_date']) && !empty($_GET['start_date'])) {
@@ -93,8 +95,10 @@ try {
     $stmt1->execute();
     $total1 = $stmt1->fetch(PDO::FETCH_ASSOC)['total'];
     $total_pages1 = ceil($total1 / 7);
-    $sql1 = "SELECT * FROM repair_asset $where1 ORDER BY id DESC LIMIT 7 OFFSET $offset1";
+    $sql1 = "SELECT * FROM repair_asset $where1 ORDER BY id DESC LIMIT 7 OFFSET :offset1";
     $stmt1 = $conn->prepare($sql1);
+    // Bind offset parameter
+    $stmt1->bindValue(':offset1', $offset1, PDO::PARAM_INT);
     if (isset($_GET['start_date']) && !empty($_GET['start_date'])) {
         $stmt1->bindValue(':start_date1', $_GET['start_date']);
     }
@@ -105,7 +109,7 @@ try {
     $damaged_assets = $stmt1->fetchAll(PDO::FETCH_ASSOC);
 
     // Completed Repairs
-    $page2 = isset($_GET['page2']) ? (int)$_GET['page2'] : 1;
+    $page2 = isset($_GET['page2']) ? max(1, (int)$_GET['page2']) : 1;
     $offset2 = ($page2 - 1) * 7;
     $where2 = "WHERE completed = '1'";
     if (isset($_GET['start_date']) && !empty($_GET['start_date'])) {
@@ -125,8 +129,10 @@ try {
     $stmt2->execute();
     $total2 = $stmt2->fetch(PDO::FETCH_ASSOC)['total'];
     $total_pages2 = ceil($total2 / 7);
-    $sql2 = "SELECT * FROM completed_asset $where2 ORDER BY id DESC LIMIT 7 OFFSET $offset2";
+    $sql2 = "SELECT * FROM completed_asset $where2 ORDER BY id DESC LIMIT 7 OFFSET :offset2";
     $stmt2 = $conn->prepare($sql2);
+    // Bind offset parameter
+    $stmt2->bindValue(':offset2', $offset2, PDO::PARAM_INT);
     if (isset($_GET['start_date']) && !empty($_GET['start_date'])) {
         $stmt2->bindValue(':start_date2', $_GET['start_date']);
     }
@@ -137,7 +143,7 @@ try {
     $completed_assets = $stmt2->fetchAll(PDO::FETCH_ASSOC);
 
     // Replaced Assets
-    $page3 = isset($_GET['page3']) ? (int)$_GET['page3'] : 1;
+    $page3 = isset($_GET['page3']) ? max(1, (int)$_GET['page3']) : 1;
     $offset3 = ($page3 - 1) * 7;
     $where3 = "WHERE replaced = '1'";
     if (isset($_GET['start_date']) && !empty($_GET['start_date'])) {
@@ -157,8 +163,10 @@ try {
     $stmt3->execute();
     $total3 = $stmt3->fetch(PDO::FETCH_ASSOC)['total'];
     $total_pages3 = ceil($total3 / 7);
-    $sql3 = "SELECT * FROM asset_replacement_log $where3 ORDER BY id DESC LIMIT 7 OFFSET $offset3";
+    $sql3 = "SELECT * FROM asset_replacement_log $where3 ORDER BY id DESC LIMIT 7 OFFSET :offset3";
     $stmt3 = $conn->prepare($sql3);
+    // Bind offset parameter
+    $stmt3->bindValue(':offset3', $offset3, PDO::PARAM_INT);
     if (isset($_GET['start_date']) && !empty($_GET['start_date'])) {
         $stmt3->bindValue(':start_date3', $_GET['start_date']);
     }
@@ -234,7 +242,7 @@ try {
                         </tbody>
                     </table>
                 </div>
-                <?php render_pagination($page1, $total_pages1, '&page1='); ?>
+                <?php render_pagination($page1, $total_pages1, 'page1', $extra_params); ?>
             </div>
         </div>
     </div>
@@ -281,7 +289,7 @@ try {
                         </tbody>
                     </table>
                 </div>
-                <?php render_pagination($page2, $total_pages2, '&page2='); ?>
+                <?php render_pagination($page2, $total_pages2, 'page2', $extra_params); ?>
             </div>
         </div>
     </div>
@@ -328,7 +336,7 @@ try {
                         </tbody>
                     </table>
                 </div>
-                <?php render_pagination($page4, $total_pages4, '&page4='); ?>
+                <?php render_pagination($page4, $total_pages4, 'page4', $extra_params); ?>
             </div>
         </div>
     </div>
@@ -373,7 +381,7 @@ try {
                         </tbody>
                     </table>
                 </div>
-                <?php render_pagination($page3, $total_pages3, '&page3='); ?>
+                <?php render_pagination($page3, $total_pages3, 'page3', $extra_params); ?>
             </div>
         </div>
     </div>

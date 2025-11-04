@@ -76,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $department = isset($user['department']) ? strtolower($user['department']) : '';
 
                     // Validate user role and department
-                    if (in_array($role, ['hod', 'user', 'admin', 'procurement']) &&
+                    if (in_array($role, ['audit', 'procurement', 'admin', 'facility', 'account']) &&
                         in_array($department, $departments)) {
                         
                         // Set session variables for the authenticated user
@@ -90,17 +90,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                         // Redirect user based on their role
                         switch ($role) {
-                            case 'hod':
+                            case 'audit':
                                 header("Location: audit/auditdashboard.php");
                                 break;
-                            case 'user':
-                                header("Location: userfolder/dashboard.php");
-                                break;
                             case 'procurement':
+                                header("Location: procurement/procurementdashboard.php");
+                                break;
+                            case 'facility':
                                 header("Location: facility/facilitydashboard.php");
                                 break;
                             case 'admin':
                                 header("Location: admindashboard/index.php");
+                                break;
+                            case 'account':
+                                header("Location: account/accountdashboard.php");
                                 break;
                         }
                         // Stop execution after redirect

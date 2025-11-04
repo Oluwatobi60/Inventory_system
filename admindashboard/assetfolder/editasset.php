@@ -12,14 +12,12 @@ try {
 
     if (isset($_POST['submit'])) {
         // Sanitize and validate inputs
-        $asset_name = trim($_POST['asset_name']);
         $desc = trim($_POST['desc']);
         $qty = (int)$_POST['qty'];
-        $asset_cat = isset($_POST['asset_cat']) ? trim($_POST['asset_cat']) : '';
-        $date = trim($_POST['dates']);
+        $date = date('Y-m-d'); // Use current date for update
 
         // Validate required fields
-        if (empty($asset_name) || empty($desc) || empty($asset_cat) || empty($date)) {
+        if (empty($desc)) {
             throw new Exception("All fields are required");
         }
 
@@ -29,18 +27,14 @@ try {
 
         // Update the asset using prepared statement
         $update_sql = "UPDATE asset_table 
-                      SET asset_name = :asset_name, 
-                          description = :description, 
+                      SET description = :description, 
                           quantity = :quantity, 
-                          category = :category, 
-                          dateofpurchase = :date 
+                          updated_at = :date 
                       WHERE id = :id";
                       
         $stmt = $conn->prepare($update_sql);
-        $stmt->bindParam(':asset_name', $asset_name);
         $stmt->bindParam(':description', $desc);
         $stmt->bindParam(':quantity', $qty, PDO::PARAM_INT);
-        $stmt->bindParam(':category', $asset_cat);
         $stmt->bindParam(':date', $date);
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         
@@ -315,13 +309,13 @@ try {
                     <div class="col-md-8 m-auto">
                         <div class="form-group shadow-sm">
                             <label for="" class="form-label">Asset Name:</label>
-                                <input type="text" id="" class="form-control" name="asset_name" value="<?php echo $row['asset_name']; ?>">
+                                <input type="text" id="" class="form-control" name="asset_name" value="<?php echo $row['asset_name']; ?>" disabled>
                         </div>
                     </div>
 
                     <div class="col-md-8 m-auto">
                         <div class="form-group shadow-sm">
-                            <label for="" class="form-label">Asset Name:</label>
+                            <label for="" class="form-label">Description:</label>
                                 <textarea name="desc" id="" rows="3" class="form-control" ><?php echo $row['description']; ?></textarea>
                         </div>
                     </div>
@@ -338,7 +332,7 @@ try {
                             <label for="category" class="col-form-label">Category:</label>
                                 <select id="category" class="form-control" name="asset_cat">
                                     <option selected disabled><?php echo $row['category']; ?></option>                                        <?php
-                                        try {
+                                       /*  try {
                                             $cat_sql = "SELECT * FROM category ORDER BY category ASC";
                                             $cat_stmt = $conn->prepare($cat_sql);
                                             $cat_stmt->execute();
@@ -349,19 +343,19 @@ try {
                                             }
                                         } catch (PDOException $e) {
                                             logError("Error fetching categories in editasset.php: " . $e->getMessage());
-                                        }
+                                        } */
                                         ?>
                                 </select>
                                                                
                         </div>
                     </div>
 
-                    <div class="col-md-8 m-auto">
+                  <!--   <div class="col-md-8 m-auto">
                         <div class="form-group shadow-sm">
                             <label for="" class="form-label">Date:</label>
                                 <input type="date" id="" class="form-control" name="dates" value="<?php echo $row['dateofpurchase']; ?>">
                         </div>
-                    </div>                    <div class="col-md-8 m-auto">
+                    </div>  -->                   <div class="col-md-8 m-auto">
                         <button type="submit" name="submit" class="btn btn-primary shadow">Update</button>
                         <a href="../assets.php" class="btn btn-secondary shadow">Cancel</a>
                     </div>

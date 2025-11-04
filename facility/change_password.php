@@ -82,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <input type="password" name="confirm_password" id="confirm_password" class="form-control" required>
             </div>
             <button type="submit" class="btn btn-success">Change Password</button>
-            <a href="prodashboard.php"><button type="button" class="btn btn-info">Back</button></a>
+            <a href="facilitydashboard.php"><button type="button" class="btn btn-info">Back</button></a>
         </form>
     </div>
 </body>

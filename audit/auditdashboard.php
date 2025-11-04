@@ -300,7 +300,7 @@ $hod_last_name = $dept_row['lastname'];
             <!-- ============================================================== -->
             <div class="container-fluid">
                 <div class="dashboard-header">
-                    <h1 class="page-title">HOD Dashboard</h1>
+                    <h1 class="page-title">Audit Dashboard</h1>
                     <div class="welcome-message" style="color: #666; font-size: 1.1em; margin-top: -15px; margin-bottom: 25px;">
                         Welcome, <span style="color: #4e73df; font-weight: 600;"><?php echo htmlspecialchars($hod_first_name . ' ' . $hod_last_name); ?></span>!
                     </div>

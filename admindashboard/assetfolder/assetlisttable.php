@@ -111,6 +111,7 @@ try {
                         <th scope="col">Description</th> <!-- Asset description column -->
                         <th scope="col">Category</th> <!-- Asset category column -->
                         <th scope="col">Purchase Date</th> <!-- Asset purchase date column -->
+                        <th scope="col">Update At</th> <!-- Asset update date column -->
                         <th scope="col">Qty</th> <!-- Asset quantity column -->
                         <th scope="col">Action</th> <!-- Action column for edit/delete -->
                     </tr>
@@ -126,6 +127,7 @@ try {
                         $description = htmlspecialchars($row['description']);
                         $category = htmlspecialchars($row['category']);
                         $dateofpurchase = htmlspecialchars($row['dateofpurchase']);
+                        $updated_at = htmlspecialchars($row['updated_at']);
                         $quantity = (int)$row['quantity'];
                         ?>
                         <tr>
@@ -135,6 +137,7 @@ try {
                             <td><?php echo $description; ?></td>
                             <td><?php echo $category; ?></td>
                             <td><?php echo $dateofpurchase; ?></td>
+                            <td><?php echo $updated_at; ?></td>
                             <td>
                                 <?php if ($quantity == 0): ?>
                                     <span class="badge badge-danger">Not Available</span>

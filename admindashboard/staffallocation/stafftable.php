@@ -527,7 +527,7 @@ try {
         // Fetch repair quantity and withdrawn quantity for this asset
         let maxQty = 0;
         try {
-            const response = await fetch(`/inventory_sys/admindashboard/staffallocation/get_asset_quantities.php?asset_id=${assetId}`);
+            const response = await fetch(`/admindashboard/staffallocation/get_asset_quantities.php?asset_id=${assetId}`);
             const data = await response.json();
             if (data.success) {
                 maxQty = data.withdrawn_qty;
@@ -553,7 +553,7 @@ try {
         try {
             button.disabled = true;
             button.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Processing...';
-            const response = await fetch('/inventory_sys/admindashboard/staffallocation/replace_asset.php', {
+            const response = await fetch('/admindashboard/staffallocation/replace_asset.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

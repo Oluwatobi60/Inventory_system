@@ -7306,3 +7306,126 @@ Parameters: offset=0, limit=7
 [2025-11-03 13:45:52] Started database transaction
 [2025-11-03 13:45:56] Pagination details
 [2025-11-03 13:46:03] Pagination details
+[2025-11-03 13:59:11] Pagination details
+[2025-11-03 14:03:22] Pagination details
+[2025-11-03 14:03:50] Pagination details
+[2025-11-03 14:03:56] Pagination details
+[2025-11-03 14:04:06] Pagination details
+[2025-11-03 14:04:50] Pagination details
+[2025-11-03 14:05:05] Pagination details
+[2025-11-03 14:05:10] Processing repair request
+[2025-11-03 14:05:10] Started database transaction
+[2025-11-03 14:05:30] Pagination details
+[2025-11-03 14:06:08] Pagination details
+[2025-11-03 14:06:12] Processing repair request
+[2025-11-03 14:06:12] Started database transaction
+[2025-11-03 14:06:16] Pagination details
+[2025-11-03 14:06:49] Pagination details
+[2025-11-03 14:07:40] Pagination details
+[2025-11-03 16:38:43] Login successful for user 'tobestic'
+[2025-11-03 16:45:53] Pagination details
+[2025-11-03 16:46:03] Pagination details
+[2025-11-03 16:46:15] Pagination details
+[2025-11-03 16:46:31] Pagination details
+[2025-11-03 16:46:39] Pagination details
+[2025-11-03 16:46:44] Pagination details
+[2025-11-03 16:46:57] Pagination details
+[2025-11-03 16:47:11] Pagination details
+[2025-11-03 16:47:19] Pagination details
+[2025-11-03 16:49:05] Pagination details
+[2025-11-03 16:49:40] Pagination details
+[2025-11-03 16:53:18] Pagination details
+[2025-11-03 16:57:51] Pagination details
+[2025-11-03 17:00:39] Pagination details
+[2025-11-03 17:02:01] Pagination details
+[2025-11-03 17:02:27] Pagination details
+[2025-11-03 17:03:01] Pagination details
+[2025-11-03 17:03:06] Processing repair request
+[2025-11-03 17:03:06] Started database transaction
+[2025-11-03 17:03:09] Pagination details
+[2025-11-03 17:03:18] Pagination details
+[2025-11-03 17:03:22] Processing repair request
+[2025-11-03 17:03:22] Started database transaction
+[2025-11-03 17:03:25] Pagination details
+[2025-11-03 17:03:32] Pagination details
+[2025-11-03 17:03:39] Pagination details
+[2025-11-03 17:06:24] Login successful for user 'daraminds'
+[2025-11-03 17:06:37] Pagination details
+[2025-11-03 17:09:20] Login successful for user 'tobestic'
+[2025-11-03 17:19:45] Login successful for user 'audit'
+[2025-11-03 17:19:45] Login failed: Invalid role or category for user 'audit'.
+[2025-11-03 17:21:14] Login successful for user 'facility'
+[2025-11-03 17:21:14] Login failed: Invalid role or category for user 'facility'.
+[2025-11-03 17:21:59] Login successful for user 'audit'
+[2025-11-03 17:22:39] Login successful for user 'audit'
+[2025-11-03 17:22:51] Login successful for user 'admin'
+[2025-11-03 17:24:09] Login successful for user 'audit'
+[2025-11-03 17:25:01] Login successful for user 'audit'
+[2025-11-03 17:25:21] Login successful for user 'facility'
+[2025-11-03 17:27:13] Login successful for user 'audit'
+[2025-11-03 17:27:54] Pagination details
+[2025-11-03 17:28:19] Login successful for user 'facility'
+[2025-11-03 17:29:34] Login successful for user 'audit'
+[2025-11-03 17:29:59] Login successful for user 'facility'
+[2025-11-03 17:30:30] Login successful for user 'facility'
+[2025-11-03 17:30:45] Login successful for user 'audit'
+[2025-11-03 17:38:43] Login successful for user 'audit'
+[2025-11-03 17:42:36] Pagination details
+[2025-11-03 17:43:18] Login successful for user 'facility'
+[2025-11-03 17:47:19] Login successful for user 'procurement'
+[2025-11-03 17:47:19] Login failed: Invalid role or category for user 'procurement'.
+[2025-11-03 17:47:50] Login successful for user 'procurement'
+[2025-11-03 18:10:01] Login successful for user 'procurement'
+[2025-11-03 18:10:38] Login successful for user 'admin'
+[2025-11-03 18:16:39] Error in editasset.php: All fields are required
+[2025-11-03 18:17:50] Asset updated successfully (ID: 24)
+[2025-11-03 18:18:20] Login successful for user 'procurement'
+[2025-11-03 18:45:07] Login successful for user 'procurement'
+[2025-11-03 18:49:49] Pagination details
+[2025-11-03 18:50:34] Pagination details
+[2025-11-03 19:06:29] Login successful for user 'procurement'
+[2025-11-03 19:06:58] Login successful for user 'procurement'
+[2025-11-03 19:07:24] Login successful for user 'procurement'
+[2025-11-03 23:02:10] Login successful for user 'procurement'
+[2025-11-03 23:03:44] Pagination details
+[2025-11-03 23:03:51] Pagination details
+[2025-11-03 23:06:10] Pagination details
+[2025-11-03 23:06:21] Pagination details
+[2025-11-03 23:10:12] Pagination details
+[2025-11-03 23:10:37] Login successful for user 'facility'
+[2025-11-03 23:14:54] Pagination details
+[2025-11-03 23:15:35] Pagination details
+[2025-11-03 23:15:57] Pagination details
+[2025-11-03 23:17:01] Pagination details
+[2025-11-03 23:17:06] Processing repair request
+[2025-11-03 23:17:06] Started database transaction
+[2025-11-03 23:17:09] Pagination details
+[2025-11-03 23:17:17] Pagination details
+[2025-11-03 23:22:10] Pagination details
+[2025-11-03 23:22:38] Login successful for user 'audit'
+[2025-11-03 23:22:52] Pagination details
+[2025-11-04 09:58:27] Login successful for user 'admin'
+[2025-11-04 09:58:54] Pagination details
+[2025-11-04 09:59:33] Processing repair request
+[2025-11-04 09:59:33] Started database transaction
+[2025-11-04 09:59:39] Pagination details
+[2025-11-04 10:00:14] Pagination details
+[2025-11-04 10:00:23] Pagination details
+[2025-11-04 10:00:56] Pagination details
+[2025-11-04 10:01:41] Pagination details
+[2025-11-04 10:01:53] Processing repair request
+[2025-11-04 10:01:53] Started database transaction
+[2025-11-04 10:02:11] Processing repair request
+[2025-11-04 10:02:11] Started database transaction
+[2025-11-04 10:02:41] Pagination details
+[2025-11-04 10:02:58] Pagination details
+[2025-11-04 10:03:05] Pagination details
+[2025-11-04 10:03:15] Pagination details
+[2025-11-04 10:04:12] Pagination details
+[2025-11-04 10:04:23] Pagination details
+[2025-11-04 10:19:55] Login successful for user 'account'
+[2025-11-04 10:21:29] Login successful for user 'facility'
+[2025-11-04 10:25:47] Login successful for user 'account'
+[2025-11-04 10:27:46] Pagination details
+[2025-11-04 10:28:22] Pagination details
+[2025-11-04 10:52:25] Pagination details

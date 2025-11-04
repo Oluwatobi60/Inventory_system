@@ -112,7 +112,7 @@ try {
                         <th scope="col">Category</th> <!-- Asset category column -->
                         <th scope="col">Purchase Date</th> <!-- Asset purchase date column -->
                         <th scope="col">Qty</th> <!-- Asset quantity column -->
-                        <th scope="col">Action</th> <!-- Action column for edit/delete -->
+                       <!--  <th scope="col">Action</th> --> <!-- Action column for edit/delete -->
                     </tr>
                 </thead>                <tbody>
                     <?php
@@ -142,10 +142,10 @@ try {
                                     <span class="badge badge-success"><?php echo $quantity; ?></span>
                                 <?php endif; ?>
                             </td>
-                            <td>
-                                <a href="assetfolder/editasset.php?id=<?php echo $id; ?>"><i class="fa fa-edit"></i></a>
-                                <a href="assetfolder/deleteasset.php?id=<?php echo $id; ?>"><i class="fa fa-trash"></i></a>
-                            </td>
+                           <!--  <td>
+                                <a href="assetfolder/editasset.php?id=<?php //echo $id; ?>"><i class="fa fa-edit"></i></a>
+                                <a href="assetfolder/deleteasset.php?id=<?php //echo $id; ?>"><i class="fa fa-trash"></i></a>
+                            </td> -->
                         </tr>
                     <?php
                     }

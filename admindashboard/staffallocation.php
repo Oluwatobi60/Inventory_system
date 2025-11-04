@@ -934,4 +934,4 @@ if (isset($_SESSION['success_message'])) {
 
 </html>
 
-<script src="../admindashboard/include/info_population.js"></script>
+<script src="../admindashboard/info_population.js"></script>

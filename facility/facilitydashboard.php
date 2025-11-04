@@ -300,14 +300,14 @@ try {
         <div class="page-wrapper">
             <div class="container-fluid">
                 <div class="dashboard-header">
-                    <h1 class="page-title">Procurement Dashboard</h1>
+                    <h1 class="page-title">Facility Dashboard</h1>
                     <div class="welcome-message" style="color: #666; font-size: 1.1em; margin-top: -15px; margin-bottom: 25px;">
                         Welcome, <span style="color: #4e73df; font-weight: 600;"><?php echo htmlspecialchars($pro_first_name . ' ' . $pro_last_name); ?></span>!
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="col-md-6 col-lg-4">
+                    <div class="col-md-6 col-lg-6">
                         <div class="stat-card">
                             <div class="stat-content bg-danger">
                                 <div class="stat-icon bg-danger-light">
@@ -321,7 +321,7 @@ try {
                         </div>
                     </div>
 
-                    <div class="col-md-6 col-lg-4">
+                    <div class="col-md-6 col-lg-6">
                         <div class="stat-card">
                             <div class="stat-content bg-success">
                                 <div class="stat-icon bg-success-light">
@@ -335,7 +335,7 @@ try {
                         </div>
                     </div>
 
-                    <div class="col-md-6 col-lg-4">
+                    <div class="col-md-6 col-lg-6">
                         <div class="stat-card">
                             <div class="stat-content bg-info">
                                 <div class="stat-icon bg-info-light">
@@ -365,19 +365,19 @@ try {
                         </div>
                     </div>
 
-                    <div class="col-md-6 col-lg-6">
+                 <!--    <div class="col-md-6 col-lg-6">
                         <div class="stat-card">
                             <div class="stat-content bg-purple" style="background-color: #6f42c1;">
                                 <div class="stat-icon bg-purple-light">
                                     <i class="fas fa-boxes text-white"></i>
                                 </div>
                                 <div class="stat-details">
-                                    <div class="stat-value text-white"><?php echo $total_assets; ?></div>
+                                    <div class="stat-value text-white"><?php //echo $total_assets; ?></div>
                                     <div class="stat-label">Total Assets</div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
 
                 <div class="row">

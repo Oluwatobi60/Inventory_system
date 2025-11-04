@@ -20,17 +20,6 @@ if ($repair_id <= 0 || $replace_qty < 1) {
     exit;
 }
 try {
-    // Always operate on repair_id
-    $delete_completed_stmt = $conn->prepare("DELETE FROM repair_asset WHERE id = :id AND quantity=0 AND completed=1 AND replaced=0");
-    $delete_completed_stmt->bindParam(':id', $repair_id, PDO::PARAM_INT);
-    $delete_completed_stmt->execute();
-    $delete_withdrawn_stmt = $conn->prepare("DELETE FROM repair_asset WHERE id = :id AND quantity=0 AND withdrawn=1 AND replaced=1");
-    $delete_withdrawn_stmt->bindParam(':id', $repair_id, PDO::PARAM_INT);
-    $delete_withdrawn_stmt->execute();
-    $delete_stmt = $conn->prepare("DELETE FROM repair_asset WHERE id = :id AND quantity=0 AND completed=1 AND replaced=1");
-    $delete_stmt->bindParam(':id', $repair_id, PDO::PARAM_INT);
-    $delete_stmt->execute();
-
     // Check asset state in repair_asset before allowing replacement
     $check_stmt = $conn->prepare("SELECT asset_id, withdrawn, quantity, status, replaced FROM repair_asset WHERE id = :id LIMIT 1");
     $check_stmt->bindParam(':id', $repair_id, PDO::PARAM_INT);
@@ -54,8 +43,8 @@ try {
         exit;
     }
 
-    // Withdrawn quantity for this asset
-    $stmt_withdrawn = $conn->prepare("SELECT SUM(qty) FROM withdrawn_asset WHERE asset_id = :asset_id");
+    // Withdrawn quantity for this asset (only status = 1, eligible for replacement)
+    $stmt_withdrawn = $conn->prepare("SELECT SUM(qty) FROM withdrawn_asset WHERE asset_id = :asset_id AND status = 1");
     $stmt_withdrawn->bindParam(':asset_id', $asset_id, PDO::PARAM_INT);
     $stmt_withdrawn->execute();
     $max_withdrawn_qty = (int)($stmt_withdrawn->fetchColumn() ?: 0);
@@ -110,10 +99,15 @@ try {
     $stmt5->bindParam(':floor', $floor, PDO::PARAM_STR);
     $stmt5->execute();
 
-    // Set status=0 in withdrawn_asset for the latest row for this asset_id
-    $update_withdrawn = $conn->prepare("UPDATE withdrawn_asset SET status = 0 WHERE asset_id = :asset_id ORDER BY withdrawn_date DESC LIMIT 1");
+    // Set status=0 in withdrawn_asset for the specific row with status=1 for this asset_id
+    $update_withdrawn = $conn->prepare("UPDATE withdrawn_asset SET status = 0 WHERE asset_id = :asset_id AND status = 1");
     $update_withdrawn->bindParam(':asset_id', $asset_id, PDO::PARAM_INT);
     $update_withdrawn->execute();
+
+    // Clean up any completed/replaced repair_asset records for this asset
+    $cleanup_stmt = $conn->prepare("DELETE FROM repair_asset WHERE asset_id = :asset_id AND quantity=0 AND (completed=1 OR replaced=1)");
+    $cleanup_stmt->bindParam(':asset_id', $asset_id, PDO::PARAM_INT);
+    $cleanup_stmt->execute();
 
     echo json_encode(['success' => true]);
 } catch (PDOException $e) {

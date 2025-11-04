@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 05, 2025 at 07:06 PM
+-- Generation Time: Nov 04, 2025 at 11:11 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -44,9 +44,7 @@ CREATE TABLE `asset_replacement_log` (
 --
 
 INSERT INTO `asset_replacement_log` (`id`, `asset_id`, `replaced_quantity`, `replaced_at`, `replaced`, `reg_no`, `asset_name`, `department`, `floor`) VALUES
-(22, 72, 2, '2025-10-05 15:03:33', 1, 'ISL761', 'HP Laserjet Black Printer', 'Nursing1', 'First Floor'),
-(23, 71, 2, '2025-10-05 15:04:12', 1, 'ISL227', 'MAC BOOK', 'Nursing1', 'First Floor'),
-(24, 72, 2, '2025-10-05 17:48:17', 1, 'ISL761', 'HP Laserjet Black Printer', 'Nursing1', 'First Floor');
+(31, 74, 1, '2025-11-04 10:04:22', 1, 'ISL913', 'HP 820 G3', 'Nursing1', 'First Floor');
 
 -- --------------------------------------------------------
 
@@ -61,18 +59,19 @@ CREATE TABLE `asset_table` (
   `description` varchar(250) NOT NULL,
   `quantity` varchar(20) NOT NULL,
   `category` varchar(30) NOT NULL,
-  `dateofpurchase` varchar(30) NOT NULL
+  `dateofpurchase` varchar(30) NOT NULL,
+  `updated_at` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `asset_table`
 --
 
-INSERT INTO `asset_table` (`id`, `reg_no`, `asset_name`, `description`, `quantity`, `category`, `dateofpurchase`) VALUES
-(23, 'ISL158', 'HP 840 G3', 'All are bought with good condition', '3', 'Laptops', '2025-09-09'),
-(24, 'ISL913', 'HP 820 G3', 'Everything is in good condition', '4', 'Laptops', '2025-09-11'),
-(29, 'ISL227', 'MAC BOOK', 'dfsdfsdfss', '7', 'Laptops', '2025-10-04'),
-(30, 'ISL761', 'HP Laserjet Black Printer', 'ddcdd', '9', 'Printers', '2025-10-04');
+INSERT INTO `asset_table` (`id`, `reg_no`, `asset_name`, `description`, `quantity`, `category`, `dateofpurchase`, `updated_at`) VALUES
+(23, 'ISL158', 'HP 840 G3', 'All are bought with good conditions', '4', 'Laptops', '2025-09-09', '2025-11-03'),
+(24, 'ISL913', 'HP 820 G3', 'Buy in good condition', '10', 'Laptops', '2025-09-11', '2025-11-03'),
+(29, 'ISL227', 'MAC BOOK', 'sfsfffsffe', '15', 'Laptops', '2025-10-04', '2025-11-03'),
+(30, 'ISL761', 'HP Laserjet Black Printer', 'dsgdgergrg', '24', 'Printers', '2025-10-04', '2025-11-03');
 
 -- --------------------------------------------------------
 
@@ -144,9 +143,8 @@ CREATE TABLE `completed_asset` (
 --
 
 INSERT INTO `completed_asset` (`id`, `asset_id`, `quantity`, `status`, `floor`, `completed`, `completed_date`, `reg_no`, `asset_name`, `department`, `reported_by`) VALUES
-(43, 71, 1, 'Repair Completed', 'First Floor', 1, '2025-10-05 13:59:03', 'ISL227', 'MAC BOOK', 'Nursing1', 'Tobestic'),
-(44, 73, 1, 'Repair Completed', 'Admin building', 1, '2025-10-05 15:04:30', 'ISL913', 'HP 820 G3', 'Facility', 'Tobestic'),
-(45, 73, 1, 'Repair Completed', 'Admin building', 1, '2025-10-05 17:46:55', 'ISL913', 'HP 820 G3', 'Facility', 'Tobestic');
+(56, 74, 1, 'Repair Completed', 'First Floor', 1, '2025-11-04 10:00:19', 'ISL913', 'HP 820 G3', 'Nursing1', 'Tobestic'),
+(57, 75, 1, 'Repair Completed', 'Admin building', 1, '2025-11-04 10:03:11', 'ISL761', 'HP Laserjet Black Printer', 'Procurement', 'admin');
 
 -- --------------------------------------------------------
 
@@ -194,7 +192,11 @@ INSERT INTO `department_table` (`id`, `department`, `floor`) VALUES
 (18, 'Nursing4', 'Fourth Floor'),
 (19, 'Nursing5', 'Fifth Floor'),
 (20, 'Nursing6', 'Sixth Floor'),
-(21, 'Facility', 'Admin building');
+(21, 'Facility', 'Admin building'),
+(22, 'Audit', 'Admin building'),
+(23, 'Procurement', 'Admin building'),
+(24, 'Information Technology', 'IT Office'),
+(25, 'Account', 'Admin building');
 
 -- --------------------------------------------------------
 
@@ -218,8 +220,7 @@ CREATE TABLE `maintenance_table` (
 --
 
 INSERT INTO `maintenance_table` (`id`, `reg_no`, `asset_name`, `description`, `category`, `department`, `last_service`, `next_service`) VALUES
-(18, 'ISL707', 'HP Laserjet Black Printer', 'Good', 'Printers', 'Nursing1', '2025-09-16', '2025-11-15'),
-(19, 'ISL707', 'HP Laserjet Black Printer', 'Good', 'Printers', 'Nursing2', '2025-09-16', '2025-11-15');
+(21, 'ISL761', 'HP Laserjet Black Printer', 'Refill', 'Printers', 'Procurement', '2025-11-04', '2026-01-03');
 
 -- --------------------------------------------------------
 
@@ -254,13 +255,9 @@ CREATE TABLE `repair_asset` (
 --
 
 INSERT INTO `repair_asset` (`id`, `asset_id`, `reg_no`, `asset_name`, `department`, `reported_by`, `description`, `category`, `quantity`, `report_date`, `status`, `floor`, `completed_date`, `completed`, `withdrawn_date`, `withdrawn`, `withdrawn_reason`, `replaced_date`, `replaced`) VALUES
-(153, 72, 'ISL761', 'HP Laserjet Black Printer', 'Nursing1', 'Odeyemi Oluwatobi', 'Marked for repair', 'General', 1, '2025-10-05 14:58:15', NULL, 'First Floor', '', 0, '2025-10-05 14:58:42', 1, 'rde', '2025-10-05 14:59:08', 1),
-(154, 71, 'ISL227', 'MAC BOOK', 'Nursing1', 'Odeyemi Oluwatobi', 'Marked for repair', 'General', 1, '2025-10-05 15:01:41', NULL, 'First Floor', '', 0, '2025-10-05 15:01:51', 1, 'as', '2025-10-05 15:01:56', 1),
-(155, 72, 'ISL761', 'HP Laserjet Black Printer', 'Nursing1', 'Odeyemi Oluwatobi', 'Marked for repair', 'General', 2, '2025-10-05 15:03:17', NULL, 'First Floor', '', 0, '2025-10-05 15:03:27', 1, 'df', '2025-10-05 15:03:33', 1),
-(156, 71, 'ISL227', 'MAC BOOK', 'Nursing1', 'Odeyemi Oluwatobi', 'Marked for repair', 'General', 2, '2025-10-05 15:03:55', NULL, 'First Floor', '', 0, '2025-10-05 15:04:07', 1, 'dfg', '2025-10-05 15:04:12', 1),
-(157, 73, 'ISL913', 'HP 820 G3', 'Facility', 'Tobestic', 'Marked for repair', 'General', 0, '2025-10-05 15:04:22', NULL, 'Admin building', '2025-10-05 15:04:30', 1, '', 0, '', '', 0),
-(158, 73, 'ISL913', 'HP 820 G3', 'Facility', 'Tobestic', 'Marked for repair', 'General', 0, '2025-10-05 17:45:16', NULL, 'Admin building', '2025-10-05 17:46:55', 1, '', 0, '', '', 0),
-(159, 72, 'ISL761', 'HP Laserjet Black Printer', 'Nursing1', 'Daramola Damola', 'Marked for repair', 'General', 2, '2025-10-05 17:47:04', NULL, 'First Floor', '', 0, '2025-10-05 17:47:43', 1, 'wer', '2025-10-05 17:48:17', 1);
+(175, 74, 'ISL913', 'HP 820 G3', 'Nursing1', 'Tobestic', 'Marked for repair', 'General', 0, '2025-11-04 09:59:33', NULL, 'First Floor', '2025-11-04 10:00:19', 1, '', 0, '', '', 0),
+(176, 74, 'ISL913', 'HP 820 G3', 'Nursing1', 'Odeyemi Oluwatobi', 'Marked for repair', 'General', 1, '2025-11-04 10:01:53', NULL, 'First Floor', '', 0, '2025-11-04 10:02:56', 1, 'Bad', '2025-11-04 10:04:22', 1),
+(177, 75, 'ISL761', 'HP Laserjet Black Printer', 'Procurement', 'admin', 'Marked for repair', 'General', 0, '2025-11-04 10:02:11', NULL, 'Admin building', '2025-11-04 10:03:11', 1, '', 0, '', '', 0);
 
 -- --------------------------------------------------------
 
@@ -301,8 +298,10 @@ CREATE TABLE `role` (
 
 INSERT INTO `role` (`id`, `user_role`) VALUES
 (1, 'admin'),
-(3, 'hod'),
-(7, 'procurement');
+(3, 'audit'),
+(7, 'procurement'),
+(8, 'facility'),
+(9, 'account');
 
 -- --------------------------------------------------------
 
@@ -331,9 +330,8 @@ CREATE TABLE `staff_table` (
 --
 
 INSERT INTO `staff_table` (`id`, `asset_id`, `reg_no`, `asset_name`, `description`, `quantity`, `category`, `department`, `floor`, `requested_by`, `request_date`, `status`, `withdrawn`) VALUES
-(71, 29, 'ISL227', 'MAC BOOK', 'dfsdfsdfss', '7', 'Laptops', 'Nursing1', 'First Floor', 'Tobestic', '2025-10-04 22:10:00', NULL, 0),
-(72, 30, 'ISL761', 'HP Laserjet Black Printer', 'ddcdd', '9', 'Printers', 'Nursing1', 'First Floor', 'Tobestic', '2025-10-04 22:12:00', NULL, 0),
-(73, 24, 'ISL913', 'HP 820 G3', 'Everything is in good condition', '4', 'Laptops', 'Facility', 'Admin building', 'Tobestic', '2025-10-05 08:52:00', NULL, 0);
+(74, 24, 'ISL913', 'HP 820 G3', 'Everything is in good condition', '2', 'Laptops', 'Nursing1', 'First Floor', 'Tobestic', '2025-11-03 17:02:00', NULL, 0),
+(75, 30, 'ISL761', 'HP Laserjet Black Printer', 'dsgdgergrg', '2', 'Printers', 'Procurement', 'Admin building', 'admin', '2025-11-04 10:00:00', NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -358,12 +356,12 @@ CREATE TABLE `user_table` (
 --
 
 INSERT INTO `user_table` (`id`, `firstname`, `lastname`, `username`, `email`, `password`, `role`, `phone`, `department`) VALUES
-(3, 'Odeyemi', 'Timothy', 'Tobestics', 'odeyemioluwatobi60@gmail.com', '12345', 'hod', '08154883262', 'Computer Science'),
-(6, 'Daramola', 'Damola', 'Daraminds', 'daramolaadewunmi@gmail.com', '12345', 'procurement', '08143405244', 'Procurement/Maintenance'),
 (7, 'Odeyemi', 'Oluwatobi', 'Tobestic', 'tobestic53@gmail.com', '12345', 'admin', '08143405243', 'Admin'),
-(16, 'Odeyemi', 'Admin', 'admin', 'admin@gmail.com', '$2y$10$oGOPN8Ah8t0k1X6wk27YnO9PJnboS1O36ISmGZGZ1dt6vP2asHgQ.', 'admin', '08154883267', 'Facility'),
-(17, 'Ola', 'Facility', 'facility', 'fas@gmail.com', '$2y$10$SbeccdeGSAcNkGoiFfINdOGL4Q4S/g08js3hYlMicWAVAkVMtfGUS', 'procurement', '08154883267', 'Facility'),
-(18, 'Tim', 'user', 'user', 'user@gmail.com', '$2y$10$/ia23/q1H5qsIR8gO7gsLODObp6LKPQK3hieEzHwN2Kr8i4TkDef.', 'hod', '08154883278', 'Facility');
+(19, 'Odeyemi', 'Timothy', 'facility', 'olasunkanmioye17@gmail.com', '$2y$10$k9K.q6TUrwpL9NZ3ZzmQaOtSgDTLkIR4wRbpufTNjiOznypjKDFUa', 'facility', '08154883269', 'Facility'),
+(20, 'Odeyemi', 'Oluwatobi', 'admin', 'odeyemioluwatobi60@gmail.com', '$2y$10$63jf2Bx.9hcQ5BG5C7AlbuGXLDsa2ZfnqDl0Ts0Qf1wVlM37hCdBy', 'admin', '08154883254', 'Information Technology'),
+(21, 'Odeyemi', 'Olasunkanmi', 'audit', 'olavikessential24@gmail.com', '$2y$10$8Q6R5tOO6ijJ8Pf/X80BVuuLlhNMSzbQpBWHD7OWxkBkuyLLnujOS', 'audit', '08154883763', 'Audit'),
+(22, 'Odeyemi', 'Oye', 'procurement', 'oluwakemiruth.olanipekun@gmail.com', '$2y$10$j1gK9hPo8TtBxiaOdW3EjewSktaTJf1ypRGu0a2.rmjNC/dmFXbbm', 'procurement', '0815488452', 'Procurement'),
+(23, 'Odeyemi', 'Ola', 'account', 'ola@gmail.com', '$2y$10$OZqP.rFramygMw8Q5sSoaephGW1FEL1L81zfKQMwfGX6Nis09bFyW', 'account', '08154834567', 'Account');
 
 -- --------------------------------------------------------
 
@@ -390,11 +388,7 @@ CREATE TABLE `withdrawn_asset` (
 --
 
 INSERT INTO `withdrawn_asset` (`id`, `asset_id`, `reg_no`, `asset_name`, `department`, `floor`, `withdrawn_date`, `withdrawn_by`, `withdrawn_reason`, `qty`, `status`) VALUES
-(70, 72, 'ISL761', 'HP Laserjet Black Printer', 'Nursing1', 'First Floor', '2025-10-05 14:58:42', 'admin', 'rde', 1, 1),
-(71, 71, 'ISL227', 'MAC BOOK', 'Nursing1', 'First Floor', '2025-10-05 15:01:51', 'admin', 'as', 1, 1),
-(72, 72, 'ISL761', 'HP Laserjet Black Printer', 'Nursing1', 'First Floor', '2025-10-05 15:03:28', 'admin', 'df', 1, 0),
-(73, 71, 'ISL227', 'MAC BOOK', 'Nursing1', 'First Floor', '2025-10-05 15:04:07', 'admin', 'dfg', 1, 0),
-(74, 72, 'ISL761', 'HP Laserjet Black Printer', 'Nursing1', 'First Floor', '2025-10-05 17:47:43', 'admin', 'wer', 1, 0);
+(82, 74, 'ISL913', 'HP 820 G3', 'Nursing1', 'First Floor', '2025-11-04 10:02:56', 'admin', 'Bad', 1, 0);
 
 --
 -- Indexes for dumped tables
@@ -496,7 +490,7 @@ ALTER TABLE `withdrawn_asset`
 -- AUTO_INCREMENT for table `asset_replacement_log`
 --
 ALTER TABLE `asset_replacement_log`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT for table `asset_table`
@@ -520,7 +514,7 @@ ALTER TABLE `category`
 -- AUTO_INCREMENT for table `completed_asset`
 --
 ALTER TABLE `completed_asset`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 
 --
 -- AUTO_INCREMENT for table `department_borrow_table`
@@ -532,19 +526,19 @@ ALTER TABLE `department_borrow_table`
 -- AUTO_INCREMENT for table `department_table`
 --
 ALTER TABLE `department_table`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `maintenance_table`
 --
 ALTER TABLE `maintenance_table`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `repair_asset`
 --
 ALTER TABLE `repair_asset`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=160;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=178;
 
 --
 -- AUTO_INCREMENT for table `request_table`
@@ -556,25 +550,25 @@ ALTER TABLE `request_table`
 -- AUTO_INCREMENT for table `role`
 --
 ALTER TABLE `role`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `staff_table`
 --
 ALTER TABLE `staff_table`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76;
 
 --
 -- AUTO_INCREMENT for table `user_table`
 --
 ALTER TABLE `user_table`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `withdrawn_asset`
 --
 ALTER TABLE `withdrawn_asset`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=75;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=83;
 
 --
 -- Constraints for dumped tables

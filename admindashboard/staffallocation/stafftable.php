@@ -23,6 +23,12 @@ if (isset($_GET['floor']) && !empty($_GET['floor'])) {
     $params[':floor'] = "%" . $_GET['floor'] . "%";
 }
 
+// Add department filter if provided
+if (isset($_GET['department']) && !empty($_GET['department'])) {
+    $where_clause .= " AND s.department LIKE :department";
+    $params[':department'] = "%" . $_GET['department'] . "%";
+}
+
 // Params array is already initialized above with the employee filter
 
 try {
@@ -53,7 +59,7 @@ try {
         $page = $total_pages;
         $offset = ($page - 1) * $items_per_page;
     }    // Fetch staff allocation data with repair status
-    $sql = "SELECT s.*, DATE_FORMAT(s.request_date, '%Y-%m-%d %H:%i') as formatted_date,
+    $sql = "SELECT s.*, s.id as staff_table_id, DATE_FORMAT(s.request_date, '%Y-%m-%d %H:%i') as formatted_date,
             CASE WHEN r.status = 'Under Repair' THEN 1 ELSE 0 END as is_under_repair
             FROM staff_table s 
             LEFT JOIN repair_asset r ON s.id = r.asset_id AND r.status = 'Under Repair'
@@ -127,7 +133,7 @@ try {
             <div class="card mb-3">
                 <div class="card-body">
                     <form id="filterForm" method="GET" class="row align-items-center">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="employee-filter">
                                 <label for="floor" class="form-label">Filter by Floor:</label>
                                 <input type="text" class="form-control" id="floor" name="floor" 
@@ -135,11 +141,19 @@ try {
                                        placeholder="Type floor...">
                             </div>
                         </div>
+                        <div class="col-md-3">
+                            <div class="employee-filter">
+                                <label for="department" class="form-label">Filter by Department:</label>
+                                <input type="text" class="form-control" id="department" name="department" 
+                                       value="<?php echo isset($_GET['department']) ? htmlspecialchars($_GET['department']) : ''; ?>" 
+                                       placeholder="Type department...">
+                            </div>
+                        </div>
                         <div class="col-md-2">
                             <label class="form-label">&nbsp;</label>
                             <button type="submit" class="btn btn-primary d-block">Apply Filter</button>
                         </div>
-                        <?php if (isset($_GET['floor'])): ?>
+                        <?php if (isset($_GET['floor']) || isset($_GET['department'])): ?>
                             <div class="col-md-2">
                                 <label class="form-label">&nbsp;</label>
                                 <a href="?<?php echo isset($_GET['page']) ? 'page=' . $_GET['page'] : ''; ?>" 
@@ -172,6 +186,7 @@ try {
                     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                         // Sanitize data to prevent XSS attacks
                         $id = htmlspecialchars($row['id']);
+                        $staff_table_id = htmlspecialchars($row['id']); // Explicitly for edit button from staff_table
                         $reg_no = htmlspecialchars($row['reg_no']);
                         $asset_name = htmlspecialchars($row['asset_name']);
                         $department = htmlspecialchars($row['department']);
@@ -221,6 +236,9 @@ try {
                             <td><?php echo $request_date; ?></td>                            <td>
                                 <a href="staffallocation/viewallocation.php?id=<?php echo $id; ?>" class="btn btn-info btn-sm">
                                     <i class="fa fa-eye"></i>
+                                </a>
+                                  <a href="staffallocation/editallocation.php?id=<?php echo $staff_table_id; ?>" class="btn btn-info btn-sm">
+                                    <i class="fa fa-edit"></i>
                                 </a>
                                 <a href="staffallocation/deleteallocation.php?id=<?php echo $id; ?>" class="btn btn-danger btn-sm">
                                     <i class="fa fa-trash"></i>
@@ -291,6 +309,9 @@ try {
                 if (isset($_GET['floor']) && !empty($_GET['floor'])) {
                     $filter_params .= '&floor=' . urlencode($_GET['floor']);
                 }
+                if (isset($_GET['department']) && !empty($_GET['department'])) {
+                    $filter_params .= '&department=' . urlencode($_GET['department']);
+                }
 
                 // Show pagination only if there are items
                 if ($total_items > 0):               // Previous page link
@@ -354,12 +375,35 @@ try {
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
 <script>
     $(document).ready(function() {
+        // Floor autocomplete
         $("#floor").autocomplete({
             source: "get_floor_suggestions.php",
             minLength: 2,
             select: function(event, ui) {
                 if (ui.item) {
                     $("#floor").val(ui.item.value);
+                    $("#filterForm").submit();
+                }
+            },
+            response: function(event, ui) {
+                if (!ui.content.length) {
+                    var noResult = { label: "No matches found", value: "" };
+                    ui.content.push(noResult);
+                }
+            }
+        }).data("ui-autocomplete")._renderItem = function(ul, item) {
+            return $("<li>")
+                .append("<div>" + (item.label || item.value) + "</div>")
+                .appendTo(ul);
+        };
+
+        // Department autocomplete
+        $("#department").autocomplete({
+            source: "get_department_suggestions.php",
+            minLength: 2,
+            select: function(event, ui) {
+                if (ui.item) {
+                    $("#department").val(ui.item.value);
                     $("#filterForm").submit();
                 }
             },
@@ -382,9 +426,9 @@ try {
 
         // Add loading indicator
         $(document).ajaxStart(function() {
-            $("#floor").addClass("loading");
+            $("#floor, #department").addClass("loading");
         }).ajaxStop(function() {
-            $("#floor").removeClass("loading");
+            $("#floor, #department").removeClass("loading");
         });
     });
 

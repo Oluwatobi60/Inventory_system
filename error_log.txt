@@ -7527,3 +7527,15 @@ Parameters: offset=0, limit=7
 [2025-11-05 17:57:58] Login successful for user 'admin'
 [2025-11-05 17:58:08] Pagination details
 [2025-11-05 18:03:47] Pagination details
+[2025-11-05 20:15:17] Pagination details
+[2025-11-05 21:05:33] Login successful for user 'tobestic'
+[2025-11-05 21:30:20] Pagination details
+[2025-11-05 21:30:39] Pagination details
+[2025-11-05 21:33:51] Asset updated successfully (ID: 35)
+[2025-11-05 21:34:01] Pagination details
+[2025-11-05 21:34:17] Pagination details
+[2025-11-05 21:34:34] Pagination details
+[2025-11-05 21:34:55] Pagination details
+[2025-11-05 21:35:06] Pagination details
+[2025-11-05 21:47:07] Login successful for user 'procurement'
+[2025-11-05 21:53:06] Login successful for user 'audit'

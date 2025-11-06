@@ -1,11 +1,12 @@
 <?php
+require "include/config.php";
 
 // Handle search
 $search = isset($_GET['search']) ? trim($_GET['search']) : '';
 
 // Pagination logic
-$per_page_options = [5, 15, 50, 'all'];
-$per_page = isset($_GET['per_page']) && in_array($_GET['per_page'], array_map('strval', $per_page_options)) ? $_GET['per_page'] : 5;
+$per_page_options = [15, 25, 50, 'all'];
+$per_page = isset($_GET['per_page']) && in_array($_GET['per_page'], array_map('strval', $per_page_options)) ? $_GET['per_page'] : 15;
 $page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
 
 // Count total records
@@ -43,6 +44,17 @@ if ($per_page === 'all') {
     $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
     $total_pages = ceil($total_records / intval($per_page));
 }
+
+// Additional query for category summary without altering existing logic
+$category_sql = "SELECT category, SUM(quantity) as total_quantity 
+                FROM staff_table 
+                WHERE (:search = '' OR department LIKE :search OR floor LIKE :search OR asset_name LIKE :search)
+                GROUP BY category 
+                ORDER BY category";
+$category_stmt = $conn->prepare($category_sql);
+$category_stmt->bindParam(':search', $search_param, PDO::PARAM_STR);
+$category_stmt->execute();
+$category_totals = $category_stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
 <html>
@@ -115,9 +127,39 @@ if ($per_page === 'all') {
                 font-size: 0.95rem;
             }
         }
+        
+        /* Category Summary Styles */
+        .category-summary {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .category-summary .card {
+            border: none;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        .category-summary .progress {
+            background-color: #e9ecef;
+            border-radius: 10px;
+        }
+        .category-summary .progress-bar {
+            border-radius: 10px;
+            transition: width 0.6s ease;
+        }
+        .category-summary .table td, .category-summary .table th {
+            border-color: #dee2e6;
+            vertical-align: middle;
+        }
+        .category-summary .badge {
+            font-size: 0.875rem;
+            padding: 0.5em 0.75em;
+        }
     </style>
     <title>Department/Floor Asset Report</title>
     <link rel="stylesheet" href="assets/libs/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <script>
     // Clear search field and submit form
     function clearSearch() {
@@ -132,6 +174,24 @@ if ($per_page === 'all') {
 </head>
 <body>
 <div class="container mt-5">
+    <?php if (isset($_GET['error'])): ?>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <?php echo htmlspecialchars($_GET['error']); ?>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    <?php endif; ?>
+    
+    <?php if (isset($_GET['success'])): ?>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <?php echo htmlspecialchars($_GET['success']); ?>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    <?php endif; ?>
+    
     <!-- <h2>Assets Allocated to Department/Floor</h2> -->
     <form method="get" class="mb-3 form-inline" id="reportForm">
         <input type="text" name="search" id="searchInput" class="form-control mb-2 mr-2" placeholder="Search by department, floor, or asset..." value="<?php echo htmlspecialchars($search); ?>" style="max-width:350px;" autofocus>
@@ -143,7 +203,10 @@ if ($per_page === 'all') {
                 </option>
             <?php endforeach; ?>
         </select>
-        <button type="submit" class="btn btn-primary mb-2">Search</button>
+        <button type="submit" class="btn btn-primary mb-2 mr-2">Search</button>
+        <a href="department_report_export_excel.php?search=<?php echo urlencode($search); ?>" class="btn btn-success mb-2">
+            <i class="fa fa-file-excel-o"></i> Export to Excel
+        </a>
     </form>
     <table class="table table-bordered table-striped">
         <thead class="thead-dark">
@@ -172,6 +235,94 @@ if ($per_page === 'all') {
         <?php endif; ?>
         </tbody>
     </table>
+    
+    <!-- Category Summary Section (without altering existing logic) -->
+    <?php if ($category_totals && count($category_totals) > 0): ?>
+    <div class="mt-4 mb-4">
+        <h5 class="text-primary mb-3">
+            <i class="fa fa-chart-bar"></i> Assets Summary by Category
+        </h5>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-sm table-hover">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>Category</th>
+                                        <th class="text-right">Total Assets</th>
+                                        <th class="text-center">Percentage</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php 
+                                // Calculate grand total for percentage calculations
+                                    $grand_total = array_sum(array_column($category_totals, 'total_quantity'));
+                                    // Display each category with progress bar
+                                    foreach ($category_totals as $category_row): 
+                                        // Calculate percentage
+                                        $percentage = $grand_total > 0 ? round(($category_row['total_quantity'] / $grand_total) * 100, 1) : 0;
+                                        // Get category name
+                                        $category_name = !empty($category_row['category']) ? $category_row['category'] : 'Uncategorized';
+                                    ?>
+                                        <tr>
+                                            <td>
+                                                <strong><?php echo htmlspecialchars($category_name); ?></strong>
+                                            </td>
+                                            <td class="text-right">
+                                                <span class="badge badge-primary"><?php echo number_format($category_row['total_quantity']); ?></span>
+                                            </td>
+                                            <td class="text-center">
+                                                <!-- Progress Bar -->
+                                                <div class="progress" style="height: 20px;">
+                                                    <div class="progress-bar bg-info" role="progressbar" 
+                                                         style="width: <?php echo $percentage; ?>%" 
+                                                         aria-valuenow="<?php echo $percentage; ?>" 
+                                                         aria-valuemin="0" aria-valuemax="100">
+                                                        <?php echo $percentage; ?>%
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                                <tfoot class="thead-dark">
+                                    <tr>
+                                        <th>Total</th>
+                                        <th class="text-right">
+                                            <span class="badge badge-success"><?php echo number_format($grand_total); ?></span>
+                                        </th>
+                                        <th class="text-center">100%</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title text-muted">Quick Stats</h6>
+                        <ul class="list-unstyled">
+                            <li><strong>Total Categories:</strong> <?php echo count($category_totals); ?></li>
+                            <li><strong>Total Assets:</strong> <?php echo number_format($grand_total); ?></li>
+                            <li><strong>Largest Category:</strong> 
+                                <?php 
+                                $max_category = max($category_totals);
+                                $max_cat_name = !empty($max_category['category']) ? $max_category['category'] : 'Uncategorized';
+                                echo htmlspecialchars($max_cat_name) . ' (' . number_format($max_category['total_quantity']) . ')';
+                                ?>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php endif; ?>
+    
     <?php if ($per_page !== 'all' && $total_pages > 1): ?>
     <nav>
         <ul class="pagination">
@@ -184,5 +335,10 @@ if ($per_page === 'all') {
     </nav>
     <?php endif; ?>
 </div>
+
+<!-- Bootstrap JS for alert dismissal -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.0/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

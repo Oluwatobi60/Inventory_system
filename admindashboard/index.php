@@ -53,46 +53,91 @@ try {
 
 // Section: Fetch Asset Quantities
 try {
-    // Prepare query to get total quantity for each asset category
-    $query = "SELECT SUM(quantity) AS total_quantity FROM asset_table WHERE category = ?";
-    // Create a prepared statement for reuse with different categories
+    // Get all categories and their total quantities dynamically from staff_table
+    $query = "SELECT category, SUM(quantity) AS total_quantity FROM staff_table GROUP BY category ORDER BY category";
     $stmt = $conn->prepare($query);
-
-    // Get total quantity of printers
-    // Execute the query specifically for 'Printers' category
-    $stmt->execute(['Printers']);
-    // Fetch the result row
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    // Store the quantity, use 0 if NULL using null coalescing operator
-    $total_printer_quantity = $row['total_quantity'] ?? 0;
-
-    // Get furniture quantity
-    $stmt->execute(['Furniture']);
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    $total_furniture_quantity = $row['total_quantity'] ?? 0;
-
-    // Get laptops quantity
-    $stmt->execute(['Laptops']);
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    $total_laptop_quantity = $row['total_quantity'] ?? 0;
-
-    // Get accessories quantity
-    $stmt->execute(['Accessories']);
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    $total_accessories_quantity = $row['total_quantity'] ?? 0;
-
-    // Get Desktop quantity
-    $stmt->execute(['Desktops']);
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    $total_desktop_quantity = $row['total_quantity'] ?? 0;
+    $stmt->execute();
+    
+    // Initialize array to store category data
+    $category_data = [];
+    
+    // Fetch all categories and their quantities
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $category_data[$row['category']] = $row['total_quantity'] ?? 0;
+    }
+    
+    // Set individual variables for backward compatibility (if needed elsewhere)
+    $total_printer_quantity = $category_data['Printers'] ?? 0;
+    $total_furniture_quantity = $category_data['Furniture'] ?? 0;
+    $total_laptop_quantity = $category_data['Laptops'] ?? 0;
+    $total_accessories_quantity = $category_data['Accessories'] ?? 0;
+    $total_desktop_quantity = $category_data['Desktops'] ?? 0;
 } catch (PDOException $e) {
     logError("Failed to fetch asset quantities: " . $e->getMessage());
     // Set default values if query fails
+    $category_data = [];
     $total_printer_quantity = 0;
     $total_furniture_quantity = 0;
     $total_laptop_quantity = 0;
     $total_accessories_quantity = 0;
     $total_desktop_quantity = 0;
+}
+
+// Helper function to get category styling
+function getCategoryStyle($category) {
+    $styles = [
+        'Printers' => ['color' => 'primary', 'icon' => 'mdi-printer'],
+        'Laptops' => ['color' => 'warning', 'icon' => 'mdi-laptop'],
+        'Desktops' => ['color' => 'info', 'icon' => 'mdi-desktop-mac'],
+        'Furniture' => ['color' => 'success', 'icon' => 'mdi-sofa'],
+        'Accessories' => ['color' => 'danger', 'icon' => 'mdi-headphones'],
+    ];
+    
+    // Default style for unknown categories
+    $default = ['color' => 'secondary', 'icon' => 'mdi-package-variant'];
+    
+    return $styles[$category] ?? $default;
+}
+
+// Prepare dynamic chart data
+$chart_labels = [];
+$chart_data = [];
+$chart_colors = [];
+$chart_border_colors = [];
+
+$color_palette = [
+    'rgba(78, 115, 223, 0.8)',   // Primary Blue
+    'rgba(28, 200, 138, 0.8)',   // Success Green
+    'rgba(246, 194, 62, 0.8)',   // Warning Yellow
+    'rgba(231, 74, 59, 0.8)',    // Danger Red
+    'rgba(54, 185, 204, 0.8)',   // Info Cyan
+    'rgba(133, 135, 150, 0.8)',  // Secondary Gray
+    'rgba(130, 87, 230, 0.8)',   // Purple
+    'rgba(255, 99, 132, 0.8)',   // Pink
+    'rgba(255, 159, 64, 0.8)',   // Orange
+    'rgba(75, 192, 192, 0.8)'    // Teal
+];
+
+$border_color_palette = [
+    'rgb(78, 115, 223)',   // Primary Blue
+    'rgb(28, 200, 138)',   // Success Green
+    'rgb(246, 194, 62)',   // Warning Yellow
+    'rgb(231, 74, 59)',    // Danger Red
+    'rgb(54, 185, 204)',   // Info Cyan
+    'rgb(133, 135, 150)',  // Secondary Gray
+    'rgb(130, 87, 230)',   // Purple
+    'rgb(255, 99, 132)',   // Pink
+    'rgb(255, 159, 64)',   // Orange
+    'rgb(75, 192, 192)'    // Teal
+];
+
+$color_index = 0;
+foreach ($category_data as $category => $quantity) {
+    $chart_labels[] = $category;
+    $chart_data[] = $quantity;
+    $chart_colors[] = $color_palette[$color_index % count($color_palette)];
+    $chart_border_colors[] = $border_color_palette[$color_index % count($border_color_palette)];
+    $color_index++;
 }
 
 // Section: Fetch Request Statistics
@@ -433,85 +478,25 @@ try {
                     <div class="col-12">
                         <h4 class="text-muted mb-4">Asset Categories</h4>
                     </div>
+                    <?php foreach ($category_data as $category => $quantity): 
+                        $style = getCategoryStyle($category); 
+                    ?>
                     <div class="col-md-4 col-lg-2">
-                        <div class="card shadow-lg rounded-lg h-100 border-left-primary">
+                        <div class="card shadow-lg rounded-lg h-100 border-left-<?php echo $style['color']; ?>">
                             <div class="card-body">
                                 <div class="row align-items-center">
                                     <div class="col">
-                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Printers</div>
-                                        <div class="h5 mb-0 font-weight-bold"><?php echo $total_printer_quantity; ?></div>
+                                        <div class="text-xs font-weight-bold text-<?php echo $style['color']; ?> text-uppercase mb-1"><?php echo htmlspecialchars($category); ?></div>
+                                        <div class="h5 mb-0 font-weight-bold"><?php echo $quantity; ?></div>
                                     </div>
                                     <div class="col-auto">
-                                        <i class="mdi mdi-printer fa-2x text-primary"></i>
+                                        <i class="mdi <?php echo $style['icon']; ?> fa-2x text-<?php echo $style['color']; ?>"></i>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <div class="col-md-4 col-lg-2">
-                        <div class="card shadow-lg rounded-lg h-100 border-left-success">
-                            <div class="card-body">
-                                <div class="row align-items-center">
-                                    <div class="col">
-                                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Furniture</div>
-                                        <div class="h5 mb-0 font-weight-bold"><?php echo $total_furniture_quantity; ?></div>
-                                    </div>
-                                    <div class="col-auto">
-                                        <i class="mdi mdi-sofa fa-2x text-success"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4 col-lg-2">
-                        <div class="card shadow-lg rounded-lg h-100 border-left-warning">
-                            <div class="card-body">
-                                <div class="row align-items-center">
-                                    <div class="col">
-                                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Laptops</div>
-                                        <div class="h5 mb-0 font-weight-bold"><?php echo $total_laptop_quantity; ?></div>
-                                    </div>
-                                    <div class="col-auto">
-                                        <i class="mdi mdi-laptop fa-2x text-warning"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4 col-lg-2">
-                        <div class="card shadow-lg rounded-lg h-100 border-left-danger">
-                            <div class="card-body">
-                                <div class="row align-items-center">
-                                    <div class="col">
-                                        <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Accessories</div>
-                                        <div class="h5 mb-0 font-weight-bold"><?php echo $total_accessories_quantity; ?></div>
-                                    </div>
-                                    <div class="col-auto">
-                                        <i class="mdi mdi-headphones fa-2x text-danger"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4 col-lg-2">
-                        <div class="card shadow-lg rounded-lg h-100 border-left-info">
-                            <div class="card-body">
-                                <div class="row align-items-center">
-                                    <div class="col">
-                                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Desktops</div>
-                                        <div class="h5 mb-0 font-weight-bold"><?php echo $total_desktop_quantity; ?></div>
-                                    </div>
-                                    <div class="col-auto">
-                                        <i class="mdi mdi-air-conditioner fa-2x text-info"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <?php endforeach; ?>
                 </div>
 
                 <!-- Statistics Section -->
@@ -676,31 +661,13 @@ try {
         type: 'bar',
         // Define the data structure
         data: {
-            // Define labels for each asset category
-            labels: ['Printers', 'Furniture', 'Laptops', 'Accessories', 'Desktops'],
+            // Dynamic labels from staff_table categories
+            labels: <?php echo json_encode($chart_labels); ?>,
             datasets: [{
                 label: 'Asset Quantities',
-                data: [
-                    <?php echo $total_printer_quantity; ?>, 
-                    <?php echo $total_furniture_quantity; ?>, 
-                    <?php echo $total_laptop_quantity; ?>, 
-                    <?php echo $total_accessories_quantity; ?>, 
-                    <?php echo $total_desktop_quantity; ?>
-                ],
-                backgroundColor: [
-                    'rgba(78, 115, 223, 0.8)',
-                    'rgba(28, 200, 138, 0.8)',
-                    'rgba(246, 194, 62, 0.8)',
-                    'rgba(231, 74, 59, 0.8)',
-                    'rgba(54, 185, 204, 0.8)'
-                ],
-                borderColor: [
-                    'rgb(78, 115, 223)',
-                    'rgb(28, 200, 138)',
-                    'rgb(246, 194, 62)',
-                    'rgb(231, 74, 59)',
-                    'rgb(54, 185, 204)'
-                ],
+                data: <?php echo json_encode($chart_data); ?>,
+                backgroundColor: <?php echo json_encode($chart_colors); ?>,
+                borderColor: <?php echo json_encode($chart_border_colors); ?>,
                 borderWidth: 2,
                 borderRadius: 5
             }]
@@ -734,26 +701,23 @@ var pieCtx = document.getElementById('statisticsPieChart').getContext('2d');
 var statisticsPieChart = new Chart(pieCtx, {
     type: 'pie',
     data: {
-        labels: ['Total Users', 'Staff Allocated Asset', 'Maintenance Report', 'New Added Assets'],
+        labels: ['Total Users', 'Staff Allocated Assets', 'Maintenance Reports'].concat(<?php echo json_encode($chart_labels); ?>),
         datasets: [{
             data: [
                 <?php echo $total_users; ?>,
                 <?php echo $staff_allocated; ?>,
-                <?php echo $maintenance_report; ?>,
-                <?php echo $new_added_asset; ?>
-            ],
+                <?php echo $maintenance_report; ?>
+            ].concat(<?php echo json_encode($chart_data); ?>),
             backgroundColor: [
                 'rgba(78, 115, 223, 0.8)',
                 'rgba(28, 200, 138, 0.8)',
-                'rgba(246, 194, 62, 0.8)',
-                'rgba(231, 74, 59, 0.8)'
-            ],
+                'rgba(246, 194, 62, 0.8)'
+            ].concat(<?php echo json_encode($chart_colors); ?>),
             borderColor: [
                 'rgb(78, 115, 223)',
                 'rgb(28, 200, 138)',
-                'rgb(246, 194, 62)',
-                'rgb(231, 74, 59)'
-            ],
+                'rgb(246, 194, 62)'
+            ].concat(<?php echo json_encode($chart_border_colors); ?>),
             borderWidth: 2
         }]
     },
